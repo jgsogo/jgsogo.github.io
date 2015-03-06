@@ -17,8 +17,9 @@ La idea me parece muy interesante, los *alumnos* pueden empezar a construir de e
 Incluso podemos considerar que aquéllos que están haciendo el proyecto de la mano de alguna empresa están metidos
 realmente en un proceso de selección de varias semanas que puede terminar con su incorporación al mundo laboral.
 
-Creo que esta iniciativa manifiesta la nueva forma de incorporación al mundo laboral que se está constituyendo
-durante los últimos años. Es la alternativa al autoempleo y al becario, una manera interesante de darse a conocer
+Creo que esta iniciativa manifiesta la nueva forma de buscar trabajo que se está constituyendo
+durante los últimos años.
+Es la alternativa al autoempleo y al becario, una manera interesante de darse a conocer
 con hechos, con repositorios de código, con leña en vez de humo, y en **h4ckademy** tienen leña de encina ;D
 
 Si te llama la atención, no lo dudes, [apúntate en su web][h4ckademy-form]... aunque para hacerlo tendrás que
