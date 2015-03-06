@@ -2,6 +2,7 @@
 layout: post
 title: "H4ckademy"
 date: 2015-03-06T10:49:26+01:00
+tags: h4ckademy
 ---
 
 [H4ckademy][h4ckademy] es un proyecto que dirige mi amigo Israel ([@gootyfer][gootyfer]).

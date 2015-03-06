@@ -2,8 +2,8 @@
 layout: post
 title: "Factorización de matrices no negativas"
 date: 2015-03-05T12:54:48+01:00
-categories: algorithm
-tags: work-in-progress
+categories: machine-learning
+tags: work-in-progress machine-learning
 ---
 
 Ayer tuve la ocasión de conocer a [Carlos J. Gil Bellosta][datanalytics] gracias a la charla que dio en el *meetup*
