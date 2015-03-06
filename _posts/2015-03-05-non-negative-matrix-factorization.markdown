@@ -22,11 +22,11 @@ o productos y elaborar recomendaciones.
 En el blog de Carlos podéis encontrar las transparencias de la charla y algunos enlaces interesantes a éste y muchos
 otros temas, os dejo [aquí][datanalytics-iv-meetup-machine-learning] el enlace.
 
+{% include under_construction.html %}
 
 Definición del modelo
 =====================
 
-**Work in progress**
 
 Algunos enlaces de interés y temas que mencionar:
 
