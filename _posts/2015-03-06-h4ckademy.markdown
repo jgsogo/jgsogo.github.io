@@ -1,0 +1,15 @@
+---
+layout: post
+title: "H4ckademy"
+date: 2015-03-06T10:49:26+01:00
+---
+
+[H4ckademy][http://www.h4ckademy.com/ "H4ckademy"] es un proyecto que dirige mi amigo Israel ([@gootyfer][gootyfer]).
+Se trata de un concepto de *academía de programación* innovador: los candidatos deben pasar un proceso de selección
+para incorporarse al programa y durante éste colaborarán entre ellos para aprender y desarrollar proyectos propuestos
+ por ellos mismos o por alguna empresa externa que se compromete a ofrecer *mentoring* durante su desarrollo.
+
+
+
+
+[gootyfer]: https://twitter.com/gootyfer "@gootyfer"
