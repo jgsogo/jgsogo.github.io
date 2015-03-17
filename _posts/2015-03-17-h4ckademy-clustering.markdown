@@ -1,14 +1,14 @@
 ---
 layout: post
-title: "Clustering"
+title: "Clustering -- presentación"
 date: 2015-03-17T13:34:12+01:00
 tags: h4ckademy clustering charla
 ---
 
-El otro día os presentaba [H4ckademy]({% post_url 2012-01-05-hello-world %}), la escuela de programación
+El otro día os presentaba [H4ckademy]({% post_url 2015-03-06-h4ckademy %}), la escuela de programación
 de mi amigo Israel Gutiérrez ([@gootyfer][gootyfer]). Después de visitarla ese día decidí que podía
-ser una buena oportunidad para salir de mi zona de confort y ofrecer a los *alumnos* una introducción
-al clustering, clasificación no supervisada.
+ser una buena oportunidad para salir de mi zona de confort y ofrecer a los *alumnos* una breve *clase*
+como introducción al clustering (clasificación no supervisada).
 
 Hoy ha llegado la hora, es el momento de enfrentarse a la realidad. Para la charla me he preparado dos
 presentaciones, espero que no sean muy densas, pero es que tampoco tenía nada claro cuál es el nivel
@@ -23,8 +23,10 @@ En los siguientes enlaces podéis encontrar las transparencias de ambas presenta
  * [Algoritmos](/static/talks/algoritmo.pdf) de clustering: k-means, BRF y CURE. Una muestra de tres algoritmos
    con características muy distintas que permiten aproximarse al clustering desde diferentes puntos de vista.
 
-Las presentaciones no son definitivas, faltan algunas cosas fundamentales como la referencias bibliográficas, 
+Las presentaciones **no son definitivas**, faltan algunas cosas fundamentales como la referencias bibliográficas, 
 pero ya las iré incluyendo poco a poco a medida que yo mismo vaya aprendiendo del tema. De todas formas, podéis
 seguir su evolución en [este repositorio](https://github.com/jgsogo/talks "Github - jgsogo - talks").
+
+... A ver qué tal se me da hoy, ya os contaré ;D
 
 [gootyfer]: https://twitter.com/gootyfer "@gootyfer"
