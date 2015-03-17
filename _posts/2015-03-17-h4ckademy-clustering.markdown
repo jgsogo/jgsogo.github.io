@@ -24,9 +24,17 @@ En los siguientes enlaces podéis encontrar las transparencias de ambas presenta
    con características muy distintas que permiten aproximarse al clustering desde diferentes puntos de vista.
 
 Las presentaciones **no son definitivas**, faltan algunas cosas fundamentales como la referencias bibliográficas, 
-pero ya las iré incluyendo poco a poco a medida que yo mismo vaya aprendiendo del tema. De todas formas, podéis
+pero ya las iré incluyendo poco a poco a medida que yo mismo vaya trabajando en el tema. De todas formas, podéis
 seguir su evolución en [este repositorio](https://github.com/jgsogo/talks "Github - jgsogo - talks").
 
 ... A ver qué tal se me da hoy, ya os contaré ;D
+
+-----
+
+Información complementaria:
+
+ * [DECSAI - Clustering basado en densidad](http://elvex.ugr.es/idbis/dm/slides/43%20Clustering%20-%20Density.pdf)
+ * [Monte Carlo K-Means clustering of Countries with Python (Part 2/3)](http://www.stuartreid.co.za/clustering-countries-real-gdp-growth-part2/)
+ * refs de Coursera, MUIA,...
 
 [gootyfer]: https://twitter.com/gootyfer "@gootyfer"
