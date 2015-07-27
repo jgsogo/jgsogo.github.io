@@ -12,7 +12,8 @@ from pelicanconf import *
 
 SITEURL = 'http://jgsogo.github.io'
 RELATIVE_URLS = False
-
+SITELOGO = SITEURL + '/images/profile.png'
+FAVICON = SITEURL + '/images/favicon.ico'
 
 CATEGORY_FEED_ATOM = 'feeds/%s.atom.xml'
 
