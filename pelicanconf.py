@@ -30,7 +30,7 @@ USE_FOLDERS_AS_CATEGORY = True
 MAIN_MENU = True
 
 # Blogroll
-LINKS = (('Lingẅars', 'https://lingwars.github.io/blog/'),)
+LINKS = (('Lingẅars', 'http://lingwars.github.io/blog/'),)
 
 # Social widget
 SOCIAL = (('linkedin', 'https://es.linkedin.com/in/jgsogo'),
