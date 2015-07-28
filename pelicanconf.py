@@ -13,7 +13,7 @@ FAVICON = SITEURL + '/images/favicon.ico'
 
 ROBOTS = 'index, follow'
 
-THEME = u'themes/Flex'  # https://github.com/alexandrevicenzi/Flex
+THEME = u'Flex'  # https://github.com/alexandrevicenzi/Flex
 PATH = u'content'
 TIMEZONE = 'Europe/Madrid'
 DEFAULT_LANG = u'es'
@@ -50,6 +50,7 @@ CC_LICENSE = {
 COPYRIGHT_YEAR = 2015
 
 DEFAULT_PAGINATION = 10
+SUMMARY_MAX_LENGTH = 50
 
 STATIC_PATHS = ['images', 'extra/CNAME']
 EXTRA_PATH_METADATA = {'extra/CNAME': {'path': 'CNAME'},}

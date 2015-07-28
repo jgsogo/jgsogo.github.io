@@ -147,9 +147,9 @@ su mantenimiento no resulte una tarea titánica es muy recomendable seguir tambi
  * Escribe tests.
  * Usa algún sistema de integración continua que ejecute esos tests automáticamente.
  * ¡Documenta!
- * ¡y mantén la documentación actualizada!
+ * ¡Y mantén la documentación actualizada!
 
 ____
 
-### Enlaces de interes
+### Enlaces de interés
  * Reutilización de código en C++: hecha un vistazo a [BiiCode](https://www.biicode.com/) ;D
