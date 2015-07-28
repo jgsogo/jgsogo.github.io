@@ -5,23 +5,23 @@ Slug: h4ckademy
 
 
 [H4ckademy][h4ckademy] es un proyecto que dirige mi amigo Israel ([@gootyfer][gootyfer]).
-Se trata de un concepto de *academia de programación* innovador: los candidatos deben pasar un proceso de selección
-para incorporarse al programa y durante éste colaborarán entre ellos para aprender y desarrollar proyectos propuestos
+Se trata de un concepto de *academia de programaciÃ³n* innovador: los candidatos deben pasar un proceso de selecciÃ³n
+para incorporarse al programa y durante este colaborarÃ¡n entre ellos para aprender y desarrollar proyectos propuestos
  por ellos mismos o por alguna empresa externa que se compromete a ofrecer *mentoring* durante su desarrollo.
 
 ![h4ckademy]({filename}/images/h4ckademy.png)
 
 La idea me parece muy interesante, los *alumnos* pueden empezar a construir de esta forma su red de contactos y potenciar
- su perfil público en la red con proyectos de código que pueden despertar el interés de las empresas.
-Incluso podemos considerar que aquéllos que están haciendo el proyecto de la mano de alguna empresa están metidos
-realmente en un proceso de selección de varias semanas que puede terminar con su incorporación al mundo laboral.
+ su perfil pÃºblico en la red con proyectos de cÃ³digo que pueden despertar el interÃ©s de las empresas.
+Incluso podemos considerar que aquellos que estÃ¡n haciendo el proyecto de la mano de alguna empresa estÃ¡n metidos
+realmente en un proceso de selecciÃ³n de varias semanas que puede terminar con su incorporaciÃ³n al mundo laboral.
 
-Creo que esta iniciativa manifiesta la nueva forma de buscar trabajo que se está constituyendo
-durante los últimos años.
+Creo que esta iniciativa manifiesta la nueva forma de buscar trabajo que se estÃ¡ constituyendo
+durante los Ãºltimos aÃ±os.
 Es la alternativa al autoempleo y al becario, una manera interesante de darse a conocer
-con hechos, con repositorios de código, con leña en vez de humo, y en **h4ckademy** tienen leña de encina ;D
+con hechos, con repositorios de cÃ³digo, con leÃ±a en vez de humo, y en **h4ckademy** tienen leÃ±a de encina ;D
 
-Si te llama la atención, no lo dudes, [apúntate en su web][h4ckademy-form]... aunque para hacerlo tendrás que
+Si te llama la atenciÃ³n, no lo dudes, [apÃºntate en su web][h4ckademy-form]... aunque para hacerlo tendrÃ¡s que
 resolver el primer reto que te proponen.
 
 
