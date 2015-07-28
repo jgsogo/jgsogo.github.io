@@ -3,4 +3,4 @@
 	url = https://github.com/getpelican/pelican-themes
 [submodule "Flex"]
 	path = Flex
-	url = ./Flex
+	url = https://github.com/jgsogo/Flex

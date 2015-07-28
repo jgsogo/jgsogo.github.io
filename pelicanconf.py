@@ -52,7 +52,7 @@ COPYRIGHT_YEAR = 2015
 DEFAULT_PAGINATION = 10
 SUMMARY_MAX_LENGTH = 50
 
-STATIC_PATHS = ['images', 'extra/CNAME']
+STATIC_PATHS = ['images', 'extra/CNAME', 'pdfs',]
 EXTRA_PATH_METADATA = {'extra/CNAME': {'path': 'CNAME'},}
 
 # Uncomment following line if you want document-relative URLs when developing

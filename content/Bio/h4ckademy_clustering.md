@@ -1,11 +1,11 @@
 Title: Clustering -- presentación en h4ckademy
 Date: 2015-03-17 13:34
-Tags: h4ckademy talk
+Tags: h4ckademy, talk
 Slug: h4ckademy-clustering-talk
 
 
 El otro día os presentaba [h4ckademy]({filename}/Friends/h4ckademy.md), la escuela de programación
-de mi amigo Israel Gutiérrez ([@gootyfer][gootyfer]). Después de visitarla ese día decidí que podía
+de mi amigo Israel Gutiérrez ([@gootyfer](https://twitter.com/gootyfer)). Después de visitarla ese día decidí que podía
 ser una buena oportunidad para salir de mi zona de confort y ofrecer a los *alumnos* una breve *clase*
 como introducción al clustering (clasificación no supervisada).
 
@@ -36,4 +36,3 @@ Información complementaria:
  * [Monte Carlo K-Means clustering of Countries with Python (Part 2/3)](http://www.stuartreid.co.za/clustering-countries-real-gdp-growth-part2/)
  * refs de Coursera, MUIA,...
 
-[gootyfer]: https://twitter.com/gootyfer "@gootyfer"

@@ -1,7 +1,7 @@
 Title: Factorización de matrices no negativas
 Date: 2015-03-05 12:54
-Tags: machine-learning work-in-progress
-Slug: h4ckademy
+Tags: machine-learning
+Slug: non-negative-matrix-factorization
 
 
 Ayer tuve la ocasión de conocer a [Carlos J. Gil Bellosta][datanalytics] gracias a la charla que dio en el *meetup*
