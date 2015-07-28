@@ -1,6 +1,6 @@
 Title: Mi primer paquete en PyPI
 Date: 2015-07-29 10:20
-Tags: pypi apicultur
+Tags: pypi, apicultur
 Slug: first-package-pypi
 
 
@@ -9,7 +9,8 @@ de tener a tu alcance infinitud de librerías con sólo escribir `pip install li
 herramienta tremendamente útil y probablemente sea una de las razones del éxito de Python entre los que
 empiezan a programar.
 
-Así que para el proyecto que estamos lanzando, [Lingẅars](), donde participa gente con poca experiencia
+Así que para el proyecto que estamos lanzando, [Lingẅars](http://lingwars.github.io/blog/),
+donde participa gente con poca experiencia
 en programación resulta prácticamente necesario enpaquetar el código que vamos a utilizar y subirlo al
 gestor de paquetes para que puedan empezar a ejecutar ejemplos desde el primer día.
 
@@ -28,6 +29,8 @@ surja seguro que está resuelta ahí, yo sólo intentaré ser breve e ir a lo im
 
 
 ## Estructura mínima
+Para poder empaquetar una librería necesitamos como mínimo la siguiente estructura de archivos:
+
 ```
 DIRECTORIO-DEL-PROYECTO
 ├── setup.py
@@ -41,14 +44,15 @@ DIRECTORIO-DEL-PROYECTO
 ```
 
 Vamos a ver qué significan los elementos anteriores:
+
  * el DIRECTORIO-DEL-PROYECTO puede ser cualquiera, no afecta en absoluto, lo que cuenta es lo que hay dentro.
  * NOMBRE-DEL-PAQUETE tiene que ser el nombre del paquete, si el nombre es `apicultur`, este directorio tiene
    que llamarse también `apicultur`. Y esto es así. Dentro estarán todos los archivos que forman la librería.
  * `setup.py`: es el archivo donde se define el paquete, el formato es el mismo para `setuptools` y para
-   `distutils` así que no hay que preocuparse por nada más.
+   `distutils` así que no hay que preocuparse por nada más. Lo vemos a continuación.
 
 ## setup.py
-Este archivo, con toda la información del paquete, tiene que tener una información parecida a la siguiente:
+Este archivo, con toda la información del paquete, tiene que tener un contenido parecido al siguiente:
 
 ```python
     from setuptools import setup, find_packages
@@ -113,11 +117,11 @@ Y ahora ya puedes generar los archivos que van a distribuirse en PyPI:
    $ python setup.py sdist
 ```
 
-Este comando crear un archivo comprimido con todos los archivos que van a subirse al gestor de paquetes PyPI, este
+Este comando crea un archivo comprimido con todos lo que va a subirse al gestor de paquetes PyPI, este
 archivo se guarda en un directorio `dist/` que habrá sido creado en el directorio de tu proyecto (si estás utilizando
 un gestor de versiones acuérdate de añadir este directorio a los archivos ignorados).
 
-Vas a necesitar un usuario en PyPI para poder subir el paquete, una vez que lo tengas puedes registrar el
+Vas a necesitar un usuario en PyPI para poder subir el paquete; una vez que lo tengas puedes registrar el
 paquete utilizando el formulario que hay en la web o bien directamente con
 
 ```bash
@@ -139,6 +143,7 @@ Y ya está listo para ser utilizado.
 ## Otras recomendaciones
 En este tutorial hemos ido a lo imprescindible, pero para que un paquete sea realmente reutilizable y que
 su mantenimiento no resulte una tarea titánica es muy recomendable seguir también otras recomendaciones:
+
  * Escribe tests.
  * Usa algún sistema de integración continua que ejecute esos tests automáticamente.
  * ¡Documenta!
