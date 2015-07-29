@@ -63,8 +63,9 @@ Creo que se pueden combinar dos aproximaciones para construir este listado de su
 
  #. **distancia entre palabras**: un índice de tipo Jaccard letra a letra o, mejor aún, en grupos de dos/tres
     letras puede darnos una idea de qué palabras están más próximas a qué otras. Construir una base de datos
-    con esta información podría resolver nuestro problema prácticamente por si solo, pero no se me ocurre
-    una forma adecuada de abordar esto con recursos limitados en lenguajes desinenciales.
+    con esta información podría resolver nuestro problema prácticamente por si solo, pero tengo dudas sobre
+    la explosión combinatoria a la que se enfrentaría una búsqueda de este tipo o la forma de construir
+    índices y el almacenamiento (¿estás pensando en *buckets*? ¿Cómo lo harías?).
 
  #. **concordancia** (ahora dudo si se llama así): estamos hablando de palabras incorrectas, pero tenemos su
     contexto, ¡aprovechémoslo! Podemos construir una matriz de concordancia restringinda a bi-gramas de algún
@@ -74,8 +75,6 @@ Creo que se pueden combinar dos aproximaciones para construir este listado de su
 Los dos planteamientos anteriores pueden combinarse fácilmente para obtener un listado de sugerencias ordenadas
 por proximidad a la palabra que está mal escrita y por frecuencia de uso. Si además incluímos un parseador
 morfológico podemos identificar la categoría gramatical de la palabra incorrecta para filtrar las sugerencias.
-
-.. [#] Se llama *concordancia* a esto, ¿verdad?
 
 ¿Qué os parece? ¿Seguimos con ello? ¿Se os ocurre alguna otra idea? ¿Creéis que sería útil algo así? Quien recoja
 el guante que se pronuncie en los comentarios...
