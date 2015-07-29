@@ -41,6 +41,8 @@ Habrá que hablar de:
  * Topic modelling
 
 
+Me encantó la conclusión de Carlos: ¿es esta la versión low-cost del Latent Dirichlet Allocation?
+
 [iv-meetup-machine-learning]: http://www.meetup.com/MachineLearningSpain/events/220799458/ "IV Meetup Machine Learning Spain"
 [datanalytics]: http://www.datanalytics.com/ "Datanalytics"
 [la-nave-nodriza]: http://www.lanavenodriza.com/ "La Nave Nodriza"
