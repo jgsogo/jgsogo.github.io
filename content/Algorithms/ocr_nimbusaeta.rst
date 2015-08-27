@@ -2,7 +2,7 @@ Mejorar la corrección de textos producidos por OCR
 ==================================================
 
 :date: 2015-07-29 10:49
-:tags: notebook, lingwars, ocr
+:tags: notebook, lingwars, ocr, machine learning
 :slug: ocr-enhancement
 
 El lunes pasado Leticia planteaba si es posible `mejorar la corrección automática de un texto producido por OCR`__,
