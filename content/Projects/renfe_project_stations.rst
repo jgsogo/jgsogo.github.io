@@ -1,7 +1,7 @@
 Geolocalización de estaciones (ADIF)
 ====================================
 
-:date: 2015-08-25 18:34
+:date: 2015-08-27 18:34
 :tags: renfe, railway, geo, cartodb
 :slug: renfe-project-geo-stations
 
@@ -171,14 +171,14 @@ las curvas que hace la vía y también puede haber error en el posicionamiento d
 una de ellas la voy a aproximar mediante una distribución normal que contenga el 95% entre la
 distancia mínima estimada (velocidad mínima) y la máxima (velocidad máxima en línea recta).
 
-Este algoritmo os lo cuento en otro artículo: `Trilateración con errores <{filename}/Algorithms/trilateration_with_errors.rst>`__
+Este algoritmo os lo cuento en otro artículo: (en construcción)
 
 
 Proyección sobre las líneas
 ---------------------------
 Un último paso, que también nos sirve para **validar las posiciones de las estaciones** (al menos para
 detectar falsos positivos) consiste en proyectar la posición de las estaciones sobre el
-`mapa de líneas <{filename}/Projects/renfe_project_lines.rst>`__, de este modo si la distancia
+mapa de líneas, de este modo si la distancia
 de la estación a la vía más cercana supera cierto umbral podemos pensar que la posición de
 partida no era correcta (o no tenemos información sobre la línea que pasa cerca de ese punto).
 
@@ -195,5 +195,5 @@ El proyecto se desarrolla en los siguientes artículos:
 
 * Mapa dinámico de circulaciones (`ver artículo <{filename}/Projects/renfe_project.rst>`__).
 * Geolocalización de estaciones (ADIF)
-* La infraestructura ferroviaria (ADIF) (`ver artículo <{filename}/Projects/renfe_project_lines.rst>`__).
-* Circulaciones de trenes (RENFE) (`ver artículo <{filename}/Projects/renfe_project_trains.rst>`__).
+* La infraestructura ferroviaria (ADIF) (en construcción).
+* Circulaciones de trenes (RENFE) (en construcción).
