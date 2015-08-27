@@ -79,7 +79,14 @@ la estación (ej.: :code:`http://www.adif.es/AdifWeb/estacion_mostrar.jsp?e=2021
 parsear la web para obtener el link de la pestaña "Información" donde tenemos las coordenadas GPS.
 
 Podría parecer que aquí termina el trabajo, pero no es así; en la web de ADIF aparecen algo más de
-200 estaciones, pero tenemos que geoposicionar unas 1200.
+240 estaciones, pero tenemos que geoposicionar unas 1300.
+
+.. figure:: {filename}/images/renfe-stations-adif.png
+   :align: center
+   :alt: Mapa de estaciones
+
+   Mapa de estaciones con las coordenadas GPS obtenidas de ADIF
+
 
 La Estación de Tren
 +++++++++++++++++++
@@ -97,6 +104,19 @@ Al automatizar el procesamiento de este conjunto de datos no tengo garantías de
 las estaciones haya sido correcta, confío en que los algoritmos posteriores muestren incongruencias ante
 un dato erroneo y me permita identificarlos.
 
+Gracias a La Estación de Tren logro geoposicionar otras ¡692 estaciones!
+
+.. figure:: {filename}/images/renfe-stations-laestaciondetren.png
+   :align: center
+   :alt: Mapa de estaciones
+
+   Mapa de estaciones con las coordenadas GPS obtenidas de ADIF (naranja) y de La Estación de Tren (azul)
+
+Sin embargo, existen unas 800 estaciones en este nuevo dataset que no es capaz de asociar a ninguna
+de las existentes, ¿no hay trenes que hagan paradas en ellas? ¿Tan diferentes son los nombres?
+¿Pertenecen a vías desmanteladas? Pues hay un poco de todo, será una información muy interesante a tratar
+cuando tenga la información de las líneas desmanteladas.
+
 Buscadores/Mapas
 ++++++++++++++++
 Una tercera vía que he utilizado para geoposicionar las estaciones ha sido utlizar los servicios de
@@ -107,7 +127,7 @@ fantástica librería que nos permite hacerlo sin despeinarnos: geopy_.
 
 Como dato de entrada para todos estos servicios he utilizado el nombre de la estación con lo cual la
 fiabilidad de los resultados es bastante baja en ocasiones (se obtienen estaciones dispersas
-por toda la Tierra).
+por toda la Tierra, pero sólo recogeré los datos de aquéllas que caigan en el entorno de la Península).
 
 Puesto que dispongo de varias respuestas para cada estación puedo combinarlas para intentar mejorar
 el resultado. Así filtro los *outliers* utilizando un test conocido como *median-absolute-deviation* (MAD_)
@@ -115,12 +135,51 @@ y posteriormente me quedo con la posición correspondiente a la media aritmétic
 
 .. _MAD: https://stackoverflow.com/questions/22354094/pythonic-way-of-detecting-outliers-in-one-dimensional-observation-data/22357811#22357811
 
+Con esta aproximación consigo localizar otras 330 estaciones, eso sí, no puedo darles el mismo
+nivel de confianza que a las anteriores.
+
+.. figure:: {filename}/images/renfe-stations-imaps.png
+   :align: center
+   :alt: Mapa de estaciones
+
+   Mapa de estaciones con las coordenadas GPS obtenidas de ADIF (naranja), La Estación de Tren (azul)
+   y las extraídas de mapas de internet (verde).
+
+Tan sólo me han quedado 35 estaciones sin geolocalizar, lo cual considero que es un muy buen resultado. Además
+puedo comprobar que estas estaciones están, en muchos casos, fuera de la Península o bien incluyen en su nombre
+la partícula :code:`-BUS`, fácilmente identificable, que podría eliminar para repetir la búsqueda.
+
+
 Estaciones sin datos
 --------------------
+Son muy pocas las estaciones que han quedado sin datos y para ellas he pensado aplicar un algoritmo probabilístico
+basado en la posición del resto de estaciones y en los horarios de los trenes que pasan por ellas. La idea es
+calcular la zona en la cual es máxima la probabilidad de encontrar un tren tomando como parámetros los tiempos
+de paso por las estaciones y su velocidad. Básicamente un problema de **trilateración con errores en las medidas**.
 
 Trilateración
 +++++++++++++
+"La trilateración_ es un método matemático para determinar las posiciones relativas de objetos usando la
+geometría de triángulos de forma análoga a la triangulación. [...] La trilateración usa las localizaciones
+conocidas de dos o más puntos de referencia, y la distancia medida entre el sujeto y cada punto de
+referencia" (Wikipedia_).
+
+.. _Wikipedia: https://es.wikipedia.org/wiki/Trilateraci%C3%B3n
+
+Puesto que tenemos error en el cálculo de las distancias (no conocemos la velocidad del tren, ni
+las curvas que hace la vía y también puede haber error en el posicionamiento de la estación) cada
+una de ellas la voy a aproximar mediante una distribución normal que contenga el 95% entre la
+distancia mínima estimada (velocidad mínima) y la máxima (velocidad máxima en línea recta).
+
+Este algoritmo os lo cuento en un artículo diferente: `Trilateración con errores <{filename}/Algorithms/trilateration_with_errors.rst>`__
 
 
 Proyección sobre las líneas
 ---------------------------
+Un último paso, que nos sirve para **validar las posiciones de las estaciones** (al menos para
+detectar falsos positivos) consiste en proyectar la posición de las estaciones sobre el
+`mapa de líneas <{filename}/Projects/renfe_project_lines.rst>`__, de este modo si la distancia
+de la estación a la vía más cercana supera cierto umbral podemos pensar que la posición de
+partida no era correcta (o no tenemos información sobre la línea que pasa por ese punto).
+
+
