@@ -171,15 +171,18 @@ las curvas que hace la vía y también puede haber error en el posicionamiento d
 una de ellas la voy a aproximar mediante una distribución normal que contenga el 95% entre la
 distancia mínima estimada (velocidad mínima) y la máxima (velocidad máxima en línea recta).
 
-Este algoritmo os lo cuento en un artículo diferente: `Trilateración con errores <{filename}/Algorithms/trilateration_with_errors.rst>`__
+Este algoritmo os lo cuento en otro artículo: `Trilateración con errores <{filename}/Algorithms/trilateration_with_errors.rst>`__
 
 
 Proyección sobre las líneas
 ---------------------------
-Un último paso, que nos sirve para **validar las posiciones de las estaciones** (al menos para
+Un último paso, que también nos sirve para **validar las posiciones de las estaciones** (al menos para
 detectar falsos positivos) consiste en proyectar la posición de las estaciones sobre el
 `mapa de líneas <{filename}/Projects/renfe_project_lines.rst>`__, de este modo si la distancia
 de la estación a la vía más cercana supera cierto umbral podemos pensar que la posición de
-partida no era correcta (o no tenemos información sobre la línea que pasa por ese punto).
+partida no era correcta (o no tenemos información sobre la línea que pasa cerca de ese punto).
 
+.. Incluir gráfica de resultados: cuántas estaciones geolocalizadas con cada tecnología y
+   cuantas se han podido proyectar (y cuantas no)
 
+.. Incluir figura con el mapa final: estaciones + líneas
