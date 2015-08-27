@@ -5,6 +5,11 @@ Trilateración con error
 :tags: optimization, multivariate,
 :slug: trilateration-with-error
 :status: draft
+:template2: draft.html
+
+.. DANGER::
+   Este artículo está en construcción... ¿`quieres colaborar <https://github.com/jgsogo/jgsogo.github.io>`__?
+
 
 .. contents::
 

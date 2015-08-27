@@ -186,3 +186,14 @@ partida no era correcta (o no tenemos información sobre la línea que pasa cerc
    cuantas se han podido proyectar (y cuantas no)
 
 .. Incluir figura con el mapa final: estaciones + líneas
+
+
+
+Más sobre el proyecto
+---------------------
+El proyecto se desarrolla en los siguientes artículos:
+
+* Mapa dinámico de circulaciones (`ver artículo <{filename}/Projects/renfe_project.rst>`__).
+* Geolocalización de estaciones (ADIF)
+* La infraestructura ferroviaria (ADIF) (`ver artículo <{filename}/Projects/renfe_project_lines.rst>`__).
+* Circulaciones de trenes (RENFE) (`ver artículo <{filename}/Projects/renfe_project_trains.rst>`__).

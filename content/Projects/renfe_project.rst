@@ -131,8 +131,8 @@ ayudarán también a construir este grafo) para construir el mapa dinámico pret
 la información disponible de esta manera permitirá realizar análisis del sistema ferroviario nacional.
 
 
-Desarrollo del proyecto
------------------------
+Más sobre el proyecto
+---------------------
 El proyecto se desarrolla en los siguientes artículos:
 
 * Geolocalización de estaciones (ADIF) (`ver artículo <{filename}/Projects/renfe_project_stations.rst>`__).
