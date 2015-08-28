@@ -182,6 +182,21 @@ detectar falsos positivos) consiste en proyectar la posición de las estaciones 
 de la estación a la vía más cercana supera cierto umbral podemos pensar que la posición de
 partida no era correcta (o no tenemos información sobre la línea que pasa cerca de ese punto).
 
+.. figure:: {filename}/images/renfe-stations-histogram.png
+   :align: center
+   :alt: Histograma con el error de posicionamiento de las estaciones
+
+   Histograma (función de densidad) con la distancia de las estaciones a la vía más próxima, según el origen
+   del dato de posicionamiento.
+
+Se puede observar cómo los datos provinientes de la web de ADIF se proyectan sobre vías que pasan muy
+próximas a ellos, los datos obtenidos de la web La Estación de Tren parece que tienen un *bias*, aún así
+la gran mayoría parecen próximos a los datos de infraestructura de los que disponemos. Por el contrario,
+cuando los datos los obtenemos utilizando el nombre de la estación para buscar las coordenadas en mapas
+de internet, la dispersión es mucho mayor, la función de densidad presenta una cola extremadamente larga.
+Se confirman las sospechas que tenía sobre la calidad del origen de los datos.
+
+
 .. Incluir gráfica de resultados: cuántas estaciones geolocalizadas con cada tecnología y
    cuantas se han podido proyectar (y cuantas no)
 
