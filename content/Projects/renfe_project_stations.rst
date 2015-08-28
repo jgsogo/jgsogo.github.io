@@ -173,6 +173,7 @@ distancia mínima estimada (velocidad mínima) y la máxima (velocidad máxima e
 
 Este algoritmo os lo cuento en otro artículo: `Trilateración con errores <{filename}/Algorithms/trilateration_with_errors.rst>`__
 
+.. Hablar de los resultados.
 
 Proyección sobre las líneas
 ---------------------------
@@ -195,9 +196,3 @@ la gran mayoría parecen próximos a los datos de infraestructura de los que dis
 cuando los datos los obtenemos utilizando el nombre de la estación para buscar las coordenadas en mapas
 de internet, la dispersión es mucho mayor, la función de densidad presenta una cola extremadamente larga.
 Se confirman las sospechas que tenía sobre la calidad del origen de los datos.
-
-
-.. Incluir gráfica de resultados: cuántas estaciones geolocalizadas con cada tecnología y
-   cuantas se han podido proyectar (y cuantas no)
-
-.. Incluir figura con el mapa final: estaciones + líneas
