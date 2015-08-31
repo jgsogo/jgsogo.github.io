@@ -204,6 +204,6 @@ El proyecto se desarrolla en los siguientes artículos:
 
 * Mapa dinámico de circulaciones (`ver artículo <{filename}/Projects/renfe_project.rst>`__).
 * Geolocalización de estaciones (ADIF)
-* La infraestructura ferroviaria (ADIF) (en construcción).
+* La infraestructura ferroviaria (ADIF) (`ver artículo <{filename}/Projects/renfe_project_lines.rst>`__).
 * Circulaciones de trenes (RENFE) (en construcción).
 
