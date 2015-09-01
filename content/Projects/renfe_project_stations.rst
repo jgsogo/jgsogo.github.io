@@ -171,7 +171,7 @@ las curvas que hace la vía y también puede haber error en el posicionamiento d
 una de ellas la voy a aproximar mediante una distribución normal que contenga el 95% entre la
 distancia mínima estimada (velocidad mínima) y la máxima (velocidad máxima en línea recta).
 
-Este algoritmo os lo cuento en otro artículo: (en construcción)
+Este algoritmo os lo cuento en otro artículo: (`ver artículo <{filename}/Algorithms/trilateration_with_errors.rst>`__)
 
 .. Hablar de los resultados.
 
