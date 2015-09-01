@@ -1,10 +1,9 @@
 La infraestructura ferroviaria (ADIF)
 =====================================
 
-:date: 2015-08-25 18:34
+:date: 2015-08-31 18:34
 :tags: renfe, railway, geo, cartodb
 :slug: renfe-project-lines
-:status: draft
 
 .. contents::
 
@@ -41,7 +40,7 @@ Podemos detectar estos errores de dos formas:
   mal posicionada, ejecutando el algoritmo entre cada par de estaciones puedo resolver la ambigüedad.
 
 Una vez que he detectado las estaciones mal posicionadas puedo utilizar el
-`algoritmo de trilateración` <{filename}/Algorithms/trilateration_with_errors.rst>__
+`algoritmo de trilateración <{filename}/Algorithms/trilateration_with_errors.rst>`__
 para calcular su posición correcta o bien solucionar el problema manualmente.
 
 Con los datos corregidos ya puedo generar mapas con las conexiones directas entre estaciones
@@ -56,7 +55,7 @@ de trenes MD, TALGO y Tren Hotel.
    muestran las estaciones donde hacen parada.
 
 
-Grafo de lineas
+Grafo de líneas
 ---------------
 El objetivo que persigo en esta parte es construir un grafo con toda la infraestructura ferroviaria
 española, donde los nodos sean las estaciones y las uniones entre líneas y los arcos sean las vías
@@ -106,7 +105,7 @@ Sin embargo la casuística es muy grande y hay muchos errores en los que aún te
   errores en los datos. El algoritmo debe permitir cierto error a la hora de identificar los cruces (sin
   introducir más falsos positivos).
 
-
+.. warning:: El resultado con el grafo final tendrá que esperar un poco más, aún está en construcción.
 
 Más sobre el proyecto
 ---------------------
