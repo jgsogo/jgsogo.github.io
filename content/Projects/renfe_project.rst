@@ -137,4 +137,4 @@ El proyecto se desarrolla en los siguientes artículos:
 
 * Geolocalización de estaciones (ADIF) (`ver artículo <{filename}/Projects/renfe_project_stations.rst>`__).
 * La infraestructura ferroviaria (ADIF) (`ver artículo <{filename}/Projects/renfe_project_lines.rst>`__).
-* Circulaciones de trenes (RENFE) (en construcción).
+* Circulaciones de trenes (RENFE) (`ver artículo <{filename}/Projects/renfe_project_trains.rst>`__).
