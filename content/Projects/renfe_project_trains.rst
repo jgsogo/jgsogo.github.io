@@ -21,7 +21,7 @@ formularios de su web. Podéis haceros una idea de la técnica empleada.
 
    Horario del tren MD 18001 entre Madrid y Valladolid (Fuente: `RENFE <http://horarios.renfe.com/HIRRenfeWeb/recorrido.do?O=17000&D=10600&F=01-09-2015&T=18001&G=1&TT=MD&ID=s&FDS=2015-06-14&DT=2%20h.%2052%20min.>`__).
 
-De esta forma, a través de la web de RENFE, puedo conocer en qué estaciones para cada tren y los horarios
+De esta forma, a través de la web de RENFE, puedo conocer en qué estaciones hace parada cada tren y los horarios
 de llegada y de salida. En total, a lo largo de una semana, he obtenido que se mueven unas 1100
 composiciones distintas desde 5500 cabeceras. ¿Muchas? ¿Pocas? Eso lo podremos ver en el mapa dinámico con
 los movimientos de los trenes.

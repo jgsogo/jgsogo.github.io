@@ -11,7 +11,7 @@ El primer paso del `proyecto RENFE`_ consistió en
 `posicionar las estaciones <{filename}/Projects/renfe_project_stations.rst>`__. Una vez realizada esta tarea
 puedo construir un mapa con los recorridos de los trenes utilizando la información de horarios y paradas que
 aparece en la web de RENFE. De esta forma puedo construir el trayecto seguido por un tren cualquiera, por un
-tipo de trenes o por todos ellos y, lo que es más importante, puede saber qué estaciones están conectadas
+tipo de trenes o por todos ellos y, lo que es más importante, puedo saber qué estaciones están conectadas
 con cuales, lo que me permitirá construir **el grafo de la infraestructura**.
 
 .. _proyecto RENFE: {filename}/Projects/renfe_project.rst
@@ -29,7 +29,8 @@ Detección de errores
 En el gráfico anterior se puede ver un dibujo esquemático de las conexiones que cubren los trenes ALVIA,
 en él se aprecian dos errores claros de posicionamiento de las estaciones. Uno de ellos está en el trayecto
 entre Córdoba y Málaga donde se realizan paradas en Puente Genil (correctamente situado en el mapa)
-y Antequera (que aparece erroneamente en Valencia).
+y Antequera (que aparece erroneamente en Valencia); el otro está relacionado con una estación gallega
+que aparece en tierras cántabras.
 
 Podemos detectar estos errores de dos formas:
 
@@ -37,14 +38,14 @@ Podemos detectar estos errores de dos formas:
 * Con un algoritmo: puesto que tengo los horarios de los trenes puedo calcular la velocidad a la
   cual deberían viajar para recorrer la distancia entre cada par de estaciones, si esta velocidad
   está fuera de unos rangos normales sabré que alguna de las estaciones (origen o destino) está
-  mal posicionada, ejecutando el algoritmo entre cada par de estaciones puedo resolver la ambigüedad.
+  mal posicionada, ejecutando el algoritmo para todos los pares de estaciones puedo resolver la ambigüedades.
 
 Una vez que he detectado las estaciones mal posicionadas puedo utilizar el
 `algoritmo de trilateración <{filename}/Algorithms/trilateration_with_errors.rst>`__
 para calcular su posición correcta o bien solucionar el problema manualmente.
 
 Con los datos corregidos ya puedo generar mapas con las conexiones directas entre estaciones
-según el tipo de tren, como es el caso de la siguiente figura, en ella aparecen las conexiones
+según el tipo de tren como es el caso de la siguiente figura donde aparecen las conexiones
 de trenes MD, TALGO y Tren Hotel.
 
 .. figure:: {filename}/images/renfe-lines-md-talgo-trenhotel.png
@@ -89,7 +90,7 @@ El otro algoritmo que he aplicado sobre las líneas es el cálculo de las inters
 entre ellas buscando puntos comunes. Este algoritmo identifica tres tipos de puntos comunes:
 
 * las intersecciones entre líneas: lugares donde una línea pasa sobre otra sin que haya unión entre ambas.
-* los puntos de unión: lugares donde vías se unen para formar una sola.
+* los puntos de unión: lugares donde dos vías se unen para formar una sola (o separan).
 * los empalmes: lugares donde empieza una vía a continuación de otra.
 
 .. figure:: {filename}/images/renfe-lines-leon.png

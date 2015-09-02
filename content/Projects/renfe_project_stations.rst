@@ -8,14 +8,14 @@ Geolocalización de estaciones (ADIF)
 .. contents::
 
 Dentro del `proyecto RENFE`_ una de las partes más importantes es determinar la posición de las
-estaciones en el mapa (latitud y longitud). Una vez más hemos de reunir información de diversas
-fuentes y hacerla coherente para generar el *dataset* que necesitamos, en concreto vamos a
-combinar datos de las siguientes fuentes:
+estaciones en el mapa (latitud y longitud). Una vez más tengo que reunir información de diversas
+fuentes y hacerla coherente para generar el *dataset* que necesito, en concreto voy a utilizar
+las siguientes fuentes:
 
 * Renfe_: en su web podemos consultar un listado de estaciones.
-* ADIF_: en la sección "infraestructuras y estaciones" se puede obtener las coordenadas GPS
+* ADIF_: en la sección "infraestructuras y estaciones" se pueden obtener las coordenadas GPS
   de algunas estaciones.
-* `La Estación de Tren`_: ofrece un listado de estaciones con sus coordenadas GPS etiquetadas manualmente.
+* `La Estación de Tren`_: ofrece un listado de estaciones con coordenadas GPS etiquetadas manualmente.
 
 Una vez obtenida la información de estas fuentes tengo que utilizar algunos **algoritmos** para
 relacionarlos, hacerlos coherentes y completarlos. Y por supuesto, un poquito de ayuda manual
@@ -35,20 +35,20 @@ la web de Renfe tenemos un link [#]_, de donde podemos obtener con un simple *sc
 .. [#] RENFE. Listado de estaciones. URL: https://venta.renfe.com/vol/estacionesAccesibleVXY.do
 
 Cada estación tiene un nombre y un identificador. Este identificador es único y está formado por 5 dígitos,
-sin embargo, en algunos casos se incorporan letras cuando no identifica una estación concreta sino una ciudad
+sin embargo, en algunos casos se incorporan letras cuando no se trata de una estación concreta sino una ciudad
 que dispone de varias estaciones: :code:`MADRI` para Madrid, :code:`IRUN-` para Irún-Hendaya,... en cualquier
 caso, cada estación de la ciudad posee un identificador numérico único.
 
 Los identificadores numéricos, donde aparecen, son la primera opción para identificar las estaciones; sin
 embargo, en muchos otros casos, tendremos que utilizar los nombres y comparar de forma inexacta cadenas de
-texto para identificar la estación (ver `comparación inexacta de cadenas <{filename}/Algorithms/fuzzy-string-comparison.md>`__). Estos nombres alternativos
+texto para identificar la estación (ver `comparación inexacta de cadenas <{filename}/Algorithms/fuzzy_string_comparison.md>`__). Estos nombres alternativos
 los guardaremos como *alias* de la estación para utilizarlos en búsquedas futuras.
 
 
 Posicionamiento
 ---------------
 Una vez obtenido el listado de estaciones tengo que georreferenciarlas sobre el mapa. Como he indicado
-más arriba, para esta tarea utilizo varias fuentes:
+más arriba para esta tarea utilizo varias fuentes:
 
 ADIF
 ++++
@@ -78,7 +78,7 @@ la pestaña de "Llegadas y Salidas" a la que se puede acceder utilizando únicam
 la estación (ej.: :code:`http://www.adif.es/AdifWeb/estacion_mostrar.jsp?e=20213`). Una vez ahí se puede
 parsear la web para obtener el link de la pestaña "Información" donde tenemos las coordenadas GPS.
 
-Podría parecer que aquí termina el trabajo, pero no es así; en la web de ADIF aparecen algo más de
+Podría parecer que aquí termina el trabajo, pero no es así; en la web de ADIF aparecen solo
 240 estaciones, pero tenemos que geoposicionar unas 1300.
 
 .. figure:: {filename}/images/renfe-stations-adif.png
@@ -115,13 +115,13 @@ Gracias a La Estación de Tren logro geoposicionar otras ¡692 estaciones!
 Sin embargo, existen unas 800 estaciones en este nuevo dataset que no es capaz de asociar a ninguna
 de las existentes, ¿no hay trenes que hagan paradas en ellas? ¿Tan diferentes son los nombres?
 ¿Pertenecen a vías desmanteladas? Pues hay un poco de todo, será una información muy interesante a tratar
-cuando tenga la información de las líneas desmanteladas.
+cuando tenga los datos de las líneas desmanteladas.
 
 Buscadores/Mapas
 ++++++++++++++++
 Una tercera vía que he utilizado para geoposicionar las estaciones ha sido utlizar los servicios de
 Internet que permiten obtener las coordenadas de un punto a partir de su dirección. Hay una
-fantástica librería que nos permite hacerlo sin despeinarnos: geopy_.
+fantástica librería que nos permite hacerlo con facilidad: geopy_.
 
 .. _geopy: https://github.com/geopy/geopy
 
@@ -155,7 +155,8 @@ Estaciones sin datos
 Son muy pocas las estaciones que han quedado sin datos y para ellas he pensado aplicar un algoritmo probabilístico
 basado en la posición del resto de estaciones y en los horarios de los trenes que pasan por ellas. La idea es
 calcular la zona en la cual es máxima la probabilidad de encontrar un tren tomando como parámetros los tiempos
-de paso por las estaciones y su velocidad. Básicamente un problema de **trilateración con errores en las medidas**.
+de paso por las estaciones adyacentes y su velocidad. Básicamente un problema
+de **trilateración con errores en las medidas**.
 
 Trilateración
 +++++++++++++
@@ -166,22 +167,22 @@ referencia" (Wikipedia_).
 
 .. _Wikipedia: https://es.wikipedia.org/wiki/Trilateraci%C3%B3n
 
-Puesto que tenemos error en el cálculo de las distancias (no conocemos la velocidad del tren, ni
+Puesto que tengo error en el cálculo de las distancias (no conozco la velocidad del tren, ni
 las curvas que hace la vía y también puede haber error en el posicionamiento de la estación) cada
-una de ellas la voy a aproximar mediante una distribución normal que contenga el 95% entre la
-distancia mínima estimada (velocidad mínima) y la máxima (velocidad máxima en línea recta).
+una de ellas la voy a aproximar mediante una distribución de probabilidad construida a partir de los datos
+de todas las composiciones que hacen parada en dicha estación.
 
-Este algoritmo os lo cuento en otro artículo: (`ver artículo <{filename}/Algorithms/trilateration_with_errors.rst>`__)
+Este algoritmo de trilateración os lo cuento en otro artículo: (`ver artículo <{filename}/Algorithms/trilateration_with_errors.rst>`__)
 
 .. Hablar de los resultados.
 
 Proyección sobre las líneas
 ---------------------------
-Un último paso, que también nos sirve para **validar las posiciones de las estaciones** (al menos para
-detectar falsos positivos) consiste en proyectar la posición de las estaciones sobre el
-mapa de líneas, de este modo si la distancia
-de la estación a la vía más cercana supera cierto umbral podemos pensar que la posición de
-partida no era correcta (o no tenemos información sobre la línea que pasa cerca de ese punto).
+Un último paso, que también sirve para **validar las posiciones de las estaciones** (al menos para
+detectar falsos positivos), consiste en proyectar la posición de las estaciones sobre el
+mapa de líneas; de este modo si la distancia de la estación a la vía más cercana supera cierto umbral
+puedo pensar que la posición de partida era errónea (o no tengo información sobre la
+línea que pasa cerca de ese punto).
 
 .. figure:: {filename}/images/renfe-stations-histogram.png
    :align: center
@@ -196,6 +197,11 @@ la gran mayoría parecen próximos a los datos de infraestructura de los que dis
 cuando los datos los obtenemos utilizando el nombre de la estación para buscar las coordenadas en mapas
 de internet, la dispersión es mucho mayor, la función de densidad presenta una cola extremadamente larga.
 Se confirman las sospechas que tenía sobre la calidad del origen de los datos.
+
+NOTA.- Los datos anteriores están construidos es base al error de posicionamiento de las estaciones según
+la fuente de datos, pero en cada grupo no se consideran las estaciones ya posicionadas por otros métodos,
+por lo tanto, si aplicara cada método al conjunto completo de estaciones se obtendrían mayores densidades
+con los errores más pequeños (o ese sería lo esperable).
 
 
 Más sobre el proyecto

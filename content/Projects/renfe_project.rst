@@ -8,15 +8,15 @@ RENFE -- Mapa dinámico de circulaciones
 .. contents::
 
 Hace unos días me propuse hacer un mapa dinámico con CartoDB_ en el que se
-mostraran los trenes de RENFE moviéndose con la única intención de probar la herramienta y experimentar
+mostraran los trenes de RENFE moviéndose con la intención de probar la herramienta y experimentar
 con sus posibilidades. El caso es que el proyecto crece, los datos no están tan disponibles como
 uno quisiera y empiezan a aparecer los famosos *"ya que..."*.
 
 .. _CartoDB: https://cartodb.com/
 
-Durante la recogida de datos para este mapa surgirán algunas ideas relacionadas, como la construcción
+Durante la recogida de datos para este mapa surgen algunas ideas relacionadas como la construcción
 de un grafo con la infraestructura de transporte para realizar análisis que permitan optimizar
-costes o tiempos, o estudiar problemas en la infraestructura. Es de imaginar que ADIF dispone de
+costes, tiempos, o estudiar problemas en la infraestructura. Es de imaginar que ADIF dispone de
 algo parecido y lo utiliza, así que el objetivo es fundamentalmente exploratorio para empezar a
 estudiar sistemas de transporte [#]_.
 
@@ -40,7 +40,7 @@ sin necesidad de bucear demasiado, aparecen algunos buenos resultados:
      o con transbordo. Autor: Victoriano_
     
 * Buscando un poco más encontramos los mapas de Astroide_, otro usuario de CartoDB que nos ofrece unos
-  mapas mucho más interesantes para lo que queremos hacer, y que además ofrece públicamente los
+  mapas mucho más interesantes para lo que quiero hacer, y que además ofrece públicamente los
   datasets: un mapa dinámico con los `trenes de largo recorrido`_ y otro con los `trenes de mercancias`_,
   que reproduzco a continuación:
   
@@ -105,7 +105,7 @@ Una vez que tenga disponibles estos datos visuales, el objetivo será crear un *
 donde los nodos sea estaciones o bifurcaciones y los arcos estén formados por los itinerarios**. Gracias
 a este grafo se podrán reconstruir las circulaciones de trenes entre estaciones no contiguas, analizar la
 demanda de la infraestructura, las consecuencias de fallos en el servicio, alternativas de recuperación, etc.
-No obstante, su construcción resulta compleja, tal y como se muestra en el artículo correspondiente.
+No obstante, su construcción resulta compleja, tal y como se mostrará en el artículo correspondiente.
 
 .. figure:: {filename}/images/jgraph-transport-system.png
    :align: center
@@ -117,7 +117,7 @@ No obstante, su construcción resulta compleja, tal y como se muestra en el art�
 Circulaciones de trenes
 +++++++++++++++++++++++
 El otro elemento del mapa son los datos de explotación de la infraestructura: la circulación de los
-trene. Necesito obtener los horarios de todos ellos (estaciones, hora de salida y llegada,...)
+trenes. Necesito obtener los horarios de todos ellos (estaciones, hora de salida y llegada,...)
 para poder identificar en qué lugar se encuentran en cada momento.
 
 RENFE no ofrece esta información de una forma amigable a través de algún tipo de API, tampoco es una
@@ -127,8 +127,8 @@ habrá que obtenerlos de alguna otra manera (scraping).
 .. _datos.gob.es: http://datos.gob.es/
 
 Estos datos de los trenes se podrán combinar con los datos del grafo de la infraestructura (y
-ayudarán también a construir este grafo) para construir el mapa dinámico pretendido. Además,
-la información disponible de esta manera permitirá realizar análisis del sistema ferroviario nacional.
+ayudarán también a construirlo) para generar el mapa dinámico pretendido. Además,
+la información disponible de esta manera permitirá realizar diferentes estudios.
 
 
 Más sobre el proyecto
