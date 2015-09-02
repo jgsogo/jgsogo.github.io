@@ -2,7 +2,7 @@ Geolocalización de estaciones (ADIF)
 ====================================
 
 :date: 2015-08-27 18:34
-:tags: renfe, railway, geo, cartodb
+:tags: renfe, railway, geo, cartodb, trilateration
 :slug: renfe-project-geo-stations
 
 .. contents::
