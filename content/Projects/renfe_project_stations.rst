@@ -16,6 +16,7 @@ las siguientes fuentes:
 * ADIF_: en la sección "infraestructuras y estaciones" se pueden obtener las coordenadas GPS
   de algunas estaciones.
 * `La Estación de Tren`_: ofrece un listado de estaciones con coordenadas GPS etiquetadas manualmente.
+* `Github - railopendata`_: con datos georreferenciados de estaciones y líneas.
 
 Una vez obtenida la información de estas fuentes tengo que utilizar algunos **algoritmos** para
 relacionarlos, hacerlos coherentes y completarlos. Y por supuesto, un poquito de ayuda manual
@@ -25,12 +26,13 @@ nunca les va a venir mal.
 .. _Renfe: http://www.renfe.com/
 .. _ADIF: http://adif.es
 .. _La Estación de Tren: http://www.laestaciondetren.net/
+.. _Github - railopendata: https://github.com/jgcasta/railopendata
 
 
 Listado de estaciones
 ---------------------
 La primera tarea que hay que realizar es obtener la lista (lo más completa posible) de estaciones. En
-la web de Renfe tenemos un link [#]_, de donde podemos obtener con un simple *script* un primer listado.
+la web de Renfe tenemos un link [#]_, de donde se puede obtener con un simple *script* un primer listado.
 
 .. [#] RENFE. Listado de estaciones. URL: https://venta.renfe.com/vol/estacionesAccesibleVXY.do
 
@@ -72,20 +74,33 @@ numérico al final que impide construirlas de forma automática. Algunos ejemplo
 74200 Huesca        http://www.adif.es/es_ES/infraestructuras/estaciones/74200/informacion_000099.shtml
 ===== ============= =====
 
-Como consecuencia de ese parámetro debemos utilizar alguna otra técnica para acceder a las páginas de
-detalle de cada una de las estaciones: se puede utilizar un script que trabaje con el mapa o partir de
+Como consecuencia de ese parámetro debo utilizar alguna otra técnica para acceder a las páginas de
+detalle de cada una de las estaciones: se puede utilizar un script que trabaje con el mapa, o partir de
 la pestaña de "Llegadas y Salidas" a la que se puede acceder utilizando únicamente el identificador de
 la estación (ej.: :code:`http://www.adif.es/AdifWeb/estacion_mostrar.jsp?e=20213`). Una vez ahí se puede
 parsear la web para obtener el link de la pestaña "Información" donde tenemos las coordenadas GPS.
 
 Podría parecer que aquí termina el trabajo, pero no es así; en la web de ADIF aparecen solo
-240 estaciones, pero tenemos que geoposicionar unas 1300.
+200-240 estaciones (depende de si hay trenes que llegan/salen a la hora de la consulta),
+pero tengo que geoposicionar unas 1300.
 
 .. figure:: {filename}/images/renfe-stations-adif.png
    :align: center
    :alt: Mapa de estaciones
 
    Mapa de estaciones con las coordenadas GPS obtenidas de ADIF
+
+
+Railopendata
+++++++++++++
+José Gómez Castaño (`@jgcasta`_) mantiene un `repositorio en Github`_ con un conjunto no oficial de datos de
+ferrocarril en el que aparecen las posiciones de las estaciones y las geometrías de las líneas. Los datos
+son accesibles y están en formato geoJSON por lo que resultan ideales para utilizarlos a aquí.
+
+.. _@jgcasta: https://twitter.com/jgcasta
+.. _repositorio en Github: https://github.com/jgcasta/railopendata
+
+
 
 
 La Estación de Tren
@@ -191,7 +206,8 @@ línea que pasa cerca de ese punto).
    Histograma (función de densidad) con la distancia de las estaciones a la vía más próxima, según el origen
    del dato de posicionamiento.
 
-Se puede observar cómo los datos provinientes de la web de ADIF se proyectan sobre vías que pasan muy
+Se puede observar cómo los datos provinientes de la web de ADIF y los disponibles a través de `@jgcasta`_)
+se proyectan sobre vías que pasan muy
 próximas a ellos, los datos obtenidos de la web La Estación de Tren parece que tienen un *bias*, aún así
 la gran mayoría parecen próximos a los datos de infraestructura de los que disponemos. Por el contrario,
 cuando los datos los obtenemos utilizando el nombre de la estación para buscar las coordenadas en mapas
