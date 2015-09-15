@@ -95,12 +95,13 @@ Railopendata
 ++++++++++++
 José Gómez Castaño (`@jgcasta`_) mantiene un `repositorio en Github`_ con un conjunto no oficial de datos de
 ferrocarril en el que aparecen las posiciones de las estaciones y las geometrías de las líneas. Los datos
-son accesibles y están en formato geoJSON por lo que resultan ideales para utilizarlos a aquí.
+son accesibles y están en formato geoJSON por lo que resultan ideales para utilizarlos aquí.
 
 .. _@jgcasta: https://twitter.com/jgcasta
 .. _repositorio en Github: https://github.com/jgcasta/railopendata
 
-
+Gracias a este repositorio de información logro posicionar ¡932 estaciones! Sin duda este es un
+recurso valiosísimo al que andemas le concedo un altísimo grado de credibilidad.
 
 
 La Estación de Tren
@@ -119,7 +120,7 @@ Al automatizar el procesamiento de este conjunto de datos no tengo garantías de
 las estaciones haya sido correcta, confío en que los algoritmos posteriores muestren incongruencias ante
 un dato erroneo y me permita identificarlos.
 
-Gracias a La Estación de Tren logro geoposicionar otras ¡692 estaciones!
+Gracias a La Estación de Tren logro geoposicionar solo 25 estaciones de las que aún me faltaban.
 
 .. figure:: {filename}/images/renfe-stations-laestaciondetren.png
    :align: center
@@ -127,7 +128,7 @@ Gracias a La Estación de Tren logro geoposicionar otras ¡692 estaciones!
 
    Mapa de estaciones con las coordenadas GPS obtenidas de ADIF (naranja) y de La Estación de Tren (azul)
 
-Sin embargo, existen unas 800 estaciones en este nuevo dataset que no es capaz de asociar a ninguna
+Sin embargo, existen unas muchas estaciones en este nuevo dataset que no es capaz de asociar a ninguna
 de las existentes, ¿no hay trenes que hagan paradas en ellas? ¿Tan diferentes son los nombres?
 ¿Pertenecen a vías desmanteladas? Pues hay un poco de todo, será una información muy interesante a tratar
 cuando tenga los datos de las líneas desmanteladas.
@@ -150,7 +151,7 @@ y posteriormente me quedo con la posición correspondiente a la media aritmétic
 
 .. _MAD: https://stackoverflow.com/questions/22354094/pythonic-way-of-detecting-outliers-in-one-dimensional-observation-data/22357811#22357811
 
-Con esta aproximación consigo localizar otras 330 estaciones, eso sí, no puedo darles el mismo
+Con esta aproximación no consigo localizar ninguna de las estaciones que aún me quedan por posicionar :/
 nivel de confianza que a las anteriores.
 
 .. figure:: {filename}/images/renfe-stations-imaps.png
@@ -160,9 +161,11 @@ nivel de confianza que a las anteriores.
    Mapa de estaciones con las coordenadas GPS obtenidas de ADIF (naranja), La Estación de Tren (azul)
    y las extraídas de mapas de internet (verde).
 
-Tan sólo me han quedado 35 estaciones sin geolocalizar, lo cual considero que es un muy buen resultado. Además
+Tan sólo me han quedado 85 estaciones sin geolocalizar, lo cual considero que es un muy buen resultado. Además
 puedo comprobar que estas estaciones están, en muchos casos, fuera de la Península o bien incluyen en su nombre
-la partícula :code:`-BUS`, fácilmente identificable, que podría eliminar para repetir la búsqueda.
+la partícula :code:`-BUS` o :code:`(*)` (indicando que se trata de una ciudad con varias estaciones). En el
+primer caso la solución es fácilmente programable, en el segundo caso se podría interpretar cuál es la estación
+correcta según los tipos de trenes que la utilicen.
 
 
 Estaciones sin datos
