@@ -2,9 +2,8 @@ ChimpPunch
 ==========
 
 :date: 2015-09-15 19:00
-:tags: information retrieval, startup
+:tags: information retrieval, startup, chimppunch, rafapcampoamor, oneeyedman
 :slug: chimppunch
-:status: draft
 
 Como últimamente mucha gente me pregunta por **ChimpPunch** voy a dejar escritas aquí
 algunas cosas para tenerlas como referencia. ChimpPunch fue un proyecto de *startup* que
@@ -63,14 +62,15 @@ En la figura de abajo muestro el diseño conceptual de la parte correspondiente 
 1. El sistema está recogiendo continuamente documentos de un conjunto de fuentes dinámico
    (según clientes y sus comunidades) y clasificándolos por todo tipo de criterios:
    fuentes, autores, temáticas,...
-1. Los clientes pueden establecer criterios y filtros de selección de contenidos, o bien dejar
+2. Los clientes pueden establecer criterios y filtros de selección de contenidos, o bien dejar
    que ChimpPunch aprenda estos criterios en base a los intereses de la comunidad de seguidores
    de cada cliente.
-1. El comportamiento de las noticias originales en los medios da un índice de popularidad, interés
+3. El comportamiento de las noticias originales en los medios da un índice de popularidad, interés
    o viralidad que se utiliza para puntuarlas. Se crea así el conjunto de datos etiquetado sobre
    el que se trabaja para puntuar los nuevos contenidos que van recuperándose.
-1. Cada cliente tiene acceso a una lista de contenidos adecuados a sus intereses (*discover*),
+4. Cada cliente tiene acceso a una lista de contenidos adecuados a sus intereses (*discover*),
    clasificados por relevancia e impacto, que van a ser bien recibidos por su comunidad.
+
 
 .. figure:: {filename}/images/chimppunch-conceptual.png
    :align: center
@@ -96,6 +96,7 @@ comportamiento de las publicaciones realizadas por el usuario. Habría dos nivel
    típicos dibujitos que muestran muchos datos, pero poca información realmente útil para el usuario.
    No obstante, estos datos se utilizarían para actualizar el modelo de recomendación de contenidos
    y personalizarlo para cada cliente (¿os suena Bayes?)
+
 2. Información: en base a las interacciones con los contenidos pretendíamos facilitar al
    usuario datos sobre sus clientes que permitieran segmentarlos e identificar el tipo de
    publicaciones que consumían para ayudar en el diseño de campañas de marketing y maximizar
@@ -111,9 +112,9 @@ como servicio y que están envejeciendo bastante bien:
   parte de una base de datos introducida por el usuario (yo) con cadenas XPath y regex para
   obtener datos característicos de un post (autor, tags, fecha de publicación, fotos, contenido,...)
   y con ellos trata de obtener la misma información de cualquier otra URL que se le pase.
-  Supongo que algo así debió ser el MVP de `Import.io`_.
+  Supongo que algo así debió ser el MVP de `import.io`_.
 
-.. _Import.io:
+.. _import.io: https://import.io
 
 * **chimp_social_monitor**: servicio para monitorizar el comportamiento de una URL en redes
   sociales. Una vez que la URL está dada de alta se encarga de recoger información de Twitter,
@@ -123,7 +124,10 @@ Ambas aplicaciones las orquesto a través de una interfaz web **chimp_discovery*
 de interactuar con el usuario, almacenar sus preferencias, sus horarios de publicación y la
 lista de publicaciones.
 
+----
+
 Como podéis ver el proyecto era completito y muy interesante. Una pena que se quedara en el cajón,
 aunque indudablemente es una experiencia más que incorporar a la mochila de herramientas
-y un conjunto de conocimientos muy importante.
+y un conjunto de conocimientos muy importante. Quien sabe si algún día seguirá creciendo otro
+poco.
 
