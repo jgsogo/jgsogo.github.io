@@ -1,7 +1,7 @@
 ChimpPunch
 ==========
 
-:date: 2015-09-15 19:00
+:date: 2015-09-27 19:00
 :tags: information retrieval, startup, chimppunch, rafapcampoamor, oneeyedman
 :slug: chimppunch
 
