@@ -52,9 +52,11 @@ COPYRIGHT_YEAR = 2015
 DEFAULT_PAGINATION = 10
 SUMMARY_MAX_LENGTH = 50
 
-STATIC_PATHS = ['images', 'extra/CNAME', 'extra/README', 'pdfs',]
+STATIC_PATHS = ['images', 'extra', 'pdfs',]
 EXTRA_PATH_METADATA = {'extra/CNAME': {'path': 'CNAME'},
-                       'extra/README': {'path': 'README'},}
+                       'extra/README': {'path': 'README'},
+                       'extra/custom.css': {'path': 'static/custom.css'},
+                       }
 
 PLUGIN_PATHS = ['./pelican-plugins']
 PLUGINS = ['extract_toc']
@@ -62,3 +64,4 @@ PLUGINS = ['extract_toc']
 # Uncomment following line if you want document-relative URLs when developing
 #RELATIVE_URLS = True
 
+CUSTOM_CSS = 'static/custom.css'
