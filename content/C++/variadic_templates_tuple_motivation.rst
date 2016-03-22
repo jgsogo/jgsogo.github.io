@@ -1,13 +1,13 @@
-Variadic templates and std::tuple
-=================================
+Variadic templates and std::tuple - Motivación
+==============================================
 
 :date: 2016-03-21 12:54
-:tags: variadic templates, metaprogramming
-:slug: variadic-templates-std-tuple
-:status: draft
+:tags: variadic templates, metaprogramming, django queryset
+:slug: variadic-templates-std-tuple-motivation
+
 
 Debo confesar que me he pasado prácticamente todo el fin de semana dándole
-vueltas a las *variadic templates* para utilizarlas con las ``std::tuples``.
+vueltas a las *variadic templates* para utilizarlas con las estructuras ``std::tuple``.
 Y debo confesar que me parece impresionante lo que se puede conseguir (y eso
 que me imagino que no he raspado más que la superficie), son una herramienta
 increiblemente potente para construir librerías genéricas sin incrementar la
@@ -147,3 +147,60 @@ El problema surge al generalizar
 Como tengo alma de programador no me vale con crear una clase que actúe como *manager* para
 cada uno de mis modelos, sino que quiero generalizar. Y el problema es que quiero **generalizar
 en dos dimensiones: tipo de elementos y número de columnas de la tabla**.
+
+Generalizar en tipo de elementos es fácil, ahí están las plantillas. Algo como lo que sigue
+podría valer:
+
+.. code:: cpp
+
+    #include <tuple>
+    #include <vector>
+    
+    template <typename T1, typename T2, typename T3, typename T4>
+    class GenericManager {
+        public:
+            typedef typename std::tuple<T1, T2, T3, T4> row_type;
+            typedef std::vector<row_type> queryset_type;
+        public:
+            static void all(queryset_type& qs);
+                       
+    };
+    
+Y ya tengo un manager genérico ``GenericManager`` con el que puedo reutilizar el código, pero
+sólo para tablas que tengan cuatro columnas, eso sí, éstas pueden ser de cualquier tipo.
+
+Un poco más difícil es generalizar el número de columnas, hace un tiempo lo habría hecho
+utilizando Boost.Preprocessor_, tengo algunos ejemplos de hace 10 años donde lo usaba, realmente
+estoy orgulloso de haberme enfrentado a ese problema de esa forma en aquel momento; pero hoy
+no es ése el camino que quiero seguir.
+
+.. _Boost.Preprocessor: http://www.boost.org/doc/libs/1_60_0/libs/preprocessor/doc/index.html
+
+
+El buen camino
+--------------
+
+Hay una solución mucho más elegante, las **variadic-templates**, con ellas
+podemos generalizar de una manera tan maravillosa como ésta:
+
+.. code:: cpp
+
+    #include <tuple>
+    #include <vector>
+    
+    template <typename... Args>
+    class GenericManager {
+        public:
+            typedef typename std::tuple<Args...> row_type;
+            typedef std::vector<row_type> queryset_type;
+        public:
+            static void all(queryset_type& qs);
+                       
+    };
+    
+¿No es fantástico? Con esta generalización puedo hacer cosas realmente útiles, puedo crear una clase
+que se comporte realmente como un *manager* genérico y una clase *queryset* que implemente
+una funcionalidad afín a la que está disponible en Django.
+
+De momento estoy trabajando en ello, básicamente reuniendo respuestas de StackOverflow en un único
+sitio y haciéndolas funcionar. Pronto un segundo post con detalles de implementación y ejemplos.
