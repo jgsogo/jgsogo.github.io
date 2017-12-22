@@ -230,7 +230,8 @@ ___
 Notas y materiales
 ------------------
 
-Puedes descargarte la presentación correspondiente a la charla `aquí <{filename}/pdf/2017.12-Madrid.ai-PLN_linguistics.pdf>`_.
+* Puedes descargarte la presentación correspondiente a la charla `aquí <{filename}/pdf/2017.12-Madrid.ai-PLN_linguistics.pdf>`_.
+* Mira algunas de las fotos del evento en `Flickr <https://www.flickr.com/photos/76867403@N04/albums/72157691335577525>`_
 
 .. [#] Convocatoria en Meetup: https://www.meetup.com/es-ES/MADRID-AI/events/245802179/
 .. [#] Reseña en Planeta Chatbot: https://planetachatbot.com/madrid-city-ai-chatbots-y-emociones-a57836487b14
