@@ -225,8 +225,12 @@ seguiremos avanzando con paso firme en la exploración de este mundo apasionante
    
    Público asistente al evento de Madrid AI en Campus Madrid el 21 de diciembre de 2017.
 
-
 ___
+
+Notas y materiales
+------------------
+
+Puedes descargarte la presentación correspondiente a la charla `aquí <{filename}/pdf/2017.12-Madrid.ai-PLN_linguistics.pdf>`_.
 
 .. [#] Convocatoria en Meetup: https://www.meetup.com/es-ES/MADRID-AI/events/245802179/
 .. [#] Reseña en Planeta Chatbot: https://planetachatbot.com/madrid-city-ai-chatbots-y-emociones-a57836487b14
