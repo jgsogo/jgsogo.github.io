@@ -5,4 +5,4 @@ branches:
 install:
 - pip install pelican ghp-import markdown
 script:
-- make publish travis_github
+- '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && make publish travis_github || make html
