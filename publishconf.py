@@ -10,7 +10,7 @@ import sys
 sys.path.append(os.curdir)
 from pelicanconf import *
 
-SITEURL = 'http://jgsogo.github.io'
+SITEURL = 'https://jgsogo.github.io'
 RELATIVE_URLS = False
 SITELOGO = SITEURL + '/images/profile.png'
 FAVICON = SITEURL + '/images/favicon.ico'
