@@ -5,3 +5,5 @@ _site
 output
 *~
 *.pid
+.vscode/
+_virtualenv/
