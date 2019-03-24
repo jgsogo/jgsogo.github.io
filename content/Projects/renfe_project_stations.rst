@@ -16,6 +16,7 @@ las siguientes fuentes:
 * ADIF_: en la sección "infraestructuras y estaciones" se pueden obtener las coordenadas GPS
   de algunas estaciones.
 * `La Estación de Tren`_: ofrece un listado de estaciones con coordenadas GPS etiquetadas manualmente.
+* `Github - railopendata`_: con datos georreferenciados de estaciones y líneas.
 
 Una vez obtenida la información de estas fuentes tengo que utilizar algunos **algoritmos** para
 relacionarlos, hacerlos coherentes y completarlos. Y por supuesto, un poquito de ayuda manual
@@ -25,12 +26,13 @@ nunca les va a venir mal.
 .. _Renfe: http://www.renfe.com/
 .. _ADIF: http://adif.es
 .. _La Estación de Tren: http://www.laestaciondetren.net/
+.. _Github - railopendata: https://github.com/jgcasta/railopendata
 
 
 Listado de estaciones
 ---------------------
 La primera tarea que hay que realizar es obtener la lista (lo más completa posible) de estaciones. En
-la web de Renfe tenemos un link [#]_, de donde podemos obtener con un simple *script* un primer listado.
+la web de Renfe tenemos un link [#]_, de donde se puede obtener con un simple *script* un primer listado.
 
 .. [#] RENFE. Listado de estaciones. URL: https://venta.renfe.com/vol/estacionesAccesibleVXY.do
 
@@ -72,20 +74,34 @@ numérico al final que impide construirlas de forma automática. Algunos ejemplo
 74200 Huesca        http://www.adif.es/es_ES/infraestructuras/estaciones/74200/informacion_000099.shtml
 ===== ============= =====
 
-Como consecuencia de ese parámetro debemos utilizar alguna otra técnica para acceder a las páginas de
-detalle de cada una de las estaciones: se puede utilizar un script que trabaje con el mapa o partir de
+Como consecuencia de ese parámetro debo utilizar alguna otra técnica para acceder a las páginas de
+detalle de cada una de las estaciones: se puede utilizar un script que trabaje con el mapa, o partir de
 la pestaña de "Llegadas y Salidas" a la que se puede acceder utilizando únicamente el identificador de
 la estación (ej.: :code:`http://www.adif.es/AdifWeb/estacion_mostrar.jsp?e=20213`). Una vez ahí se puede
 parsear la web para obtener el link de la pestaña "Información" donde tenemos las coordenadas GPS.
 
 Podría parecer que aquí termina el trabajo, pero no es así; en la web de ADIF aparecen solo
-240 estaciones, pero tenemos que geoposicionar unas 1300.
+200-240 estaciones (depende de si hay trenes que llegan/salen a la hora de la consulta),
+pero tengo que geoposicionar unas 1300.
 
 .. figure:: {filename}/images/renfe-stations-adif.png
    :align: center
    :alt: Mapa de estaciones
 
    Mapa de estaciones con las coordenadas GPS obtenidas de ADIF
+
+
+Railopendata
+++++++++++++
+José Gómez Castaño (`@jgcasta`_) mantiene un `repositorio en Github`_ con un conjunto no oficial de datos de
+ferrocarril en el que aparecen las posiciones de las estaciones y las geometrías de las líneas. Los datos
+son accesibles y están en formato geoJSON por lo que resultan ideales para utilizarlos aquí.
+
+.. _@jgcasta: https://twitter.com/jgcasta
+.. _repositorio en Github: https://github.com/jgcasta/railopendata
+
+Gracias a este repositorio de información logro posicionar ¡932 estaciones! Sin duda este es un
+recurso valiosísimo al que andemas le concedo un altísimo grado de credibilidad.
 
 
 La Estación de Tren
@@ -104,7 +120,7 @@ Al automatizar el procesamiento de este conjunto de datos no tengo garantías de
 las estaciones haya sido correcta, confío en que los algoritmos posteriores muestren incongruencias ante
 un dato erroneo y me permita identificarlos.
 
-Gracias a La Estación de Tren logro geoposicionar otras ¡692 estaciones!
+Gracias a La Estación de Tren logro geoposicionar solo 25 estaciones de las que aún me faltaban.
 
 .. figure:: {filename}/images/renfe-stations-laestaciondetren.png
    :align: center
@@ -112,7 +128,7 @@ Gracias a La Estación de Tren logro geoposicionar otras ¡692 estaciones!
 
    Mapa de estaciones con las coordenadas GPS obtenidas de ADIF (naranja) y de La Estación de Tren (azul)
 
-Sin embargo, existen unas 800 estaciones en este nuevo dataset que no es capaz de asociar a ninguna
+Sin embargo, existen unas muchas estaciones en este nuevo dataset que no es capaz de asociar a ninguna
 de las existentes, ¿no hay trenes que hagan paradas en ellas? ¿Tan diferentes son los nombres?
 ¿Pertenecen a vías desmanteladas? Pues hay un poco de todo, será una información muy interesante a tratar
 cuando tenga los datos de las líneas desmanteladas.
@@ -135,7 +151,7 @@ y posteriormente me quedo con la posición correspondiente a la media aritmétic
 
 .. _MAD: https://stackoverflow.com/questions/22354094/pythonic-way-of-detecting-outliers-in-one-dimensional-observation-data/22357811#22357811
 
-Con esta aproximación consigo localizar otras 330 estaciones, eso sí, no puedo darles el mismo
+Con esta aproximación no consigo localizar ninguna de las estaciones que aún me quedan por posicionar :/
 nivel de confianza que a las anteriores.
 
 .. figure:: {filename}/images/renfe-stations-imaps.png
@@ -145,9 +161,11 @@ nivel de confianza que a las anteriores.
    Mapa de estaciones con las coordenadas GPS obtenidas de ADIF (naranja), La Estación de Tren (azul)
    y las extraídas de mapas de internet (verde).
 
-Tan sólo me han quedado 35 estaciones sin geolocalizar, lo cual considero que es un muy buen resultado. Además
+Tan sólo me han quedado 85 estaciones sin geolocalizar, lo cual considero que es un muy buen resultado. Además
 puedo comprobar que estas estaciones están, en muchos casos, fuera de la Península o bien incluyen en su nombre
-la partícula :code:`-BUS`, fácilmente identificable, que podría eliminar para repetir la búsqueda.
+la partícula :code:`-BUS` o :code:`(*)` (indicando que se trata de una ciudad con varias estaciones). En el
+primer caso la solución es fácilmente programable, en el segundo caso se podría interpretar cuál es la estación
+correcta según los tipos de trenes que la utilicen.
 
 
 Estaciones sin datos
@@ -191,7 +209,8 @@ línea que pasa cerca de ese punto).
    Histograma (función de densidad) con la distancia de las estaciones a la vía más próxima, según el origen
    del dato de posicionamiento.
 
-Se puede observar cómo los datos provinientes de la web de ADIF se proyectan sobre vías que pasan muy
+Se puede observar cómo los datos provinientes de la web de ADIF y los disponibles a través de `@jgcasta`_)
+se proyectan sobre vías que pasan muy
 próximas a ellos, los datos obtenidos de la web La Estación de Tren parece que tienen un *bias*, aún así
 la gran mayoría parecen próximos a los datos de infraestructura de los que disponemos. Por el contrario,
 cuando los datos los obtenemos utilizando el nombre de la estación para buscar las coordenadas en mapas
