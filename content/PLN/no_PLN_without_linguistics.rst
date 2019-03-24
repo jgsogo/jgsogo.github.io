@@ -16,7 +16,7 @@ herramientas que nos permitirán interactuar con las máquinas utilizando el len
 Este artículo resume la charla que ofrecí el 21 de diciembre de 2017 en Google Campus (Madrid) en
 el encuentro de `Madrid.ai`_ [#]_ [#]_. En aquel encuentro también participaron `Cristina Santamarina`_ hablando
 sobre desarrollo de chatbots, y `Nieves Ábalos`_ y `Carlos Muñoz-Romero`_ exponiendo los desafíos que supone dotar
-a una inteligencia artificial de emociones y peersonalidad.
+a una inteligencia artificial de emociones y personalidad.
 
 .. _Madrid.ai: https://madrid.city.ai/
 .. _Cristina Santamarina: https://www.linkedin.com/in/cristinasantamarina/
