@@ -41,7 +41,7 @@ renderizarlo. ¿Será muy complicado juntar ambos?
 que hayan sido probadas conjuntamente y se sepa que funcionan. En este blogpost seguiré
 esta recomendación, aunque algunas otras combinaciones también me han funcionado.**
 
-**Nota2.- El proceso ha sido probado en Macos, es esperable que en otros sistemas operativos
+**Nota.- El proceso ha sido probado en Macos, es esperable que en otros sistemas operativos
 sea algo parecido. De cualquier forma, son bienvenidos los comentarios para actualizar esta
 publicación e incluir más casos de uso.**
 
@@ -79,8 +79,8 @@ Qt
 --
 
 El siguiente paso es compilar Qt para Webassembly. En realidad lo que haremos es compilar
-para nuestro sistema operativo el _build-system_ ``qmake`` configurado como _cross_-compilador
-que utiliza Webassembly como _target_. Suena más complicado de lo que es, podemos seguir
+para nuestro sistema operativo el *build-system* ``qmake`` configurado como *cross*-compilador
+que utiliza Webassembly como *target*. Suena más complicado de lo que es, podemos seguir
 los pasos `este tutorial`_.
 
 .. _este tutorial: https://doc.qt.io/qt-5/wasm.html
@@ -110,7 +110,7 @@ funciona `qmake` con los ficheros `.pro` para generar las aplicaciones de Qt. Se
 a continuación.
 
 Una vez terminado el proceso anterior debería haberse generado **el ejecutable ``qtbase/bin/qmake``, éste
-es nuestro _build-system_ preparado para cross-compilar utilizando Emscripten**.
+es nuestro *build-system* preparado para *cross*-compilar utilizando Emscripten**.
 
 Si creaste ese pequeño ``Hello world!``, ahora es el momento de comprobar que todo funciona. Dentro de su
 directorio sólo tienes que ejecutar:
@@ -121,14 +121,37 @@ directorio sólo tienes que ejecutar:
    .../qtbase/bin/qmake
    make
 
-Ahora no tienes más que abrir el fichero ``.html`` con tu navegador de cabecera. Voilá! Lo que antes
+Ahora no tienes más que abrir el fichero ``.html`` con tu navegador de cabecera. ¡*Voilá*! Lo que antes
 era una aplicación de escritorio se ha convertido en una applicación web. El mismo código en C++ lo
 hemos utilizado para generar una aplicación para dos plataformas totalmente diferentes... esto abre
-un **horizonte de posibilidades**.
+un **horizonte de posibilidades muy interesante para explorar**.
 
 
 Aplicación
 ----------
 
-Usando Conan
-------------
+Ya tenemos todas las piezas disponibles y únicamente nos falta el cubo. El cubo no es más que una
+aplicación de Qt con una ventana de OpenGL. Yo utilicé como base el `ejemplo de OpenGL ES 2.0`_, 
+cambié la textura e hice unos ajustes.
+
+.. _`ejemplo de OpenGL ES 2.0`: https://doc.qt.io/qt-5/qtopengl-cube-example.html
+
+En `este repositorio`_ podéis encontrar el código fuente que yo utilicé. Utilizando los pasos
+anteriores debería compilarse una aplicación para Webassembly que podéis abrir en vuestro
+navegador:
+
+.. _`este repositorio`: https://github.com/jgsogo/qt-opengl-cube/tree/main/qt-opengl-example
+
+.. code-block:: bash
+
+   git clone https://github.com/jgsogo/qt-opengl-cube.git
+   cd qt-opengl-cube/qt-opengl-example
+   .../qtbase/bin/qmake
+   make
+
+
+**Nota.- Todavía tengo que pulir algunos detalles en el blogpost y comprobar que no me he saltado
+ningún paso en la explicación.** Si eres de los primeros en llegar por aquí, ten en cuenta que en 
+el futuro probablemente actualice el artículo añadiendo algunos detalles (optimizaciones para que
+la ejecución sea más rápida, cómo ejecutar todo el proceso con Conan en una única línea, más detalles
+sobre Webassembly, otras versiones de las aplicaciones,...). Stay tuned!
