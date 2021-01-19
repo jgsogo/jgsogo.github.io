@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="https://jgsogo.es/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="https://jgsogo.es/theme/css/pygments.min.css">
+  <link rel="stylesheet" type="text/css" href="https://jgsogo.es/theme/css/font-awesome.min.css">
+  <link href="https://jgsogo.es/static/custom.css" rel="stylesheet">
+  <link href="https://jgsogo.es/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Javier G. Sogo's blog Atom">
+  <link rel="shortcut icon" href="http://localhost:8000/images/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="http://localhost:8000/images/favicon.ico" type="image/x-icon">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="" />
+<meta name="author" content="Javier G. Sogo" />
+<meta name="description" content="Dentro del proyecto RENFE una de las partes más importantes es determinar la posición de las estaciones en el mapa (latitud y longitud). Una vez más tengo que reunir información de diversas fuentes y hacerla coherente para generar el dataset que necesito, en concreto voy a utilizar las siguientes fuentes …" />
+<meta name="keywords" content="renfe, railway, geo, cartodb, trilateration">
+<meta property="og:site_name" content="Javier G. Sogo's blog"/>
+<meta property="og:title" content="Geolocalización de estaciones (ADIF)"/>
+<meta property="og:description" content="Dentro del proyecto RENFE una de las partes más importantes es determinar la posición de las estaciones en el mapa (latitud y longitud). Una vez más tengo que reunir información de diversas fuentes y hacerla coherente para generar el dataset que necesito, en concreto voy a utilizar las siguientes fuentes …"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="https://jgsogo.es/renfe-project-geo-stations.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2015-08-27 18:34:00+02:00"/>
+<meta property="article:modified_time" content=""/>
+<meta property="article:author" content="https://jgsogo.es/author/javier-g-sogo.html">
+<meta property="article:section" content="Projects"/>
+<meta property="article:tag" content="renfe"/>
+<meta property="article:tag" content="railway"/>
+<meta property="article:tag" content="geo"/>
+<meta property="article:tag" content="cartodb"/>
+<meta property="article:tag" content="trilateration"/>
+<meta property="og:image" content="http://localhost:8000/images/profile.png">  <title>Javier G. Sogo's blog &ndash; Geolocalización de estaciones (ADIF)</title>
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="https://jgsogo.es">
+        <img src="http://localhost:8000/images/profile.png" alt="Javier G. Sogo" title="Javier G. Sogo">
+      </a>
+      <h1><a href="https://jgsogo.es">Javier G. Sogo</a></h1>
+      <p></p>
+      <nav>
+        <ul class="list">
+          <li><a href="https://jgsogo.es/pages/contact.html#contact">Contacto</a></li>
+          <li><a href="https://jgsogo.es/pages/about-me.html#about-me">Yo, mí, me, conmigo</a></li>
+          <li><a href="http://lingwars.github.io/blog/" target="_blank">Lingẅars</a></li>
+        </ul>
+      </nav>
+      <ul class="social">
+        <li><a class="sc-linkedin" href="https://es.linkedin.com/in/jgsogo" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+        <li><a class="sc-github" href="https://github.com/jgsogo" target="_blank"><i class="fa fa-github"></i></a></li>
+        <li><a class="sc-twitter" href="https://twitter.com/jgsogo" target="_blank"><i class="fa fa-twitter"></i></a></li>
+        <li><a class="sc-rss" href="http://localhost:8000feeds/all.atom.xml" target="_blank"><i class="fa fa-rss"></i></a></li>
+      </ul>
+    </div>
+  </aside>
+  <main>
+    <nav>
+      <a href="https://jgsogo.es">Home</a>
+      <a href="/archives.html">Archives</a>
+      <a href="/categories.html">Categories</a>
+      <a href="https://jgsogo.es/feeds/all.atom.xml">Atom</a>
+    </nav>
+
+<article>
+  <header>
+    <h1 id="renfe-project-geo-stations">Geolocalización de estaciones (ADIF)</h1>
+    <p>Posted on Thu 27 August 2015 in <a href="https://jgsogo.es/category/projects.html">Projects</a></p>
+  </header>
+  <div>
+    
+<p>Dentro del <a class="reference external" href="https://jgsogo.es/renfe-project.html">proyecto RENFE</a> una de las partes más importantes es determinar la posición de las
+estaciones en el mapa (latitud y longitud). Una vez más tengo que reunir información de diversas
+fuentes y hacerla coherente para generar el <em>dataset</em> que necesito, en concreto voy a utilizar
+las siguientes fuentes:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://www.renfe.com/">Renfe</a>: en su web podemos consultar un listado de estaciones.</li>
+<li><a class="reference external" href="http://adif.es">ADIF</a>: en la sección "infraestructuras y estaciones" se pueden obtener las coordenadas GPS
+de algunas estaciones.</li>
+<li><a class="reference external" href="http://www.laestaciondetren.net/">La Estación de Tren</a>: ofrece un listado de estaciones con coordenadas GPS etiquetadas manualmente.</li>
+<li><a class="reference external" href="https://github.com/jgcasta/railopendata">Github - railopendata</a>: con datos georreferenciados de estaciones y líneas.</li>
+</ul>
+<p>Una vez obtenida la información de estas fuentes tengo que utilizar algunos <strong>algoritmos</strong> para
+relacionarlos, hacerlos coherentes y completarlos. Y por supuesto, un poquito de ayuda manual
+nunca les va a venir mal.</p>
+<div class="section" id="listado-de-estaciones">
+<h2><a class="toc-backref" href="#id5">Listado de estaciones</a></h2>
+<p>La primera tarea que hay que realizar es obtener la lista (lo más completa posible) de estaciones. En
+la web de Renfe tenemos un link <a class="footnote-reference" href="#id2" id="id1">[1]</a>, de donde se puede obtener con un simple <em>script</em> un primer listado.</p>
+<table class="docutils footnote" frame="void" id="id2" rules="none">
+<colgroup><col class="label"/><col/></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>RENFE. Listado de estaciones. URL: <a class="reference external" href="https://venta.renfe.com/vol/estacionesAccesibleVXY.do">https://venta.renfe.com/vol/estacionesAccesibleVXY.do</a></td></tr>
+</tbody>
+</table>
+<p>Cada estación tiene un nombre y un identificador. Este identificador es único y está formado por 5 dígitos,
+sin embargo, en algunos casos se incorporan letras cuando no se trata de una estación concreta sino una ciudad
+que dispone de varias estaciones: <code>MADRI</code> para Madrid, <code>IRUN-</code> para Irún-Hendaya,... en cualquier
+caso, cada estación de la ciudad posee un identificador numérico único.</p>
+<p>Los identificadores numéricos, donde aparecen, son la primera opción para identificar las estaciones; sin
+embargo, en muchos otros casos, tendremos que utilizar los nombres y comparar de forma inexacta cadenas de
+texto para identificar la estación (ver <a class="reference external" href="{filename}/Algorithms/fuzzy_string_comparison.md">comparación inexacta de cadenas</a>). Estos nombres alternativos
+los guardaremos como <em>alias</em> de la estación para utilizarlos en búsquedas futuras.</p>
+</div>
+<div class="section" id="posicionamiento">
+<h2><a class="toc-backref" href="#id6">Posicionamiento</a></h2>
+<p>Una vez obtenido el listado de estaciones tengo que georreferenciarlas sobre el mapa. Como he indicado
+más arriba para esta tarea utilizo varias fuentes:</p>
+<div class="section" id="id3">
+<h3><a class="toc-backref" href="#id7">ADIF</a></h3>
+<p>En la web de ADIF se pueden consultar los datos GPS de algunas estaciones, extraerlos del HTML no es
+complicado, tal y como se puede ver en la imagen siguiente:</p>
+<div class="figure align-center">
+<img alt="Coordenadas GPS de una estación en la web de ADIF" src="https://jgsogo.es/images/renfe-stations-adif-gps.png"/>
+<p class="caption">Coordenadas GPS de una estación en la web de ADIF.</p>
+</div>
+<p>Sin embargo, las URLs de esta página siguen un patrón que no he podido identificar, aparece un identificador
+numérico al final que impide construirlas de forma automática. Algunos ejemplos:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="5%"/>
+<col width="13%"/>
+<col width="82%"/>
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">ID</th>
+<th class="head">Nombre</th>
+<th class="head">URL</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>23004</td>
+<td>Pontevedra</td>
+<td><a class="reference external" href="http://www.adif.es/es_ES/infraestructuras/estaciones/23004/informacion_000047.shtml">http://www.adif.es/es_ES/infraestructuras/estaciones/23004/informacion_000047.shtml</a></td>
+</tr>
+<tr><td>30002</td>
+<td>Plasencia</td>
+<td><a class="reference external" href="http://www.adif.es/es_ES/infraestructuras/estaciones/30002/informacion_000141.shtml">http://www.adif.es/es_ES/infraestructuras/estaciones/30002/informacion_000141.shtml</a></td>
+</tr>
+<tr><td>74200</td>
+<td>Huesca</td>
+<td><a class="reference external" href="http://www.adif.es/es_ES/infraestructuras/estaciones/74200/informacion_000099.shtml">http://www.adif.es/es_ES/infraestructuras/estaciones/74200/informacion_000099.shtml</a></td>
+</tr>
+</tbody>
+</table>
+<p>Como consecuencia de ese parámetro debo utilizar alguna otra técnica para acceder a las páginas de
+detalle de cada una de las estaciones: se puede utilizar un script que trabaje con el mapa, o partir de
+la pestaña de "Llegadas y Salidas" a la que se puede acceder utilizando únicamente el identificador de
+la estación (ej.: <code>http://www.adif.es/AdifWeb/estacion_mostrar.jsp?e=20213</code>). Una vez ahí se puede
+parsear la web para obtener el link de la pestaña "Información" donde tenemos las coordenadas GPS.</p>
+<p>Podría parecer que aquí termina el trabajo, pero no es así; en la web de ADIF aparecen solo
+200-240 estaciones (depende de si hay trenes que llegan/salen a la hora de la consulta),
+pero tengo que geoposicionar unas 1300.</p>
+<div class="figure align-center">
+<img alt="Mapa de estaciones" src="https://jgsogo.es/images/renfe-stations-adif.png"/>
+<p class="caption">Mapa de estaciones con las coordenadas GPS obtenidas de ADIF</p>
+</div>
+</div>
+<div class="section" id="railopendata">
+<h3><a class="toc-backref" href="#id8">Railopendata</a></h3>
+<p>José Gómez Castaño (<a class="reference external" href="https://twitter.com/jgcasta">@jgcasta</a>) mantiene un <a class="reference external" href="https://github.com/jgcasta/railopendata">repositorio en Github</a> con un conjunto no oficial de datos de
+ferrocarril en el que aparecen las posiciones de las estaciones y las geometrías de las líneas. Los datos
+son accesibles y están en formato geoJSON por lo que resultan ideales para utilizarlos aquí.</p>
+<p>Gracias a este repositorio de información logro posicionar ¡932 estaciones! Sin duda este es un
+recurso valiosísimo al que andemas le concedo un altísimo grado de credibilidad.</p>
+</div>
+<div class="section" id="id4">
+<h3><a class="toc-backref" href="#id9">La Estación de Tren</a></h3>
+<p><strong>Fernando Solabre</strong> es el autor de la web La Estación de Tren, en la que se muestra un listado de 1915 estaciones
+geolocalizadas manualmente e identificadas por el nombre que aparece en los mapas. El trabajo realizado merece
+una mención especial y me va a permitir posicionar muchas estaciones.</p>
+<p>Para utilizar este dataset nos enfrentamos a dos dificultades: identificar la estación y convertir las coordenadas
+de UTM a longitud/latitud. Para la primera de ellas utilizaremos la comparación inexacta de cadenas a la que
+hemos hecho mención anteriormente, para la segunda utlizamos la librería de Python llamada <a class="reference external" href="https://github.com/Turbo87/utm">utm</a>.</p>
+<p>Al automatizar el procesamiento de este conjunto de datos no tengo garantías de que la identificación de
+las estaciones haya sido correcta, confío en que los algoritmos posteriores muestren incongruencias ante
+un dato erroneo y me permita identificarlos.</p>
+<p>Gracias a La Estación de Tren logro geoposicionar solo 25 estaciones de las que aún me faltaban.</p>
+<div class="figure align-center">
+<img alt="Mapa de estaciones" src="https://jgsogo.es/images/renfe-stations-laestaciondetren.png"/>
+<p class="caption">Mapa de estaciones con las coordenadas GPS obtenidas de ADIF (naranja) y de La Estación de Tren (azul)</p>
+</div>
+<p>Sin embargo, existen unas muchas estaciones en este nuevo dataset que no es capaz de asociar a ninguna
+de las existentes, ¿no hay trenes que hagan paradas en ellas? ¿Tan diferentes son los nombres?
+¿Pertenecen a vías desmanteladas? Pues hay un poco de todo, será una información muy interesante a tratar
+cuando tenga los datos de las líneas desmanteladas.</p>
+</div>
+<div class="section" id="buscadores-mapas">
+<h3><a class="toc-backref" href="#id10">Buscadores/Mapas</a></h3>
+<p>Una tercera vía que he utilizado para geoposicionar las estaciones ha sido utlizar los servicios de
+Internet que permiten obtener las coordenadas de un punto a partir de su dirección. Hay una
+fantástica librería que nos permite hacerlo con facilidad: <a class="reference external" href="https://github.com/geopy/geopy">geopy</a>.</p>
+<p>Como dato de entrada para todos estos servicios he utilizado el nombre de la estación con lo cual la
+fiabilidad de los resultados es bastante baja en ocasiones (se obtienen estaciones dispersas
+por toda la Tierra, pero sólo recogeré los datos de aquéllas que caigan en el entorno de la Península).</p>
+<p>Puesto que dispongo de varias respuestas para cada estación puedo combinarlas para intentar mejorar
+el resultado. Así filtro los <em>outliers</em> utilizando un test conocido como <em>median-absolute-deviation</em> (<a class="reference external" href="https://stackoverflow.com/questions/22354094/pythonic-way-of-detecting-outliers-in-one-dimensional-observation-data/22357811#22357811">MAD</a>)
+y posteriormente me quedo con la posición correspondiente a la media aritmética de todas las respuestas.</p>
+<p>Con esta aproximación no consigo localizar ninguna de las estaciones que aún me quedan por posicionar :/
+nivel de confianza que a las anteriores.</p>
+<div class="figure align-center">
+<img alt="Mapa de estaciones" src="https://jgsogo.es/images/renfe-stations-imaps.png"/>
+<p class="caption">Mapa de estaciones con las coordenadas GPS obtenidas de ADIF (naranja), La Estación de Tren (azul)
+y las extraídas de mapas de internet (verde).</p>
+</div>
+<p>Tan sólo me han quedado 85 estaciones sin geolocalizar, lo cual considero que es un muy buen resultado. Además
+puedo comprobar que estas estaciones están, en muchos casos, fuera de la Península o bien incluyen en su nombre
+la partícula <code>-BUS</code> o <code>(*)</code> (indicando que se trata de una ciudad con varias estaciones). En el
+primer caso la solución es fácilmente programable, en el segundo caso se podría interpretar cuál es la estación
+correcta según los tipos de trenes que la utilicen.</p>
+</div>
+</div>
+<div class="section" id="estaciones-sin-datos">
+<h2><a class="toc-backref" href="#id11">Estaciones sin datos</a></h2>
+<p>Son muy pocas las estaciones que han quedado sin datos y para ellas he pensado aplicar un algoritmo probabilístico
+basado en la posición del resto de estaciones y en los horarios de los trenes que pasan por ellas. La idea es
+calcular la zona en la cual es máxima la probabilidad de encontrar un tren tomando como parámetros los tiempos
+de paso por las estaciones adyacentes y su velocidad. Básicamente un problema
+de <strong>trilateración con errores en las medidas</strong>.</p>
+<div class="section" id="trilateracion">
+<h3><a class="toc-backref" href="#id12">Trilateración</a></h3>
+<p>"La <a class="reference internal" href="#trilateracion">trilateración</a> es un método matemático para determinar las posiciones relativas de objetos usando la
+geometría de triángulos de forma análoga a la triangulación. [...] La trilateración usa las localizaciones
+conocidas de dos o más puntos de referencia, y la distancia medida entre el sujeto y cada punto de
+referencia" (<a class="reference external" href="https://es.wikipedia.org/wiki/Trilateraci%C3%B3n">Wikipedia</a>).</p>
+<p>Puesto que tengo error en el cálculo de las distancias (no conozco la velocidad del tren, ni
+las curvas que hace la vía y también puede haber error en el posicionamiento de la estación) cada
+una de ellas la voy a aproximar mediante una distribución de probabilidad construida a partir de los datos
+de todas las composiciones que hacen parada en dicha estación.</p>
+<p>Este algoritmo de trilateración os lo cuento en otro artículo: (<a class="reference external" href="{filename}/Algorithms/trilateration_with_errors.rst">ver artículo</a>)</p>
+<!-- Hablar de los resultados. -->
+</div>
+</div>
+<div class="section" id="proyeccion-sobre-las-lineas">
+<h2><a class="toc-backref" href="#id13">Proyección sobre las líneas</a></h2>
+<p>Un último paso, que también sirve para <strong>validar las posiciones de las estaciones</strong> (al menos para
+detectar falsos positivos), consiste en proyectar la posición de las estaciones sobre el
+mapa de líneas; de este modo si la distancia de la estación a la vía más cercana supera cierto umbral
+puedo pensar que la posición de partida era errónea (o no tengo información sobre la
+línea que pasa cerca de ese punto).</p>
+<div class="figure align-center">
+<img alt="Histograma con el error de posicionamiento de las estaciones" src="https://jgsogo.es/images/renfe-stations-histogram.png"/>
+<p class="caption">Histograma (función de densidad) con la distancia de las estaciones a la vía más próxima, según el origen
+del dato de posicionamiento.</p>
+</div>
+<p>Se puede observar cómo los datos provinientes de la web de ADIF y los disponibles a través de <a class="reference external" href="https://twitter.com/jgcasta">@jgcasta</a>)
+se proyectan sobre vías que pasan muy
+próximas a ellos, los datos obtenidos de la web La Estación de Tren parece que tienen un <em>bias</em>, aún así
+la gran mayoría parecen próximos a los datos de infraestructura de los que disponemos. Por el contrario,
+cuando los datos los obtenemos utilizando el nombre de la estación para buscar las coordenadas en mapas
+de internet, la dispersión es mucho mayor, la función de densidad presenta una cola extremadamente larga.
+Se confirman las sospechas que tenía sobre la calidad del origen de los datos.</p>
+<p>NOTA.- Los datos anteriores están construidos es base al error de posicionamiento de las estaciones según
+la fuente de datos, pero en cada grupo no se consideran las estaciones ya posicionadas por otros métodos,
+por lo tanto, si aplicara cada método al conjunto completo de estaciones se obtendrían mayores densidades
+con los errores más pequeños (o ese sería lo esperable).</p>
+</div>
+<div class="section" id="mas-sobre-el-proyecto">
+<h2><a class="toc-backref" href="#id14">Más sobre el proyecto</a></h2>
+<p>El proyecto se desarrolla en los siguientes artículos:</p>
+<ul class="simple">
+<li>Mapa dinámico de circulaciones (<a class="reference external" href="https://jgsogo.es/renfe-project.html">ver artículo</a>).</li>
+<li>Geolocalización de estaciones (ADIF)</li>
+<li>La infraestructura ferroviaria (ADIF) (<a class="reference external" href="https://jgsogo.es/renfe-project-lines.html">ver artículo</a>).</li>
+<li>Circulaciones de trenes (RENFE) (<a class="reference external" href="https://jgsogo.es/renfe-project-trains.html">ver artículo</a>).</li>
+</ul>
+</div>
+
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="https://jgsogo.es/tag/renfe.html">renfe</a>
+      <a href="https://jgsogo.es/tag/railway.html">railway</a>
+      <a href="https://jgsogo.es/tag/geo.html">geo</a>
+      <a href="https://jgsogo.es/tag/cartodb.html">cartodb</a>
+      <a href="https://jgsogo.es/tag/trilateration.html">trilateration</a>
+    </p>
+  </div>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'jgsogoes';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</article>
+
+    <footer>
+<p>
+  &copy; Javier G. Sogo 2021 - This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>
+</p>
+<p>Built using <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a></p><p>
+  <a rel="license"
+     href="http://creativecommons.org/licenses/by-sa/4.0/"
+     target="_blank">
+    <img alt="Creative Commons License"
+         title="Creative Commons License"
+         style="border-width:0"
+         src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png"
+         width="80"
+         height="15"/>
+  </a>
+</p>    </footer>
+  </main>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "name": "Geolocalización de estaciones (ADIF)",
+  "headline": "Geolocalización de estaciones (ADIF)",
+  "datePublished": "2015-08-27 18:34:00+02:00",
+  "dateModified": "",
+  "author": {
+    "@type": "Person",
+    "name": "Javier G. Sogo",
+    "url": "https://jgsogo.es/author/javier-g-sogo.html"
+  },
+  "image": "http://localhost:8000/images/profile.png",
+  "url": "https://jgsogo.es/renfe-project-geo-stations.html",
+  "description": "Dentro del proyecto RENFE una de las partes más importantes es determinar la posición de las estaciones en el mapa (latitud y longitud). Una vez más tengo que reunir información de diversas fuentes y hacerla coherente para generar el dataset que necesito, en concreto voy a utilizar las siguientes fuentes …"
+}
+</script></body>
+</html>

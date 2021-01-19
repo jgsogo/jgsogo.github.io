@@ -1,0 +1,509 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Javier G. Sogo's blog - Projects</title><link href="https://jgsogo.es/" rel="alternate"></link><link href="https://jgsogo.es/feeds/projects.atom.xml" rel="self"></link><id>https://jgsogo.es/</id><updated>2015-09-22T20:24:00+02:00</updated><entry><title>Mapa dinámico con los trenes (continuará...)</title><link href="https://jgsogo.es/renfe-circulaciones-1.html" rel="alternate"></link><published>2015-09-22T20:24:00+02:00</published><updated>2015-09-22T20:24:00+02:00</updated><author><name>Javier G. Sogo</name></author><id>tag:jgsogo.es,2015-09-22:/renfe-circulaciones-1.html</id><summary type="html">&lt;p&gt;El &lt;a class="reference external" href="https://jgsogo.es/renfe-project.html"&gt;proyecto RENFE&lt;/a&gt; empieza a dar sus frutos a pesar de que no puedo dedicarle todo el tiempo que
+quisiera (y que probablemente se merezca), así que en un pequeño paréntesis os voy a contar los
+avances: ya saco los horarios de todos los trenes, he logrado posicionar la mayoría …&lt;/p&gt;</summary><content type="html">&lt;p&gt;El &lt;a class="reference external" href="https://jgsogo.es/renfe-project.html"&gt;proyecto RENFE&lt;/a&gt; empieza a dar sus frutos a pesar de que no puedo dedicarle todo el tiempo que
+quisiera (y que probablemente se merezca), así que en un pequeño paréntesis os voy a contar los
+avances: ya saco los horarios de todos los trenes, he logrado posicionar la mayoría de las estaciones
+(aunque aún me quedan más de 2000 alias por identificar) y ahora también sitúo los trenes dentro
+de su trayecto entre estaciones, es decir, que calculo su posición para cualquier instante temporal.&lt;/p&gt;
+&lt;p&gt;Y aquí tenéis el resultado. A mí me hipnotiza, y me encanta ver dónde se cruzan los trenes ;D&lt;/p&gt;
+&lt;iframe width="100%" height="520" frameborder="0" src="https://jgsogo.cartodb.com/viz/1f707e86-613c-11e5-a7e5-0e9d821ea90d/embed_map" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen&gt;&lt;/iframe&gt;&lt;p&gt;No obstante todavía me queda trabajo por delante, dos &lt;em&gt;issues&lt;/em&gt; principales:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;No están incluídos los trenes que tienes varias cabeceras o destinos como es el caso de varios que
+con origen o destino en Galicia, por lo que esa parte del mapa está infrarrepresentada.&lt;/li&gt;
+&lt;li&gt;Los trenes viajan en línea recta entre las estaciones.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Es segundo punto es un problema relativamente complejo. Gracias a &amp;#64;jgcasta tengo las principales líneas
+de ferrocarril de España, pero estas líneas no están etiquetadas ni conectadas, son sólo dibujos, líneas.
+Lo que me propongo es construir un grafo donde los nodos sean las estaciones y estas líneas los arcos que
+las unen de tal manera que cuando un tren vaya de una estación a otra yo sepa sin ambigüedad cuál de los
+arcos está siguiendo y pueda proyectar su movimiento sobre él.&lt;/p&gt;
+&lt;p&gt;Sin embargo, las líneas se cruzan de vez en cuando (sin existir aguja) y otras que deberían estar unidas
+están ligeramente separadas con lo que no es fácil identificar qué línea va a continuación de cual otra,
+algunos de estos casos se pueden ver en la siguiente figura:&lt;/p&gt;
+&lt;div class="figure align-center"&gt;
+&lt;img alt="Intersecciones entre líneas en las proximidades de León." src="https://jgsogo.es/images/renfe-lines-leon.png" /&gt;
+&lt;p class="caption"&gt;Mapa de intersecciones entre líneas (puntos blancos) en las proximidades de la ciudad de León.&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;Me temo que construir este grafo va a requerir bastante trabajo... os mantendré informados.&lt;/p&gt;
+</content><category term="Projects"></category><category term="renfe"></category><category term="railway"></category><category term="geo"></category><category term="cartodb"></category></entry><entry><title>Circulaciones de trenes (RENFE)</title><link href="https://jgsogo.es/renfe-project-trains.html" rel="alternate"></link><published>2015-09-01T15:00:00+02:00</published><updated>2015-09-01T15:00:00+02:00</updated><author><name>Javier G. Sogo</name></author><id>tag:jgsogo.es,2015-09-01:/renfe-project-trains.html</id><summary type="html">
+&lt;p&gt;Una fuente de información importantísima para el &lt;a class="reference external" href="https://jgsogo.es/renfe-project.html"&gt;proyecto RENFE&lt;/a&gt; son los horarios de los trenes, gracias a
+ellos he podido estimar la zona que debe ocupar cada estación (algoritmo de trilateración) identificando
+errores de posicionamiento gracias a los tiempos de circulación entre estaciones. Sin embargo, esta
+información no es facilitada …&lt;/p&gt;</summary><content type="html">
+&lt;p&gt;Una fuente de información importantísima para el &lt;a class="reference external" href="https://jgsogo.es/renfe-project.html"&gt;proyecto RENFE&lt;/a&gt; son los horarios de los trenes, gracias a
+ellos he podido estimar la zona que debe ocupar cada estación (algoritmo de trilateración) identificando
+errores de posicionamiento gracias a los tiempos de circulación entre estaciones. Sin embargo, esta
+información no es facilitada por RENFE en un formato adecuado sino que hay que extraerla a través de los
+formularios de su web. Podéis haceros una idea de la técnica empleada.&lt;/p&gt;
+&lt;div class="figure align-center"&gt;
+&lt;img alt="Horario del tren MD 18001." src="https://jgsogo.es/images/renfe-trains-timetable.png"/&gt;
+&lt;p class="caption"&gt;Horario del tren MD 18001 entre Madrid y Valladolid (Fuente: &lt;a class="reference external" href="http://horarios.renfe.com/HIRRenfeWeb/recorrido.do?O=17000&amp;amp;D=10600&amp;amp;F=01-09-2015&amp;amp;T=18001&amp;amp;G=1&amp;amp;TT=MD&amp;amp;ID=s&amp;amp;FDS=2015-06-14&amp;amp;DT=2%20h.%2052%20min."&gt;RENFE&lt;/a&gt;).&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;De esta forma, a través de la web de RENFE, puedo conocer en qué estaciones hace parada cada tren y los horarios
+de llegada y de salida. En total, a lo largo de una semana, he obtenido que se mueven unas 1100
+composiciones distintas desde 5500 cabeceras. ¿Muchas? ¿Pocas? Eso lo podremos ver en el mapa dinámico con
+los movimientos de los trenes.&lt;/p&gt;
+&lt;div class="section" id="los-trenes"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="#id1"&gt;Los trenes&lt;/a&gt;&lt;/h2&gt;
+&lt;div class="section" id="tipos-de-trenes"&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="#id2"&gt;Tipos de trenes&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Me ha sorprendido la cantidad de tipos de trenes que aparecen. La lista completa la forman 26 tipos distintos: &lt;tt class="docutils literal"&gt;ALSA&lt;/tt&gt;,
+&lt;tt class="docutils literal"&gt;ALSINA&lt;/tt&gt;, &lt;tt class="docutils literal"&gt;ALTARIA&lt;/tt&gt;, &lt;tt class="docutils literal"&gt;ALVIA&lt;/tt&gt;, &lt;tt class="docutils literal"&gt;AV City&lt;/tt&gt;, &lt;tt class="docutils literal"&gt;AVANT&lt;/tt&gt;, &lt;tt class="docutils literal"&gt;AVE&lt;/tt&gt;, &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;AVE-TGV&lt;/span&gt;&lt;/tt&gt;, &lt;tt class="docutils literal"&gt;BAILE BUS&lt;/tt&gt;, &lt;tt class="docutils literal"&gt;BUS ALOSA&lt;/tt&gt;,
+&lt;tt class="docutils literal"&gt;CERCANIAS&lt;/tt&gt;, &lt;tt class="docutils literal"&gt;EUROMED&lt;/tt&gt;, &lt;tt class="docutils literal"&gt;FRS&lt;/tt&gt;, &lt;tt class="docutils literal"&gt;INTERCITY&lt;/tt&gt;, &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;LD-AVE&lt;/span&gt;&lt;/tt&gt;, &lt;tt class="docutils literal"&gt;MD&lt;/tt&gt;, &lt;tt class="docutils literal"&gt;R. EXPRES&lt;/tt&gt;, &lt;tt class="docutils literal"&gt;REG ESP&lt;/tt&gt;, &lt;tt class="docutils literal"&gt;REG EXP&lt;/tt&gt;,
+&lt;tt class="docutils literal"&gt;REG. EXP&lt;/tt&gt;, &lt;tt class="docutils literal"&gt;REG. EXP.&lt;/tt&gt;, &lt;tt class="docutils literal"&gt;REGIONAL&lt;/tt&gt;, &lt;tt class="docutils literal"&gt;TALGO&lt;/tt&gt;, &lt;tt class="docutils literal"&gt;TRENCELTA&lt;/tt&gt;, &lt;tt class="docutils literal"&gt;TRENHOTEL&lt;/tt&gt; y &lt;tt class="docutils literal"&gt;VIA ESTRE&lt;/tt&gt;. Se puede observar
+que los nombres no están homogeneizados (hay cinco forma de hacer referencia a los Regional Express) y además, me
+ha sorprendido mucho ver que RENFE opera algunos autobuses ¡!.&lt;/p&gt;
+&lt;p&gt;El caso es que tanta fragmentación no es útil, yo he decidido agruparlos en las tipologías clásicas más
+próximas al entendimiento común:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;AVE: &lt;tt class="docutils literal"&gt;AVE&lt;/tt&gt;, &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;AVE-TGV&lt;/span&gt;&lt;/tt&gt;, &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;LD-AVE&lt;/span&gt;&lt;/tt&gt;, &lt;tt class="docutils literal"&gt;AV City&lt;/tt&gt;.&lt;/li&gt;
+&lt;li&gt;Alta Velocidad (no AVE): &lt;tt class="docutils literal"&gt;ALTARIA&lt;/tt&gt;, &lt;tt class="docutils literal"&gt;ALVIA&lt;/tt&gt;, &lt;tt class="docutils literal"&gt;AVANT&lt;/tt&gt;, &lt;tt class="docutils literal"&gt;EUROMED&lt;/tt&gt;.&lt;/li&gt;
+&lt;li&gt;Larga distancia: &lt;tt class="docutils literal"&gt;TALGO&lt;/tt&gt;, &lt;tt class="docutils literal"&gt;TRENHOTEL&lt;/tt&gt;&lt;/li&gt;
+&lt;li&gt;Media distancia: &lt;tt class="docutils literal"&gt;INTERCITY&lt;/tt&gt;, &lt;tt class="docutils literal"&gt;MD&lt;/tt&gt;.&lt;/li&gt;
+&lt;li&gt;Regionales: &lt;tt class="docutils literal"&gt;R. EXPRES&lt;/tt&gt;, &lt;tt class="docutils literal"&gt;REG ESP&lt;/tt&gt;, &lt;tt class="docutils literal"&gt;REG EXP&lt;/tt&gt;, &lt;tt class="docutils literal"&gt;REG. EXP&lt;/tt&gt;, &lt;tt class="docutils literal"&gt;REG. EXP.&lt;/tt&gt;, &lt;tt class="docutils literal"&gt;REGIONAL&lt;/tt&gt;.&lt;/li&gt;
+&lt;li&gt;Cercanías: &lt;tt class="docutils literal"&gt;CERCANIAS&lt;/tt&gt;&lt;/li&gt;
+&lt;li&gt;Otros trenes: &lt;tt class="docutils literal"&gt;TRENCELTA&lt;/tt&gt;, &lt;tt class="docutils literal"&gt;VIA ESTRE&lt;/tt&gt;&lt;/li&gt;
+&lt;li&gt;Autobuses: &lt;tt class="docutils literal"&gt;ALSA&lt;/tt&gt;, &lt;tt class="docutils literal"&gt;ALSINA&lt;/tt&gt;, &lt;tt class="docutils literal"&gt;BAILE BUS&lt;/tt&gt;, &lt;tt class="docutils literal"&gt;BUS ALOSA&lt;/tt&gt;.&lt;/li&gt;
+&lt;li&gt;Ferry: &lt;tt class="docutils literal"&gt;FRS&lt;/tt&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="section" id="horarios-de-trenes"&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="#id3"&gt;Horarios de trenes&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Una vez obtenida la información de RENFE, he preparado unas clases para acceder a los datos de forma ordenada,
+de tal forma que se puedan hacer las consultas por identificador de tren, por parada, día de la semana,...&lt;/p&gt;
+&lt;p&gt;Gracias a estos horarios también puedo estimar las distancias entre estaciones y ayudar al algoritmo de
+posicionamiento de las mismas a detectar errores.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="trenes-compuestos"&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="#id4"&gt;Trenes compuestos&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Un problema que he encontrado y que aún no he resuelto son los trenes que se unen o se separan en ciertas
+estaciones, ocurre a menudo con los de alta velocidad que suben a Galicia. La dificultad radica en que estos
+trenes tienen el mismo identificador durante todo su recorrido para ambas ramas.&lt;/p&gt;
+&lt;p&gt;Otra cosa más de trabajo pendiente :/&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="mas-sobre-el-proyecto"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="#id5"&gt;Más sobre el proyecto&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;El proyecto se desarrolla en los siguientes artículos:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Mapa dinámico de circulaciones (&lt;a class="reference external" href="https://jgsogo.es/renfe-project.html"&gt;ver artículo&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Geolocalización de estaciones (ADIF) (&lt;a class="reference external" href="https://jgsogo.es/renfe-project-geo-stations.html"&gt;ver artículo&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;La infraestructura ferroviaria (ADIF) (&lt;a class="reference external" href="https://jgsogo.es/renfe-project-lines.html"&gt;ver artículo&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Circulaciones de trenes (RENFE)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</content><category term="Projects"></category><category term="renfe"></category><category term="railway"></category><category term="geo"></category><category term="cartodb"></category></entry><entry><title>La infraestructura ferroviaria (ADIF)</title><link href="https://jgsogo.es/renfe-project-lines.html" rel="alternate"></link><published>2015-08-31T18:34:00+02:00</published><updated>2015-08-31T18:34:00+02:00</updated><author><name>Javier G. Sogo</name></author><id>tag:jgsogo.es,2015-08-31:/renfe-project-lines.html</id><summary type="html">
+&lt;p&gt;El primer paso del &lt;a class="reference external" href="https://jgsogo.es/renfe-project.html"&gt;proyecto RENFE&lt;/a&gt; consistió en
+&lt;a class="reference external" href="https://jgsogo.es/renfe-project-geo-stations.html"&gt;posicionar las estaciones&lt;/a&gt;. Una vez realizada esta tarea
+puedo construir un mapa con los recorridos de los trenes utilizando la información de horarios y paradas que
+aparece en la web de RENFE. De esta forma puedo construir el trayecto seguido por un …&lt;/p&gt;</summary><content type="html">
+&lt;p&gt;El primer paso del &lt;a class="reference external" href="https://jgsogo.es/renfe-project.html"&gt;proyecto RENFE&lt;/a&gt; consistió en
+&lt;a class="reference external" href="https://jgsogo.es/renfe-project-geo-stations.html"&gt;posicionar las estaciones&lt;/a&gt;. Una vez realizada esta tarea
+puedo construir un mapa con los recorridos de los trenes utilizando la información de horarios y paradas que
+aparece en la web de RENFE. De esta forma puedo construir el trayecto seguido por un tren cualquiera, por un
+tipo de trenes o por todos ellos y, lo que es más importante, puedo saber qué estaciones están conectadas
+con cuales, lo que me permitirá construir &lt;strong&gt;el grafo de la infraestructura&lt;/strong&gt;.&lt;/p&gt;
+&lt;div class="figure align-center"&gt;
+&lt;img alt="Mapa de conexiones de los trenes ALVIA de RENFE" src="https://jgsogo.es/images/renfe-lines-alvia-with-errors.png"/&gt;
+&lt;p class="caption"&gt;Grafo de conexiones de los trenes ALVIA de RENFE, se muestra con colores el número de composiciones
+que hacen uso de cada conexión.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="deteccion-de-errores"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="#id1"&gt;Detección de errores&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;En el gráfico anterior se puede ver un dibujo esquemático de las conexiones que cubren los trenes ALVIA,
+en él se aprecian dos errores claros de posicionamiento de las estaciones. Uno de ellos está en el trayecto
+entre Córdoba y Málaga donde se realizan paradas en Puente Genil (correctamente situado en el mapa)
+y Antequera (que aparece erroneamente en Valencia); el otro está relacionado con una estación gallega
+que aparece en tierras cántabras.&lt;/p&gt;
+&lt;p&gt;Podemos detectar estos errores de dos formas:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Visualmente: en el caso anterior está claro que Antequera es un error de posicionamiento.&lt;/li&gt;
+&lt;li&gt;Con un algoritmo: puesto que tengo los horarios de los trenes puedo calcular la velocidad a la
+cual deberían viajar para recorrer la distancia entre cada par de estaciones, si esta velocidad
+está fuera de unos rangos normales sabré que alguna de las estaciones (origen o destino) está
+mal posicionada, ejecutando el algoritmo para todos los pares de estaciones puedo resolver la ambigüedades.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Una vez que he detectado las estaciones mal posicionadas puedo utilizar el
+&lt;a class="reference external" href="{filename}/Algorithms/trilateration_with_errors.rst"&gt;algoritmo de trilateración&lt;/a&gt;
+para calcular su posición correcta o bien solucionar el problema manualmente.&lt;/p&gt;
+&lt;p&gt;Con los datos corregidos ya puedo generar mapas con las conexiones directas entre estaciones
+según el tipo de tren como es el caso de la siguiente figura donde aparecen las conexiones
+de trenes MD, TALGO y Tren Hotel.&lt;/p&gt;
+&lt;div class="figure align-center"&gt;
+&lt;img alt="Mapa de conexiones de los trenes MD, TALGO y Tren Hotel" src="https://jgsogo.es/images/renfe-lines-md-talgo-trenhotel.png"/&gt;
+&lt;p class="caption"&gt;Mapa de conexiones de los trenes MD (naranja), TALGO (rojo) y Tren Hotel (verde) de RENFE; en blanco se
+muestran las estaciones donde hacen parada.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="grafo-de-lineas"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="#id2"&gt;Grafo de líneas&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;El objetivo que persigo en esta parte es construir un grafo con toda la infraestructura ferroviaria
+española, donde los nodos sean las estaciones y las uniones entre líneas y los arcos sean las vías
+que los conectan. Idealmente cada arco y nodo podrá tener sus atributos indicando si está electrificado,
+cuál es la velocidad máxima, ancho de vía, distancia,...&lt;/p&gt;
+&lt;p&gt;Para lograr realizar este grafo me tengo que apoyar en los grafos por tipo de tren del apartado anterior
+para saber qué estaciones están conectadas con cuáles, pero la dificultad estriba en relacionar esas
+estaciones con la infraestructura subyacente.&lt;/p&gt;
+&lt;p&gt;Como indiqué en el artículo de introducción, gracias a &lt;a class="reference external" href="https://astroide.cartodb.com/maps"&gt;Astroide&lt;/a&gt; he conseguido la información de las
+líneas, pero no se incluyen las estaciones ni las uniones entre líneas.&lt;/p&gt;
+&lt;div class="section" id="posicion-de-las-estaciones-sobre-las-lineas"&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="#id3"&gt;Posición de las estaciones sobre las líneas&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Una vez que he realizado el trabajo de posicionamiento de las estaciones en el mapa puedo proyectarlas
+sobre la línea más cercana, son unos cálculos triviales utilizando la librería &lt;a class="reference external" href="http://toblerity.org/shapely/manual.html"&gt;shapely&lt;/a&gt;. Esta proyección
+que ya hicimos en el artículo sobre (&lt;a class="reference external" href="https://jgsogo.es/renfe-project-geo-stations.html"&gt;estaciones&lt;/a&gt;) nos
+sirve también para validar el posicionamiento de las mismas.&lt;/p&gt;
+&lt;p&gt;Sería muy interesante contar con las líneas de Portugal (algunas estaciones pertenecen a este país) y
+con la información de vías desmanteladas para validar la posición de estaciones en desuso.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="cruces-entre-lineas"&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="#id4"&gt;Cruces entre líneas&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;El otro algoritmo que he aplicado sobre las líneas es el cálculo de las intersecciones que se producen
+entre ellas buscando puntos comunes. Este algoritmo identifica tres tipos de puntos comunes:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;las intersecciones entre líneas: lugares donde una línea pasa sobre otra sin que haya unión entre ambas.&lt;/li&gt;
+&lt;li&gt;los puntos de unión: lugares donde dos vías se unen para formar una sola (o separan).&lt;/li&gt;
+&lt;li&gt;los empalmes: lugares donde empieza una vía a continuación de otra.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="figure align-center"&gt;
+&lt;img alt="Intersecciones entre líneas en las proximidades de León." src="https://jgsogo.es/images/renfe-lines-leon.png"/&gt;
+&lt;p class="caption"&gt;Mapa de intersecciones entre líneas (puntos blancos) en las proximidades de la ciudad de León.&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;Sin embargo la casuística es muy grande y hay muchos errores en los que aún tengo que trabajar:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;strong&gt;Falsos positivos&lt;/strong&gt;: los cruces entre líneas sin unión entre ellas no deben ser incluídos en el grafo resultante.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Falsos negativos&lt;/strong&gt;: uniones entre líneas que no comparten ningún punto geométrico común por redondeos u
+errores en los datos. El algoritmo debe permitir cierto error a la hora de identificar los cruces (sin
+introducir más falsos positivos).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="admonition warning"&gt;
+&lt;p class="first admonition-title"&gt;Advertencia&lt;/p&gt;
+&lt;p class="last"&gt;El resultado con el grafo final tendrá que esperar un poco más, aún está en construcción.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="mas-sobre-el-proyecto"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="#id5"&gt;Más sobre el proyecto&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;El proyecto se desarrolla en los siguientes artículos:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Mapa dinámico de circulaciones (&lt;a class="reference external" href="https://jgsogo.es/renfe-project.html"&gt;ver artículo&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Geolocalización de estaciones (ADIF) (&lt;a class="reference external" href="https://jgsogo.es/renfe-project-geo-stations.html"&gt;ver artículo&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;La infraestructura ferroviaria (ADIF)&lt;/li&gt;
+&lt;li&gt;Circulaciones de trenes (RENFE) (&lt;a class="reference external" href="https://jgsogo.es/renfe-project-trains.html"&gt;ver artículo&lt;/a&gt;).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</content><category term="Projects"></category><category term="renfe"></category><category term="railway"></category><category term="geo"></category><category term="cartodb"></category></entry><entry><title>Geolocalización de estaciones (ADIF)</title><link href="https://jgsogo.es/renfe-project-geo-stations.html" rel="alternate"></link><published>2015-08-27T18:34:00+02:00</published><updated>2015-08-27T18:34:00+02:00</updated><author><name>Javier G. Sogo</name></author><id>tag:jgsogo.es,2015-08-27:/renfe-project-geo-stations.html</id><summary type="html">
+&lt;p&gt;Dentro del &lt;a class="reference external" href="https://jgsogo.es/renfe-project.html"&gt;proyecto RENFE&lt;/a&gt; una de las partes más importantes es determinar la posición de las
+estaciones en el mapa (latitud y longitud). Una vez más tengo que reunir información de diversas
+fuentes y hacerla coherente para generar el &lt;em&gt;dataset&lt;/em&gt; que necesito, en concreto voy a utilizar
+las siguientes fuentes …&lt;/p&gt;</summary><content type="html">
+&lt;p&gt;Dentro del &lt;a class="reference external" href="https://jgsogo.es/renfe-project.html"&gt;proyecto RENFE&lt;/a&gt; una de las partes más importantes es determinar la posición de las
+estaciones en el mapa (latitud y longitud). Una vez más tengo que reunir información de diversas
+fuentes y hacerla coherente para generar el &lt;em&gt;dataset&lt;/em&gt; que necesito, en concreto voy a utilizar
+las siguientes fuentes:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://www.renfe.com/"&gt;Renfe&lt;/a&gt;: en su web podemos consultar un listado de estaciones.&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://adif.es"&gt;ADIF&lt;/a&gt;: en la sección "infraestructuras y estaciones" se pueden obtener las coordenadas GPS
+de algunas estaciones.&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://www.laestaciondetren.net/"&gt;La Estación de Tren&lt;/a&gt;: ofrece un listado de estaciones con coordenadas GPS etiquetadas manualmente.&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://github.com/jgcasta/railopendata"&gt;Github - railopendata&lt;/a&gt;: con datos georreferenciados de estaciones y líneas.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Una vez obtenida la información de estas fuentes tengo que utilizar algunos &lt;strong&gt;algoritmos&lt;/strong&gt; para
+relacionarlos, hacerlos coherentes y completarlos. Y por supuesto, un poquito de ayuda manual
+nunca les va a venir mal.&lt;/p&gt;
+&lt;div class="section" id="listado-de-estaciones"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="#id5"&gt;Listado de estaciones&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;La primera tarea que hay que realizar es obtener la lista (lo más completa posible) de estaciones. En
+la web de Renfe tenemos un link &lt;a class="footnote-reference" href="#id2" id="id1"&gt;[1]&lt;/a&gt;, de donde se puede obtener con un simple &lt;em&gt;script&lt;/em&gt; un primer listado.&lt;/p&gt;
+&lt;table class="docutils footnote" frame="void" id="id2" rules="none"&gt;
+&lt;colgroup&gt;&lt;col class="label"/&gt;&lt;col/&gt;&lt;/colgroup&gt;
+&lt;tbody valign="top"&gt;
+&lt;tr&gt;&lt;td class="label"&gt;&lt;a class="fn-backref" href="#id1"&gt;[1]&lt;/a&gt;&lt;/td&gt;&lt;td&gt;RENFE. Listado de estaciones. URL: &lt;a class="reference external" href="https://venta.renfe.com/vol/estacionesAccesibleVXY.do"&gt;https://venta.renfe.com/vol/estacionesAccesibleVXY.do&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Cada estación tiene un nombre y un identificador. Este identificador es único y está formado por 5 dígitos,
+sin embargo, en algunos casos se incorporan letras cuando no se trata de una estación concreta sino una ciudad
+que dispone de varias estaciones: &lt;code&gt;MADRI&lt;/code&gt; para Madrid, &lt;code&gt;IRUN-&lt;/code&gt; para Irún-Hendaya,... en cualquier
+caso, cada estación de la ciudad posee un identificador numérico único.&lt;/p&gt;
+&lt;p&gt;Los identificadores numéricos, donde aparecen, son la primera opción para identificar las estaciones; sin
+embargo, en muchos otros casos, tendremos que utilizar los nombres y comparar de forma inexacta cadenas de
+texto para identificar la estación (ver &lt;a class="reference external" href="{filename}/Algorithms/fuzzy_string_comparison.md"&gt;comparación inexacta de cadenas&lt;/a&gt;). Estos nombres alternativos
+los guardaremos como &lt;em&gt;alias&lt;/em&gt; de la estación para utilizarlos en búsquedas futuras.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="posicionamiento"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="#id6"&gt;Posicionamiento&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Una vez obtenido el listado de estaciones tengo que georreferenciarlas sobre el mapa. Como he indicado
+más arriba para esta tarea utilizo varias fuentes:&lt;/p&gt;
+&lt;div class="section" id="id3"&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="#id7"&gt;ADIF&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;En la web de ADIF se pueden consultar los datos GPS de algunas estaciones, extraerlos del HTML no es
+complicado, tal y como se puede ver en la imagen siguiente:&lt;/p&gt;
+&lt;div class="figure align-center"&gt;
+&lt;img alt="Coordenadas GPS de una estación en la web de ADIF" src="https://jgsogo.es/images/renfe-stations-adif-gps.png"/&gt;
+&lt;p class="caption"&gt;Coordenadas GPS de una estación en la web de ADIF.&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;Sin embargo, las URLs de esta página siguen un patrón que no he podido identificar, aparece un identificador
+numérico al final que impide construirlas de forma automática. Algunos ejemplos:&lt;/p&gt;
+&lt;table border="1" class="docutils"&gt;
+&lt;colgroup&gt;
+&lt;col width="5%"/&gt;
+&lt;col width="13%"/&gt;
+&lt;col width="82%"/&gt;
+&lt;/colgroup&gt;
+&lt;thead valign="bottom"&gt;
+&lt;tr&gt;&lt;th class="head"&gt;ID&lt;/th&gt;
+&lt;th class="head"&gt;Nombre&lt;/th&gt;
+&lt;th class="head"&gt;URL&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody valign="top"&gt;
+&lt;tr&gt;&lt;td&gt;23004&lt;/td&gt;
+&lt;td&gt;Pontevedra&lt;/td&gt;
+&lt;td&gt;&lt;a class="reference external" href="http://www.adif.es/es_ES/infraestructuras/estaciones/23004/informacion_000047.shtml"&gt;http://www.adif.es/es_ES/infraestructuras/estaciones/23004/informacion_000047.shtml&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;30002&lt;/td&gt;
+&lt;td&gt;Plasencia&lt;/td&gt;
+&lt;td&gt;&lt;a class="reference external" href="http://www.adif.es/es_ES/infraestructuras/estaciones/30002/informacion_000141.shtml"&gt;http://www.adif.es/es_ES/infraestructuras/estaciones/30002/informacion_000141.shtml&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;74200&lt;/td&gt;
+&lt;td&gt;Huesca&lt;/td&gt;
+&lt;td&gt;&lt;a class="reference external" href="http://www.adif.es/es_ES/infraestructuras/estaciones/74200/informacion_000099.shtml"&gt;http://www.adif.es/es_ES/infraestructuras/estaciones/74200/informacion_000099.shtml&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Como consecuencia de ese parámetro debo utilizar alguna otra técnica para acceder a las páginas de
+detalle de cada una de las estaciones: se puede utilizar un script que trabaje con el mapa, o partir de
+la pestaña de "Llegadas y Salidas" a la que se puede acceder utilizando únicamente el identificador de
+la estación (ej.: &lt;code&gt;http://www.adif.es/AdifWeb/estacion_mostrar.jsp?e=20213&lt;/code&gt;). Una vez ahí se puede
+parsear la web para obtener el link de la pestaña "Información" donde tenemos las coordenadas GPS.&lt;/p&gt;
+&lt;p&gt;Podría parecer que aquí termina el trabajo, pero no es así; en la web de ADIF aparecen solo
+200-240 estaciones (depende de si hay trenes que llegan/salen a la hora de la consulta),
+pero tengo que geoposicionar unas 1300.&lt;/p&gt;
+&lt;div class="figure align-center"&gt;
+&lt;img alt="Mapa de estaciones" src="https://jgsogo.es/images/renfe-stations-adif.png"/&gt;
+&lt;p class="caption"&gt;Mapa de estaciones con las coordenadas GPS obtenidas de ADIF&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="railopendata"&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="#id8"&gt;Railopendata&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;José Gómez Castaño (&lt;a class="reference external" href="https://twitter.com/jgcasta"&gt;@jgcasta&lt;/a&gt;) mantiene un &lt;a class="reference external" href="https://github.com/jgcasta/railopendata"&gt;repositorio en Github&lt;/a&gt; con un conjunto no oficial de datos de
+ferrocarril en el que aparecen las posiciones de las estaciones y las geometrías de las líneas. Los datos
+son accesibles y están en formato geoJSON por lo que resultan ideales para utilizarlos aquí.&lt;/p&gt;
+&lt;p&gt;Gracias a este repositorio de información logro posicionar ¡932 estaciones! Sin duda este es un
+recurso valiosísimo al que andemas le concedo un altísimo grado de credibilidad.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="id4"&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="#id9"&gt;La Estación de Tren&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Fernando Solabre&lt;/strong&gt; es el autor de la web La Estación de Tren, en la que se muestra un listado de 1915 estaciones
+geolocalizadas manualmente e identificadas por el nombre que aparece en los mapas. El trabajo realizado merece
+una mención especial y me va a permitir posicionar muchas estaciones.&lt;/p&gt;
+&lt;p&gt;Para utilizar este dataset nos enfrentamos a dos dificultades: identificar la estación y convertir las coordenadas
+de UTM a longitud/latitud. Para la primera de ellas utilizaremos la comparación inexacta de cadenas a la que
+hemos hecho mención anteriormente, para la segunda utlizamos la librería de Python llamada &lt;a class="reference external" href="https://github.com/Turbo87/utm"&gt;utm&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Al automatizar el procesamiento de este conjunto de datos no tengo garantías de que la identificación de
+las estaciones haya sido correcta, confío en que los algoritmos posteriores muestren incongruencias ante
+un dato erroneo y me permita identificarlos.&lt;/p&gt;
+&lt;p&gt;Gracias a La Estación de Tren logro geoposicionar solo 25 estaciones de las que aún me faltaban.&lt;/p&gt;
+&lt;div class="figure align-center"&gt;
+&lt;img alt="Mapa de estaciones" src="https://jgsogo.es/images/renfe-stations-laestaciondetren.png"/&gt;
+&lt;p class="caption"&gt;Mapa de estaciones con las coordenadas GPS obtenidas de ADIF (naranja) y de La Estación de Tren (azul)&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;Sin embargo, existen unas muchas estaciones en este nuevo dataset que no es capaz de asociar a ninguna
+de las existentes, ¿no hay trenes que hagan paradas en ellas? ¿Tan diferentes son los nombres?
+¿Pertenecen a vías desmanteladas? Pues hay un poco de todo, será una información muy interesante a tratar
+cuando tenga los datos de las líneas desmanteladas.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="buscadores-mapas"&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="#id10"&gt;Buscadores/Mapas&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Una tercera vía que he utilizado para geoposicionar las estaciones ha sido utlizar los servicios de
+Internet que permiten obtener las coordenadas de un punto a partir de su dirección. Hay una
+fantástica librería que nos permite hacerlo con facilidad: &lt;a class="reference external" href="https://github.com/geopy/geopy"&gt;geopy&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Como dato de entrada para todos estos servicios he utilizado el nombre de la estación con lo cual la
+fiabilidad de los resultados es bastante baja en ocasiones (se obtienen estaciones dispersas
+por toda la Tierra, pero sólo recogeré los datos de aquéllas que caigan en el entorno de la Península).&lt;/p&gt;
+&lt;p&gt;Puesto que dispongo de varias respuestas para cada estación puedo combinarlas para intentar mejorar
+el resultado. Así filtro los &lt;em&gt;outliers&lt;/em&gt; utilizando un test conocido como &lt;em&gt;median-absolute-deviation&lt;/em&gt; (&lt;a class="reference external" href="https://stackoverflow.com/questions/22354094/pythonic-way-of-detecting-outliers-in-one-dimensional-observation-data/22357811#22357811"&gt;MAD&lt;/a&gt;)
+y posteriormente me quedo con la posición correspondiente a la media aritmética de todas las respuestas.&lt;/p&gt;
+&lt;p&gt;Con esta aproximación no consigo localizar ninguna de las estaciones que aún me quedan por posicionar :/
+nivel de confianza que a las anteriores.&lt;/p&gt;
+&lt;div class="figure align-center"&gt;
+&lt;img alt="Mapa de estaciones" src="https://jgsogo.es/images/renfe-stations-imaps.png"/&gt;
+&lt;p class="caption"&gt;Mapa de estaciones con las coordenadas GPS obtenidas de ADIF (naranja), La Estación de Tren (azul)
+y las extraídas de mapas de internet (verde).&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;Tan sólo me han quedado 85 estaciones sin geolocalizar, lo cual considero que es un muy buen resultado. Además
+puedo comprobar que estas estaciones están, en muchos casos, fuera de la Península o bien incluyen en su nombre
+la partícula &lt;code&gt;-BUS&lt;/code&gt; o &lt;code&gt;(*)&lt;/code&gt; (indicando que se trata de una ciudad con varias estaciones). En el
+primer caso la solución es fácilmente programable, en el segundo caso se podría interpretar cuál es la estación
+correcta según los tipos de trenes que la utilicen.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="estaciones-sin-datos"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="#id11"&gt;Estaciones sin datos&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Son muy pocas las estaciones que han quedado sin datos y para ellas he pensado aplicar un algoritmo probabilístico
+basado en la posición del resto de estaciones y en los horarios de los trenes que pasan por ellas. La idea es
+calcular la zona en la cual es máxima la probabilidad de encontrar un tren tomando como parámetros los tiempos
+de paso por las estaciones adyacentes y su velocidad. Básicamente un problema
+de &lt;strong&gt;trilateración con errores en las medidas&lt;/strong&gt;.&lt;/p&gt;
+&lt;div class="section" id="trilateracion"&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="#id12"&gt;Trilateración&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;"La &lt;a class="reference internal" href="#trilateracion"&gt;trilateración&lt;/a&gt; es un método matemático para determinar las posiciones relativas de objetos usando la
+geometría de triángulos de forma análoga a la triangulación. [...] La trilateración usa las localizaciones
+conocidas de dos o más puntos de referencia, y la distancia medida entre el sujeto y cada punto de
+referencia" (&lt;a class="reference external" href="https://es.wikipedia.org/wiki/Trilateraci%C3%B3n"&gt;Wikipedia&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;Puesto que tengo error en el cálculo de las distancias (no conozco la velocidad del tren, ni
+las curvas que hace la vía y también puede haber error en el posicionamiento de la estación) cada
+una de ellas la voy a aproximar mediante una distribución de probabilidad construida a partir de los datos
+de todas las composiciones que hacen parada en dicha estación.&lt;/p&gt;
+&lt;p&gt;Este algoritmo de trilateración os lo cuento en otro artículo: (&lt;a class="reference external" href="{filename}/Algorithms/trilateration_with_errors.rst"&gt;ver artículo&lt;/a&gt;)&lt;/p&gt;
+&lt;!-- Hablar de los resultados. --&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="proyeccion-sobre-las-lineas"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="#id13"&gt;Proyección sobre las líneas&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Un último paso, que también sirve para &lt;strong&gt;validar las posiciones de las estaciones&lt;/strong&gt; (al menos para
+detectar falsos positivos), consiste en proyectar la posición de las estaciones sobre el
+mapa de líneas; de este modo si la distancia de la estación a la vía más cercana supera cierto umbral
+puedo pensar que la posición de partida era errónea (o no tengo información sobre la
+línea que pasa cerca de ese punto).&lt;/p&gt;
+&lt;div class="figure align-center"&gt;
+&lt;img alt="Histograma con el error de posicionamiento de las estaciones" src="https://jgsogo.es/images/renfe-stations-histogram.png"/&gt;
+&lt;p class="caption"&gt;Histograma (función de densidad) con la distancia de las estaciones a la vía más próxima, según el origen
+del dato de posicionamiento.&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;Se puede observar cómo los datos provinientes de la web de ADIF y los disponibles a través de &lt;a class="reference external" href="https://twitter.com/jgcasta"&gt;@jgcasta&lt;/a&gt;)
+se proyectan sobre vías que pasan muy
+próximas a ellos, los datos obtenidos de la web La Estación de Tren parece que tienen un &lt;em&gt;bias&lt;/em&gt;, aún así
+la gran mayoría parecen próximos a los datos de infraestructura de los que disponemos. Por el contrario,
+cuando los datos los obtenemos utilizando el nombre de la estación para buscar las coordenadas en mapas
+de internet, la dispersión es mucho mayor, la función de densidad presenta una cola extremadamente larga.
+Se confirman las sospechas que tenía sobre la calidad del origen de los datos.&lt;/p&gt;
+&lt;p&gt;NOTA.- Los datos anteriores están construidos es base al error de posicionamiento de las estaciones según
+la fuente de datos, pero en cada grupo no se consideran las estaciones ya posicionadas por otros métodos,
+por lo tanto, si aplicara cada método al conjunto completo de estaciones se obtendrían mayores densidades
+con los errores más pequeños (o ese sería lo esperable).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="mas-sobre-el-proyecto"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="#id14"&gt;Más sobre el proyecto&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;El proyecto se desarrolla en los siguientes artículos:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Mapa dinámico de circulaciones (&lt;a class="reference external" href="https://jgsogo.es/renfe-project.html"&gt;ver artículo&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Geolocalización de estaciones (ADIF)&lt;/li&gt;
+&lt;li&gt;La infraestructura ferroviaria (ADIF) (&lt;a class="reference external" href="https://jgsogo.es/renfe-project-lines.html"&gt;ver artículo&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Circulaciones de trenes (RENFE) (&lt;a class="reference external" href="https://jgsogo.es/renfe-project-trains.html"&gt;ver artículo&lt;/a&gt;).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</content><category term="Projects"></category><category term="renfe"></category><category term="railway"></category><category term="geo"></category><category term="cartodb"></category><category term="trilateration"></category></entry><entry><title>RENFE -- Mapa dinámico de circulaciones</title><link href="https://jgsogo.es/renfe-project.html" rel="alternate"></link><published>2015-08-25T18:34:00+02:00</published><updated>2015-08-25T18:34:00+02:00</updated><author><name>Javier G. Sogo</name></author><id>tag:jgsogo.es,2015-08-25:/renfe-project.html</id><summary type="html">
+&lt;p&gt;Hace unos días me propuse hacer un mapa dinámico con &lt;a class="reference external" href="https://cartodb.com/"&gt;CartoDB&lt;/a&gt; en el que se
+mostraran los trenes de RENFE moviéndose con la intención de probar la herramienta y experimentar
+con sus posibilidades. El caso es que el proyecto crece, los datos no están tan disponibles como
+uno quisiera y …&lt;/p&gt;</summary><content type="html">
+&lt;p&gt;Hace unos días me propuse hacer un mapa dinámico con &lt;a class="reference external" href="https://cartodb.com/"&gt;CartoDB&lt;/a&gt; en el que se
+mostraran los trenes de RENFE moviéndose con la intención de probar la herramienta y experimentar
+con sus posibilidades. El caso es que el proyecto crece, los datos no están tan disponibles como
+uno quisiera y empiezan a aparecer los famosos &lt;em&gt;"ya que..."&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;Durante la recogida de datos para este mapa surgen algunas ideas relacionadas como la construcción
+de un grafo con la infraestructura de transporte para realizar análisis que permitan optimizar
+costes, tiempos, o estudiar problemas en la infraestructura. Es de imaginar que ADIF dispone de
+algo parecido y lo utiliza, así que el objetivo es fundamentalmente exploratorio para empezar a
+estudiar sistemas de transporte &lt;a class="footnote-reference" href="#id2" id="id1"&gt;[1]&lt;/a&gt;.&lt;/p&gt;
+&lt;table class="docutils footnote" frame="void" id="id2" rules="none"&gt;
+&lt;colgroup&gt;&lt;col class="label"/&gt;&lt;col/&gt;&lt;/colgroup&gt;
+&lt;tbody valign="top"&gt;
+&lt;tr&gt;&lt;td class="label"&gt;&lt;a class="fn-backref" href="#id1"&gt;[1]&lt;/a&gt;&lt;/td&gt;&lt;td&gt;Andrew Sherratt, 2005. Portages. &lt;a class="reference external" href="http://www.archatlas.org/Portages/Portages.php"&gt;http://www.archatlas.org/Portages/Portages.php&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;div class="section" id="ideas-previas"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="#id4"&gt;Ideas previas&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Como siempre lo primero es buscar un poco por Internet para ver quién ha hecho algo ya y, como siempre,
+sin necesidad de bucear demasiado, aparecen algunos buenos resultados:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p class="first"&gt;&lt;a class="reference external" href="https://twitter.com/victorianoi"&gt;Victoriano&lt;/a&gt; tiene un mapa donde muestra los &lt;a class="reference external" href="https://victoriano-v21.cartodb.com/viz/aac847aa-e882-11e2-bc2b-d90ab36db2dd/public_map"&gt;trenes de larga distancia en 2013&lt;/a&gt; (ver imagen más abajo),
+sin embargo no es exactamente lo que busco. De todos modos, una pena que los datasets sean privados.&lt;/p&gt;
+&lt;div class="figure align-center"&gt;
+&lt;img alt="Renfe - Trenes de larga distancia 2013" src="https://jgsogo.es/images/renfe-stations-victoriano.png"/&gt;
+&lt;p class="caption"&gt;&lt;strong&gt;Renfe - Trenes de larga distancia 2013&lt;/strong&gt;.
+Los puntos naranjas son la estaciones según el nº de trenes que salen de esa estación.
+El azul es el nº de conexiones posibles con billete único que vende Renfe en viaje directo
+o con transbordo. Autor: &lt;a class="reference external" href="https://twitter.com/victorianoi"&gt;Victoriano&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;Buscando un poco más encontramos los mapas de &lt;a class="reference external" href="https://astroide.cartodb.com/maps"&gt;Astroide&lt;/a&gt;, otro usuario de CartoDB que nos ofrece unos
+mapas mucho más interesantes para lo que quiero hacer, y que además ofrece públicamente los
+datasets: un mapa dinámico con los &lt;a class="reference external" href="https://astroide.cartodb.com/viz/83f346cc-18bc-11e5-a62d-0e9d821ea90d/public_map"&gt;trenes de largo recorrido&lt;/a&gt; y otro con los &lt;a class="reference external" href="https://astroide.cartodb.com/viz/5b6b5838-1aa7-11e5-858b-0e018d66dc29/public_map"&gt;trenes de mercancias&lt;/a&gt;,
+que reproduzco a continuación:&lt;/p&gt;
+&lt;div class="figure align-center"&gt;
+&lt;img alt="Renfe - Trenes de larga distancia" src="https://jgsogo.es/images/renfe-stations-astroide-largadistancia.png"/&gt;
+&lt;p class="caption"&gt;&lt;strong&gt;Renfe - Trenes de Larga Distancia&lt;/strong&gt;.
+Recorrido efectuado por trenes de Larga Distancia. Estudio del uso de bases de datos NoSQL en
+la Fundación de los Ferrocarriles Españoles. Autor: &lt;a class="reference external" href="https://astroide.cartodb.com/maps"&gt;Astroide&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="figure align-center"&gt;
+&lt;img alt="Renfe - Trenes de mercancias" src="https://jgsogo.es/images/renfe-stations-astroide-mercancias.png"/&gt;
+&lt;p class="caption"&gt;&lt;strong&gt;Trenes de mercancías&lt;/strong&gt;.
+Reconstrucción del movimiento de los trenes de mercancías. Estudio del uso de bases de datos NoSQL en
+la Fundación de los Ferrocarriles Españoles. Autor: &lt;a class="reference external" href="https://astroide.cartodb.com/maps"&gt;Astroide&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;Estos dos mapas son públicos y los datasets pueden descargarse, uno de ellos me será de muchísima
+utilidad: la información con las líneas de la infraestructura, ¿están todas las líneas activas? Por
+si acaso contacto con el usuario para confirmarlo y para saber si puede también proporcionarme los
+datos de las líneas desmanteladas que ya no están operativas.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Los mapas de Astroide muestran básicamente el resultado al que quiero llegar, pero el problema que
+me planteo no es tanto obtener el mapa como disfrutar del camino hasta conseguirlo. Además, echo de
+menos los trenes de media distancia y regionales, ¡y las estaciones!. Me pregunto: ¿cómo quedará el
+mapa si se combinan todos estos trenes en una única visualización y mostramos también las estaciones?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="definicion-del-problema"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="#id5"&gt;Definición del problema&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;El reto sigue presente a pesar de los recursos que se han encontrado: para realizar mi mapa dinámico con
+las circulaciones de trenes necesito posicionar las estaciones, conseguir los horarios de los trenes y
+luego muestrear su posición a lo largo de un día o de una semana para mostrarlos en el mapa.&lt;/p&gt;
+&lt;div class="section" id="la-infraestructura-estaciones-y-lineas"&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="#id6"&gt;La infraestructura: estaciones y líneas&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Uno de los primeros pasos que me propongo dar es crear un mapa estático con la infraestructura, básicamente
+reproducir la capa de ferrocarriles que supongo que estará disponible en muchos GIS. Para ello necesito:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;los recorridos de las líneas (&lt;a class="reference external" href="https://jgsogo.es/renfe-project-lines.html"&gt;ver artículo&lt;/a&gt;), y&lt;/li&gt;
+&lt;li&gt;la posición de las estaciones (&lt;a class="reference external" href="https://jgsogo.es/renfe-project-geo-stations.html"&gt;ver artículo&lt;/a&gt;).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;En la infraestructura quiero mostrar tanto las líneas que actualmente están en funcionamiento como las
+líneas que ya han sido desmanteladas. Asimismo quiero diferenciar por colores según los anchos (FEVE,
+métrico, internacional, ibérico) y también identificar qué tramos están electrificados.&lt;/p&gt;
+&lt;p&gt;En cuanto a las estaciones, el objetivo será mostrar en el mapa la posición de todos los edificios
+que hayan ofrecido este servicio. Podrían categorizarse en función de las prestaciones de cada uno
+de ellos: accesibilidad, área comercial,...&lt;/p&gt;
+&lt;p&gt;Una vez que tenga disponibles estos datos visuales, el objetivo será crear un &lt;strong&gt;grafo de la infraestructura
+donde los nodos sea estaciones o bifurcaciones y los arcos estén formados por los itinerarios&lt;/strong&gt;. Gracias
+a este grafo se podrán reconstruir las circulaciones de trenes entre estaciones no contiguas, analizar la
+demanda de la infraestructura, las consecuencias de fallos en el servicio, alternativas de recuperación, etc.
+No obstante, su construcción resulta compleja, tal y como se mostrará en el artículo correspondiente.&lt;/p&gt;
+&lt;div class="figure align-center"&gt;
+&lt;img alt="Visualización de un sistema de transporte sobre el mapa de Europa" src="https://jgsogo.es/images/jgraph-transport-system.png"/&gt;
+&lt;p class="caption"&gt;Visualización como grafo de una red de transporte sobre el mapa de Europa. Fuente: &lt;a class="reference external" href="https://jgraph.github.io/mxgraph/docs/manual_javavis.html"&gt;JGraphX User Manual&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="circulaciones-de-trenes"&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="#id7"&gt;Circulaciones de trenes&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;El otro elemento del mapa son los datos de explotación de la infraestructura: la circulación de los
+trenes. Necesito obtener los horarios de todos ellos (estaciones, hora de salida y llegada,...)
+para poder identificar en qué lugar se encuentran en cada momento.&lt;/p&gt;
+&lt;p&gt;RENFE no ofrece esta información de una forma amigable a través de algún tipo de API, tampoco es una
+información que haya encontrado en alguna web de la administración como &lt;a class="reference external" href="http://datos.gob.es/"&gt;datos.gob.es&lt;/a&gt;, así que
+habrá que obtenerlos de alguna otra manera (scraping).&lt;/p&gt;
+&lt;p&gt;Estos datos de los trenes se podrán combinar con los datos del grafo de la infraestructura (y
+ayudarán también a construirlo) para generar el mapa dinámico pretendido. Además,
+la información disponible de esta manera permitirá realizar diferentes estudios.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="mas-sobre-el-proyecto"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="#id8"&gt;Más sobre el proyecto&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;El proyecto se desarrolla en los siguientes artículos:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Geolocalización de estaciones (ADIF) (&lt;a class="reference external" href="https://jgsogo.es/renfe-project-geo-stations.html"&gt;ver artículo&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;La infraestructura ferroviaria (ADIF) (&lt;a class="reference external" href="https://jgsogo.es/renfe-project-lines.html"&gt;ver artículo&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Circulaciones de trenes (RENFE) (&lt;a class="reference external" href="https://jgsogo.es/renfe-project-trains.html"&gt;ver artículo&lt;/a&gt;).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</content><category term="Projects"></category><category term="renfe"></category><category term="railway"></category><category term="geo"></category><category term="cartodb"></category></entry></feed>

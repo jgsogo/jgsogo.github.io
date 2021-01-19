@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="https://jgsogo.es/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="https://jgsogo.es/theme/css/pygments.min.css">
+  <link rel="stylesheet" type="text/css" href="https://jgsogo.es/theme/css/font-awesome.min.css">
+  <link href="https://jgsogo.es/static/custom.css" rel="stylesheet">
+  <link href="https://jgsogo.es/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Javier G. Sogo's blog Atom">
+  <link rel="shortcut icon" href="http://localhost:8000/images/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="http://localhost:8000/images/favicon.ico" type="image/x-icon">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="" />
+<meta name="author" content="Javier G. Sogo" />
+<meta name="description" content="El primer paso del proyecto RENFE consistió en posicionar las estaciones. Una vez realizada esta tarea puedo construir un mapa con los recorridos de los trenes utilizando la información de horarios y paradas que aparece en la web de RENFE. De esta forma puedo construir el trayecto seguido por un …" />
+<meta name="keywords" content="renfe, railway, geo, cartodb">
+<meta property="og:site_name" content="Javier G. Sogo's blog"/>
+<meta property="og:title" content="La infraestructura ferroviaria (ADIF)"/>
+<meta property="og:description" content="El primer paso del proyecto RENFE consistió en posicionar las estaciones. Una vez realizada esta tarea puedo construir un mapa con los recorridos de los trenes utilizando la información de horarios y paradas que aparece en la web de RENFE. De esta forma puedo construir el trayecto seguido por un …"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="https://jgsogo.es/renfe-project-lines.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2015-08-31 18:34:00+02:00"/>
+<meta property="article:modified_time" content=""/>
+<meta property="article:author" content="https://jgsogo.es/author/javier-g-sogo.html">
+<meta property="article:section" content="Projects"/>
+<meta property="article:tag" content="renfe"/>
+<meta property="article:tag" content="railway"/>
+<meta property="article:tag" content="geo"/>
+<meta property="article:tag" content="cartodb"/>
+<meta property="og:image" content="http://localhost:8000/images/profile.png">  <title>Javier G. Sogo's blog &ndash; La infraestructura ferroviaria (ADIF)</title>
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="https://jgsogo.es">
+        <img src="http://localhost:8000/images/profile.png" alt="Javier G. Sogo" title="Javier G. Sogo">
+      </a>
+      <h1><a href="https://jgsogo.es">Javier G. Sogo</a></h1>
+      <p></p>
+      <nav>
+        <ul class="list">
+          <li><a href="https://jgsogo.es/pages/contact.html#contact">Contacto</a></li>
+          <li><a href="https://jgsogo.es/pages/about-me.html#about-me">Yo, mí, me, conmigo</a></li>
+          <li><a href="http://lingwars.github.io/blog/" target="_blank">Lingẅars</a></li>
+        </ul>
+      </nav>
+      <ul class="social">
+        <li><a class="sc-linkedin" href="https://es.linkedin.com/in/jgsogo" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+        <li><a class="sc-github" href="https://github.com/jgsogo" target="_blank"><i class="fa fa-github"></i></a></li>
+        <li><a class="sc-twitter" href="https://twitter.com/jgsogo" target="_blank"><i class="fa fa-twitter"></i></a></li>
+        <li><a class="sc-rss" href="http://localhost:8000feeds/all.atom.xml" target="_blank"><i class="fa fa-rss"></i></a></li>
+      </ul>
+    </div>
+  </aside>
+  <main>
+    <nav>
+      <a href="https://jgsogo.es">Home</a>
+      <a href="/archives.html">Archives</a>
+      <a href="/categories.html">Categories</a>
+      <a href="https://jgsogo.es/feeds/all.atom.xml">Atom</a>
+    </nav>
+
+<article>
+  <header>
+    <h1 id="renfe-project-lines">La infraestructura ferroviaria (ADIF)</h1>
+    <p>Posted on Mon 31 August 2015 in <a href="https://jgsogo.es/category/projects.html">Projects</a></p>
+  </header>
+  <div>
+    
+<p>El primer paso del <a class="reference external" href="https://jgsogo.es/renfe-project.html">proyecto RENFE</a> consistió en
+<a class="reference external" href="https://jgsogo.es/renfe-project-geo-stations.html">posicionar las estaciones</a>. Una vez realizada esta tarea
+puedo construir un mapa con los recorridos de los trenes utilizando la información de horarios y paradas que
+aparece en la web de RENFE. De esta forma puedo construir el trayecto seguido por un tren cualquiera, por un
+tipo de trenes o por todos ellos y, lo que es más importante, puedo saber qué estaciones están conectadas
+con cuales, lo que me permitirá construir <strong>el grafo de la infraestructura</strong>.</p>
+<div class="figure align-center">
+<img alt="Mapa de conexiones de los trenes ALVIA de RENFE" src="https://jgsogo.es/images/renfe-lines-alvia-with-errors.png"/>
+<p class="caption">Grafo de conexiones de los trenes ALVIA de RENFE, se muestra con colores el número de composiciones
+que hacen uso de cada conexión.</p>
+</div>
+<div class="section" id="deteccion-de-errores">
+<h2><a class="toc-backref" href="#id1">Detección de errores</a></h2>
+<p>En el gráfico anterior se puede ver un dibujo esquemático de las conexiones que cubren los trenes ALVIA,
+en él se aprecian dos errores claros de posicionamiento de las estaciones. Uno de ellos está en el trayecto
+entre Córdoba y Málaga donde se realizan paradas en Puente Genil (correctamente situado en el mapa)
+y Antequera (que aparece erroneamente en Valencia); el otro está relacionado con una estación gallega
+que aparece en tierras cántabras.</p>
+<p>Podemos detectar estos errores de dos formas:</p>
+<ul class="simple">
+<li>Visualmente: en el caso anterior está claro que Antequera es un error de posicionamiento.</li>
+<li>Con un algoritmo: puesto que tengo los horarios de los trenes puedo calcular la velocidad a la
+cual deberían viajar para recorrer la distancia entre cada par de estaciones, si esta velocidad
+está fuera de unos rangos normales sabré que alguna de las estaciones (origen o destino) está
+mal posicionada, ejecutando el algoritmo para todos los pares de estaciones puedo resolver la ambigüedades.</li>
+</ul>
+<p>Una vez que he detectado las estaciones mal posicionadas puedo utilizar el
+<a class="reference external" href="{filename}/Algorithms/trilateration_with_errors.rst">algoritmo de trilateración</a>
+para calcular su posición correcta o bien solucionar el problema manualmente.</p>
+<p>Con los datos corregidos ya puedo generar mapas con las conexiones directas entre estaciones
+según el tipo de tren como es el caso de la siguiente figura donde aparecen las conexiones
+de trenes MD, TALGO y Tren Hotel.</p>
+<div class="figure align-center">
+<img alt="Mapa de conexiones de los trenes MD, TALGO y Tren Hotel" src="https://jgsogo.es/images/renfe-lines-md-talgo-trenhotel.png"/>
+<p class="caption">Mapa de conexiones de los trenes MD (naranja), TALGO (rojo) y Tren Hotel (verde) de RENFE; en blanco se
+muestran las estaciones donde hacen parada.</p>
+</div>
+</div>
+<div class="section" id="grafo-de-lineas">
+<h2><a class="toc-backref" href="#id2">Grafo de líneas</a></h2>
+<p>El objetivo que persigo en esta parte es construir un grafo con toda la infraestructura ferroviaria
+española, donde los nodos sean las estaciones y las uniones entre líneas y los arcos sean las vías
+que los conectan. Idealmente cada arco y nodo podrá tener sus atributos indicando si está electrificado,
+cuál es la velocidad máxima, ancho de vía, distancia,...</p>
+<p>Para lograr realizar este grafo me tengo que apoyar en los grafos por tipo de tren del apartado anterior
+para saber qué estaciones están conectadas con cuáles, pero la dificultad estriba en relacionar esas
+estaciones con la infraestructura subyacente.</p>
+<p>Como indiqué en el artículo de introducción, gracias a <a class="reference external" href="https://astroide.cartodb.com/maps">Astroide</a> he conseguido la información de las
+líneas, pero no se incluyen las estaciones ni las uniones entre líneas.</p>
+<div class="section" id="posicion-de-las-estaciones-sobre-las-lineas">
+<h3><a class="toc-backref" href="#id3">Posición de las estaciones sobre las líneas</a></h3>
+<p>Una vez que he realizado el trabajo de posicionamiento de las estaciones en el mapa puedo proyectarlas
+sobre la línea más cercana, son unos cálculos triviales utilizando la librería <a class="reference external" href="http://toblerity.org/shapely/manual.html">shapely</a>. Esta proyección
+que ya hicimos en el artículo sobre (<a class="reference external" href="https://jgsogo.es/renfe-project-geo-stations.html">estaciones</a>) nos
+sirve también para validar el posicionamiento de las mismas.</p>
+<p>Sería muy interesante contar con las líneas de Portugal (algunas estaciones pertenecen a este país) y
+con la información de vías desmanteladas para validar la posición de estaciones en desuso.</p>
+</div>
+<div class="section" id="cruces-entre-lineas">
+<h3><a class="toc-backref" href="#id4">Cruces entre líneas</a></h3>
+<p>El otro algoritmo que he aplicado sobre las líneas es el cálculo de las intersecciones que se producen
+entre ellas buscando puntos comunes. Este algoritmo identifica tres tipos de puntos comunes:</p>
+<ul class="simple">
+<li>las intersecciones entre líneas: lugares donde una línea pasa sobre otra sin que haya unión entre ambas.</li>
+<li>los puntos de unión: lugares donde dos vías se unen para formar una sola (o separan).</li>
+<li>los empalmes: lugares donde empieza una vía a continuación de otra.</li>
+</ul>
+<div class="figure align-center">
+<img alt="Intersecciones entre líneas en las proximidades de León." src="https://jgsogo.es/images/renfe-lines-leon.png"/>
+<p class="caption">Mapa de intersecciones entre líneas (puntos blancos) en las proximidades de la ciudad de León.</p>
+</div>
+<p>Sin embargo la casuística es muy grande y hay muchos errores en los que aún tengo que trabajar:</p>
+<ul class="simple">
+<li><strong>Falsos positivos</strong>: los cruces entre líneas sin unión entre ellas no deben ser incluídos en el grafo resultante.</li>
+<li><strong>Falsos negativos</strong>: uniones entre líneas que no comparten ningún punto geométrico común por redondeos u
+errores en los datos. El algoritmo debe permitir cierto error a la hora de identificar los cruces (sin
+introducir más falsos positivos).</li>
+</ul>
+<div class="admonition warning">
+<p class="first admonition-title">Advertencia</p>
+<p class="last">El resultado con el grafo final tendrá que esperar un poco más, aún está en construcción.</p>
+</div>
+</div>
+</div>
+<div class="section" id="mas-sobre-el-proyecto">
+<h2><a class="toc-backref" href="#id5">Más sobre el proyecto</a></h2>
+<p>El proyecto se desarrolla en los siguientes artículos:</p>
+<ul class="simple">
+<li>Mapa dinámico de circulaciones (<a class="reference external" href="https://jgsogo.es/renfe-project.html">ver artículo</a>).</li>
+<li>Geolocalización de estaciones (ADIF) (<a class="reference external" href="https://jgsogo.es/renfe-project-geo-stations.html">ver artículo</a>).</li>
+<li>La infraestructura ferroviaria (ADIF)</li>
+<li>Circulaciones de trenes (RENFE) (<a class="reference external" href="https://jgsogo.es/renfe-project-trains.html">ver artículo</a>).</li>
+</ul>
+</div>
+
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="https://jgsogo.es/tag/renfe.html">renfe</a>
+      <a href="https://jgsogo.es/tag/railway.html">railway</a>
+      <a href="https://jgsogo.es/tag/geo.html">geo</a>
+      <a href="https://jgsogo.es/tag/cartodb.html">cartodb</a>
+    </p>
+  </div>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'jgsogoes';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</article>
+
+    <footer>
+<p>
+  &copy; Javier G. Sogo 2021 - This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>
+</p>
+<p>Built using <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a></p><p>
+  <a rel="license"
+     href="http://creativecommons.org/licenses/by-sa/4.0/"
+     target="_blank">
+    <img alt="Creative Commons License"
+         title="Creative Commons License"
+         style="border-width:0"
+         src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png"
+         width="80"
+         height="15"/>
+  </a>
+</p>    </footer>
+  </main>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "name": "La infraestructura ferroviaria (ADIF)",
+  "headline": "La infraestructura ferroviaria (ADIF)",
+  "datePublished": "2015-08-31 18:34:00+02:00",
+  "dateModified": "",
+  "author": {
+    "@type": "Person",
+    "name": "Javier G. Sogo",
+    "url": "https://jgsogo.es/author/javier-g-sogo.html"
+  },
+  "image": "http://localhost:8000/images/profile.png",
+  "url": "https://jgsogo.es/renfe-project-lines.html",
+  "description": "El primer paso del proyecto RENFE consistió en posicionar las estaciones. Una vez realizada esta tarea puedo construir un mapa con los recorridos de los trenes utilizando la información de horarios y paradas que aparece en la web de RENFE. De esta forma puedo construir el trayecto seguido por un …"
+}
+</script></body>
+</html>

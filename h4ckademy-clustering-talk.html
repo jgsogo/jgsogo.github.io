@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="https://jgsogo.es/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="https://jgsogo.es/theme/css/pygments.min.css">
+  <link rel="stylesheet" type="text/css" href="https://jgsogo.es/theme/css/font-awesome.min.css">
+  <link href="https://jgsogo.es/static/custom.css" rel="stylesheet">
+  <link href="https://jgsogo.es/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Javier G. Sogo's blog Atom">
+  <link rel="shortcut icon" href="http://localhost:8000/images/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="http://localhost:8000/images/favicon.ico" type="image/x-icon">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="" />
+<meta name="author" content="Javier G. Sogo" />
+<meta name="description" content="El otro día os presentaba h4ckademy, la escuela de programación de mi amigo Israel Gutiérrez (@gootyfer). Después de visitarla ese día decidí que podía ser una buena oportunidad para salir de mi zona de confort y ofrecer a los alumnos una breve clase como introducción al clustering (clasificación no supervisada …" />
+<meta name="keywords" content="h4ckademy, talk">
+<meta property="og:site_name" content="Javier G. Sogo's blog"/>
+<meta property="og:title" content="Clustering -- presentación en h4ckademy"/>
+<meta property="og:description" content="El otro día os presentaba h4ckademy, la escuela de programación de mi amigo Israel Gutiérrez (@gootyfer). Después de visitarla ese día decidí que podía ser una buena oportunidad para salir de mi zona de confort y ofrecer a los alumnos una breve clase como introducción al clustering (clasificación no supervisada …"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="https://jgsogo.es/h4ckademy-clustering-talk.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2015-03-17 13:34:00+01:00"/>
+<meta property="article:modified_time" content=""/>
+<meta property="article:author" content="https://jgsogo.es/author/javier-g-sogo.html">
+<meta property="article:section" content="Bio"/>
+<meta property="article:tag" content="h4ckademy"/>
+<meta property="article:tag" content="talk"/>
+<meta property="og:image" content="http://localhost:8000/images/profile.png">  <title>Javier G. Sogo's blog &ndash; Clustering -- presentación en h4ckademy</title>
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="https://jgsogo.es">
+        <img src="http://localhost:8000/images/profile.png" alt="Javier G. Sogo" title="Javier G. Sogo">
+      </a>
+      <h1><a href="https://jgsogo.es">Javier G. Sogo</a></h1>
+      <p></p>
+      <nav>
+        <ul class="list">
+          <li><a href="https://jgsogo.es/pages/contact.html#contact">Contacto</a></li>
+          <li><a href="https://jgsogo.es/pages/about-me.html#about-me">Yo, mí, me, conmigo</a></li>
+          <li><a href="http://lingwars.github.io/blog/" target="_blank">Lingẅars</a></li>
+        </ul>
+      </nav>
+      <ul class="social">
+        <li><a class="sc-linkedin" href="https://es.linkedin.com/in/jgsogo" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+        <li><a class="sc-github" href="https://github.com/jgsogo" target="_blank"><i class="fa fa-github"></i></a></li>
+        <li><a class="sc-twitter" href="https://twitter.com/jgsogo" target="_blank"><i class="fa fa-twitter"></i></a></li>
+        <li><a class="sc-rss" href="http://localhost:8000feeds/all.atom.xml" target="_blank"><i class="fa fa-rss"></i></a></li>
+      </ul>
+    </div>
+  </aside>
+  <main>
+    <nav>
+      <a href="https://jgsogo.es">Home</a>
+      <a href="/archives.html">Archives</a>
+      <a href="/categories.html">Categories</a>
+      <a href="https://jgsogo.es/feeds/all.atom.xml">Atom</a>
+    </nav>
+
+<article>
+  <header>
+    <h1 id="h4ckademy-clustering-talk">Clustering -- presentación en h4ckademy</h1>
+    <p>Posted on Tue 17 March 2015 in <a href="https://jgsogo.es/category/bio.html">Bio</a></p>
+  </header>
+  <div>
+    <p>El otro día os presentaba <a href="https://jgsogo.es/h4ckademy.html">h4ckademy</a>, la escuela de programación
+de mi amigo Israel Gutiérrez (<a href="https://twitter.com/gootyfer">@gootyfer</a>). Después de visitarla ese día decidí que podía
+ser una buena oportunidad para salir de mi zona de confort y ofrecer a los <em>alumnos</em> una breve <em>clase</em>
+como introducción al clustering (clasificación no supervisada).</p>
+<p>Hoy ha llegado la hora, es el momento de enfrentarse a la realidad. Para la charla me he preparado dos
+presentaciones, espero que no sean muy densas, pero es que tampoco tenía nada claro cuál es el nivel
+de la gente ni qué esperan de mí, así que espero no haber metido la pata. Confío en sembrar algunas
+inquietudes, algunas ideas fundamentales acerca de esta técnica que les permita evaluar los resultados
+con mejor criterio la próxima vez que la ejecuten.</p>
+<p>En los siguientes enlaces podéis encontrar las transparencias de ambas presentaciones:</p>
+<ul>
+<li><a href="https://jgsogo.es/pdfs/clustering.pdf">Clustering</a> es una introducción al clustering y las principales consideraciones
+   a tener en cuenta cuando uno se enfrenta a él: medidas de distancia, outliers, intepretación de resultados,...</li>
+<li><a href="https://jgsogo.es/pdfs/algoritmo.pdf">Algoritmos</a> de clustering: k-means, BRF y CURE. Una muestra de tres algoritmos
+   con características muy distintas que permiten aproximarse al clustering desde diferentes puntos de vista.</li>
+</ul>
+<p>Las presentaciones <strong>no son definitivas</strong>, faltan algunas cosas fundamentales como la referencias bibliográficas, 
+pero ya las iré incluyendo poco a poco a medida que yo mismo vaya trabajando en el tema. De todas formas, podéis
+seguir su evolución en <a href="https://github.com/jgsogo/talks" title="Github - jgsogo - talks">este repositorio</a>.</p>
+<p>... A ver qué tal se me da hoy, ya os contaré ;D</p>
+<hr>
+<p>Información complementaria:</p>
+<ul>
+<li><a href="http://elvex.ugr.es/idbis/dm/slides/43%20Clustering%20-%20Density.pdf">DECSAI - Clustering basado en densidad</a></li>
+<li><a href="http://www.stuartreid.co.za/clustering-countries-real-gdp-growth-part2/">Monte Carlo K-Means clustering of Countries with Python (Part 2/3)</a></li>
+<li>refs de Coursera, MUIA,...</li>
+</ul>
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="https://jgsogo.es/tag/h4ckademy.html">h4ckademy</a>
+      <a href="https://jgsogo.es/tag/talk.html">talk</a>
+    </p>
+  </div>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'jgsogoes';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</article>
+
+    <footer>
+<p>
+  &copy; Javier G. Sogo 2021 - This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>
+</p>
+<p>Built using <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a></p><p>
+  <a rel="license"
+     href="http://creativecommons.org/licenses/by-sa/4.0/"
+     target="_blank">
+    <img alt="Creative Commons License"
+         title="Creative Commons License"
+         style="border-width:0"
+         src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png"
+         width="80"
+         height="15"/>
+  </a>
+</p>    </footer>
+  </main>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "name": "Clustering -- presentación en h4ckademy",
+  "headline": "Clustering -- presentación en h4ckademy",
+  "datePublished": "2015-03-17 13:34:00+01:00",
+  "dateModified": "",
+  "author": {
+    "@type": "Person",
+    "name": "Javier G. Sogo",
+    "url": "https://jgsogo.es/author/javier-g-sogo.html"
+  },
+  "image": "http://localhost:8000/images/profile.png",
+  "url": "https://jgsogo.es/h4ckademy-clustering-talk.html",
+  "description": "El otro día os presentaba h4ckademy, la escuela de programación de mi amigo Israel Gutiérrez (@gootyfer). Después de visitarla ese día decidí que podía ser una buena oportunidad para salir de mi zona de confort y ofrecer a los alumnos una breve clase como introducción al clustering (clasificación no supervisada …"
+}
+</script></body>
+</html>

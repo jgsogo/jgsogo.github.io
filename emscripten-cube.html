@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="https://jgsogo.es/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="https://jgsogo.es/theme/css/pygments.min.css">
+  <link rel="stylesheet" type="text/css" href="https://jgsogo.es/theme/css/font-awesome.min.css">
+  <link href="https://jgsogo.es/static/custom.css" rel="stylesheet">
+  <link href="https://jgsogo.es/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Javier G. Sogo's blog Atom">
+  <link rel="shortcut icon" href="http://localhost:8000/images/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="http://localhost:8000/images/favicon.ico" type="image/x-icon">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="" />
+<meta name="author" content="Javier G. Sogo" />
+<meta name="description" content="Hace mucho tiempo publiqué un tweet que tuvo cierta tracción, en él mostraba un cubo interactivo en el navegador que había hecho con C++. La magia detrás de ese cubo era una aplicación de Qt compilada para Webassembly utilizando un visor de OpenGL. Here it is, a little @conan_io/@jfrog …" />
+<meta name="keywords" content="c++, wasm, qt, web">
+<meta property="og:site_name" content="Javier G. Sogo's blog"/>
+<meta property="og:title" content="Webassembly, OpenGL y Qt - Un cubo interactivo en la web"/>
+<meta property="og:description" content="Hace mucho tiempo publiqué un tweet que tuvo cierta tracción, en él mostraba un cubo interactivo en el navegador que había hecho con C++. La magia detrás de ese cubo era una aplicación de Qt compilada para Webassembly utilizando un visor de OpenGL. Here it is, a little @conan_io/@jfrog …"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="https://jgsogo.es/emscripten-cube.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2021-01-19 10:30:00+01:00"/>
+<meta property="article:modified_time" content=""/>
+<meta property="article:author" content="https://jgsogo.es/author/javier-g-sogo.html">
+<meta property="article:section" content="C++"/>
+<meta property="article:tag" content="c++"/>
+<meta property="article:tag" content="wasm"/>
+<meta property="article:tag" content="qt"/>
+<meta property="article:tag" content="web"/>
+<meta property="og:image" content="http://localhost:8000/images/profile.png">  <title>Javier G. Sogo's blog &ndash; Webassembly, OpenGL y Qt - Un cubo interactivo en la web</title>
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="https://jgsogo.es">
+        <img src="http://localhost:8000/images/profile.png" alt="Javier G. Sogo" title="Javier G. Sogo">
+      </a>
+      <h1><a href="https://jgsogo.es">Javier G. Sogo</a></h1>
+      <p></p>
+      <nav>
+        <ul class="list">
+          <li><a href="https://jgsogo.es/pages/contact.html#contact">Contacto</a></li>
+          <li><a href="https://jgsogo.es/pages/about-me.html#about-me">Yo, mí, me, conmigo</a></li>
+          <li><a href="http://lingwars.github.io/blog/" target="_blank">Lingẅars</a></li>
+        </ul>
+      </nav>
+      <ul class="social">
+        <li><a class="sc-linkedin" href="https://es.linkedin.com/in/jgsogo" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+        <li><a class="sc-github" href="https://github.com/jgsogo" target="_blank"><i class="fa fa-github"></i></a></li>
+        <li><a class="sc-twitter" href="https://twitter.com/jgsogo" target="_blank"><i class="fa fa-twitter"></i></a></li>
+        <li><a class="sc-rss" href="http://localhost:8000feeds/all.atom.xml" target="_blank"><i class="fa fa-rss"></i></a></li>
+      </ul>
+    </div>
+  </aside>
+  <main>
+    <nav>
+      <a href="https://jgsogo.es">Home</a>
+      <a href="/archives.html">Archives</a>
+      <a href="/categories.html">Categories</a>
+      <a href="https://jgsogo.es/feeds/all.atom.xml">Atom</a>
+    </nav>
+
+<article>
+  <header>
+    <h1 id="emscripten-cube">Webassembly, OpenGL y Qt - Un cubo interactivo en la web</h1>
+    <p>Posted on Tue 19 January 2021 in <a href="https://jgsogo.es/category/c.html">C++</a></p>
+  </header>
+  <div>
+    
+<p>Hace mucho tiempo publiqué un tweet que tuvo cierta tracción, en él mostraba
+un cubo interactivo en el navegador que había hecho con C++. La magia detrás
+de ese cubo era una aplicación de Qt compilada para Webassembly utilizando un
+visor de OpenGL.</p>
+<blockquote class="twitter-tweet"><p dir="ltr" lang="en">Here it is, a little <a href="https://twitter.com/conan_io?ref_src=twsrc%5Etfw">@conan_io</a>/<a href="https://twitter.com/jfrog?ref_src=twsrc%5Etfw">@jfrog</a>/<a href="https://twitter.com/isocpp?ref_src=twsrc%5Etfw">@isocpp</a> cube running in Chrome compiled to <a href="https://twitter.com/hashtag/webassembly?src=hash&amp;ref_src=twsrc%5Etfw">#webassembly</a> using <a href="https://twitter.com/hashtag/Qt?src=hash&amp;ref_src=twsrc%5Etfw">#Qt</a> 🤠. Just a couple of steps thanks to the packages and recipes provided by <a href="https://twitter.com/bincrafters?ref_src=twsrc%5Etfw">@bincrafters</a> 🤟 I'll write a making of, promise. <a href="https://t.co/0XPbifrant">pic.twitter.com/0XPbifrant</a></p>— jgsogo (@jgsogo) <a href="https://twitter.com/jgsogo/status/1089562018355527680?ref_src=twsrc%5Etfw">January 27, 2019</a></blockquote>
+<script async="" charset="utf-8" src="https://platform.twitter.com/widgets.js"></script><p>En aquel momento dije que documentaría el proceso, pero no lo hice. Hoy, casualidades
+del destino, me siento en deuda con esto de nuevo y ha llegado el momento de comentar
+cómo se hizo... aunque haya que hacerlo de nuevo porque perdí el código fuente 😅.</p>
+<p>He conseguido reproducir el proyecto de una manera más ordenada y quizá algunas de las
+cosas que se utlizan aquí podrían incorporarse a los paquetes correspondientes de
+<a class="reference external" href="https://conan.io/center">ConanCenter</a>, aunque ése no es el objetivo de este post ni condición para publicarlo.</p>
+<p>Las tecnologías que he utilizado, como ya avanzaba, han sido el conocido framework <a class="reference external" href="https://qt.io">Qt</a>
+y <a class="reference external" href="https://emscripten.org/index.html">Emscripten</a> para compilar el código a Webassembly. Con Qt es muy sencillo hacer una
+aplicación de escritorio con un canvas de OpenGL en el que mostrar un cubo, con Emscripten
+resulta trivial compilar un proyecto para Webassembly y utilizar el navegador para
+renderizarlo. ¿Será muy complicado juntar ambos?</p>
+<p><strong>Nota.- La documentación recomienda utilizar versiones de las diferentes herramientas
+que hayan sido probadas conjuntamente y se sepa que funcionan. En este blogpost seguiré
+esta recomendación, aunque algunas otras combinaciones también me han funcionado.</strong></p>
+<p><strong>Nota.- El proceso ha sido probado en Macos, es esperable que en otros sistemas operativos
+sea algo parecido. De cualquier forma, son bienvenidos los comentarios para actualizar esta
+publicación e incluir más casos de uso.</strong></p>
+<div class="section" id="id1">
+<h2><a class="toc-backref" href="#id3">Emscripten</a></h2>
+<p>El primer paso consiste en preparar Emscripten para compilar código C++ a Webassembly. El
+proceso es muy sencillo y basta con seguir la <a class="reference external" href="https://emscripten.org/docs/getting_started/downloads.html">documentación</a> disponible en la web:</p>
+<div class="highlight"><pre><span></span>git clone https://github.com/emscripten-core/emsdk.git
+<span class="nb">cd</span> emsdk
+git pull
+./emsdk install <span class="m">1</span>.39.8
+./emsdk activate <span class="m">1</span>.39.8
+</pre></div>
+<p>Esta versión de Emscripten utiliza también Python3 aunque no lo instala, versiones más
+nuevas lo incluyen vendorizado. Suponemos que el lector si no lo tiene ya disponible en
+el <tt class="docutils literal">PATH</tt> sabe cómo conseguirlo.</p>
+<p>En este proceso es importante notar el fichero <tt class="docutils literal">emsdk_env.sh</tt> que ha sido generado
+anteriormente. Este fichero es un <strong>script para activar Emscripten como entorno de
+desarrollo</strong>, añadirá al <tt class="docutils literal">PATH</tt> algunos directorios y variables de entorno para utlizar
+los compiladores y herramientas que nos permitirán generan Webassembly.</p>
+<p>Se recomienda al lector que pruebe algunos ejemplos básicos del <a class="reference external" href="https://emscripten.org/docs/getting_started/Tutorial.html">getting started</a>
+para verificar que el compilador funciona y tener una primera experiencia con el proceso.</p>
+</div>
+<div class="section" id="id2">
+<h2><a class="toc-backref" href="#id4">Qt</a></h2>
+<p>El siguiente paso es compilar Qt para Webassembly. En realidad lo que haremos es compilar
+para nuestro sistema operativo el <em>build-system</em> <tt class="docutils literal">qmake</tt> configurado como <em>cross</em>-compilador
+que utiliza Webassembly como <em>target</em>. Suena más complicado de lo que es, podemos seguir
+los pasos <a class="reference external" href="https://doc.qt.io/qt-5/wasm.html">este tutorial</a>.</p>
+<p>En primer lugar deberemos activar Emscripten como indicamos anteriormente:</p>
+<div class="highlight"><pre><span></span><span class="nb">source</span> emsdk/emsdk_env.sh
+emcc -v
+</pre></div>
+<p>Y descargar y compilar Qt para Webassembly:</p>
+<div class="highlight"><pre><span></span>wget http://download.qt.io/official_releases/qt/5.15/5.15.2/single/qt-everywhere-src-5.15.2.tar.xz
+xz -d qt-everywhere-src-5.15.2.tar.xz
+tar xopf qt-everywhere-src-5.15.2.tar
+
+<span class="nb">cd</span> qt-everywhere-src-5.15.2
+./configure -xplatform wasm-emscripten -nomake examples -nomake tests -prefix <span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/qtbase
+make -j16 module-qtbase module-qtdeclarative
+</pre></div>
+<p>El proceso anterior tomará su tiempo, aprovecha para repasar algún ejemplo con Emscripten o refrescar
+tus conocimientos de Qt. Tal vez sea un buen momento para buscar un <tt class="docutils literal">Hello World!</tt> sencillo y ver cómo
+funciona <cite>qmake</cite> con los ficheros <cite>.pro</cite> para generar las aplicaciones de Qt. Será útil en lo que viene
+a continuación.</p>
+<p>Una vez terminado el proceso anterior debería haberse generado <strong>el ejecutable</strong> <tt class="docutils literal">qtbase/bin/qmake</tt>, éste
+es nuestro <em>build-system</em> preparado para <em>cross</em>-compilar utilizando Emscripten.</p>
+<p>Si creaste ese pequeño <tt class="docutils literal">Hello world!</tt>, ahora es el momento de comprobar que todo funciona. Dentro de su
+directorio sólo tienes que ejecutar:</p>
+<div class="highlight"><pre><span></span><span class="nb">cd</span> hello-world
+.../qtbase/bin/qmake
+make
+</pre></div>
+<p>Ahora no tienes más que abrir el fichero <tt class="docutils literal">.html</tt> con tu navegador de cabecera. ¡<em>Voilá</em>! Lo que antes
+era una aplicación de escritorio se ha convertido en una applicación web. El mismo código en C++ lo
+hemos utilizado para generar una aplicación para dos plataformas totalmente diferentes... esto abre
+un <strong>horizonte de posibilidades muy interesante para explorar</strong>.</p>
+</div>
+<div class="section" id="el-cubo">
+<h2><a class="toc-backref" href="#id5">El cubo</a></h2>
+<p>Ya tenemos todas las piezas disponibles y únicamente nos falta el cubo. El cubo no es más que una
+aplicación de Qt con una ventana de OpenGL. Yo utilicé como base el <a class="reference external" href="https://doc.qt.io/qt-5/qtopengl-cube-example.html">ejemplo de OpenGL ES 2.0</a>,
+cambié la textura e hice unos ajustes.</p>
+<p>En <a class="reference external" href="https://github.com/jgsogo/qt-opengl-cube/tree/main/qt-opengl-example">este repositorio</a> podéis encontrar el código fuente que yo utilicé. Utilizando los pasos
+anteriores debería compilarse una aplicación para Webassembly que podéis abrir en vuestro
+navegador:</p>
+<div class="highlight"><pre><span></span>git clone https://github.com/jgsogo/qt-opengl-cube.git
+<span class="nb">cd</span> qt-opengl-cube/qt-opengl-example
+.../qtbase/bin/qmake
+make
+</pre></div>
+<hr class="docutils"/>
+<p><strong>Nota.- Todavía tengo que pulir algunos detalles en el blogpost y comprobar que no me he saltado
+ningún paso en la explicación.</strong> Si eres de los primeros en llegar por aquí, ten en cuenta que en
+el futuro probablemente actualice el artículo añadiendo algunos detalles (optimizaciones para que
+la ejecución sea más rápida, cómo ejecutar todo el proceso con Conan en una única línea, más detalles
+sobre Webassembly, otras versiones de las aplicaciones,...). Stay tuned!</p>
+</div>
+
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="https://jgsogo.es/tag/c.html">c++</a>
+      <a href="https://jgsogo.es/tag/wasm.html">wasm</a>
+      <a href="https://jgsogo.es/tag/qt.html">qt</a>
+      <a href="https://jgsogo.es/tag/web.html">web</a>
+    </p>
+  </div>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'jgsogoes';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</article>
+
+    <footer>
+<p>
+  &copy; Javier G. Sogo 2021 - This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>
+</p>
+<p>Built using <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a></p><p>
+  <a rel="license"
+     href="http://creativecommons.org/licenses/by-sa/4.0/"
+     target="_blank">
+    <img alt="Creative Commons License"
+         title="Creative Commons License"
+         style="border-width:0"
+         src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png"
+         width="80"
+         height="15"/>
+  </a>
+</p>    </footer>
+  </main>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "name": "Webassembly, OpenGL y Qt - Un cubo interactivo en la web",
+  "headline": "Webassembly, OpenGL y Qt - Un cubo interactivo en la web",
+  "datePublished": "2021-01-19 10:30:00+01:00",
+  "dateModified": "",
+  "author": {
+    "@type": "Person",
+    "name": "Javier G. Sogo",
+    "url": "https://jgsogo.es/author/javier-g-sogo.html"
+  },
+  "image": "http://localhost:8000/images/profile.png",
+  "url": "https://jgsogo.es/emscripten-cube.html",
+  "description": "Hace mucho tiempo publiqué un tweet que tuvo cierta tracción, en él mostraba un cubo interactivo en el navegador que había hecho con C++. La magia detrás de ese cubo era una aplicación de Qt compilada para Webassembly utilizando un visor de OpenGL. Here it is, a little @conan_io/@jfrog …"
+}
+</script></body>
+</html>

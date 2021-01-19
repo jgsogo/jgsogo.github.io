@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="https://jgsogo.es/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="https://jgsogo.es/theme/css/pygments.min.css">
+  <link rel="stylesheet" type="text/css" href="https://jgsogo.es/theme/css/font-awesome.min.css">
+  <link href="https://jgsogo.es/static/custom.css" rel="stylesheet">
+  <link href="https://jgsogo.es/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Javier G. Sogo's blog Atom">
+  <link rel="shortcut icon" href="http://localhost:8000/images/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="http://localhost:8000/images/favicon.ico" type="image/x-icon">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="" />
+<meta name="author" content="Javier G. Sogo" />
+<meta name="description" content="Esta semana he estado entretenido creando una arquitectura web para que el grupo de Lingẅars pueda publicar online juegos y desafíos de forma sencilla. Básicamente el objetivo que perseguía era que se puediera crear un juego implementando un par de funciones y que el sistema lo dotara automáticamente de presencia …" />
+<meta name="keywords" content="lingwars, django, architecture, plugins">
+<meta property="og:site_name" content="Javier G. Sogo's blog"/>
+<meta property="og:title" content="Lingẅars: Desafíos y juegos"/>
+<meta property="og:description" content="Esta semana he estado entretenido creando una arquitectura web para que el grupo de Lingẅars pueda publicar online juegos y desafíos de forma sencilla. Básicamente el objetivo que perseguía era que se puediera crear un juego implementando un par de funciones y que el sistema lo dotara automáticamente de presencia …"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="https://jgsogo.es/lingwars-games.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2015-09-15 19:00:00+02:00"/>
+<meta property="article:modified_time" content=""/>
+<meta property="article:author" content="https://jgsogo.es/author/javier-g-sogo.html">
+<meta property="article:section" content="Bio"/>
+<meta property="article:tag" content="lingwars"/>
+<meta property="article:tag" content="django"/>
+<meta property="article:tag" content="architecture"/>
+<meta property="article:tag" content="plugins"/>
+<meta property="og:image" content="http://localhost:8000/images/profile.png">  <title>Javier G. Sogo's blog &ndash; Lingẅars: Desafíos y juegos</title>
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="https://jgsogo.es">
+        <img src="http://localhost:8000/images/profile.png" alt="Javier G. Sogo" title="Javier G. Sogo">
+      </a>
+      <h1><a href="https://jgsogo.es">Javier G. Sogo</a></h1>
+      <p></p>
+      <nav>
+        <ul class="list">
+          <li><a href="https://jgsogo.es/pages/contact.html#contact">Contacto</a></li>
+          <li><a href="https://jgsogo.es/pages/about-me.html#about-me">Yo, mí, me, conmigo</a></li>
+          <li><a href="http://lingwars.github.io/blog/" target="_blank">Lingẅars</a></li>
+        </ul>
+      </nav>
+      <ul class="social">
+        <li><a class="sc-linkedin" href="https://es.linkedin.com/in/jgsogo" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+        <li><a class="sc-github" href="https://github.com/jgsogo" target="_blank"><i class="fa fa-github"></i></a></li>
+        <li><a class="sc-twitter" href="https://twitter.com/jgsogo" target="_blank"><i class="fa fa-twitter"></i></a></li>
+        <li><a class="sc-rss" href="http://localhost:8000feeds/all.atom.xml" target="_blank"><i class="fa fa-rss"></i></a></li>
+      </ul>
+    </div>
+  </aside>
+  <main>
+    <nav>
+      <a href="https://jgsogo.es">Home</a>
+      <a href="/archives.html">Archives</a>
+      <a href="/categories.html">Categories</a>
+      <a href="https://jgsogo.es/feeds/all.atom.xml">Atom</a>
+    </nav>
+
+<article>
+  <header>
+    <h1 id="lingwars-games">Lingẅars: Desafíos y juegos</h1>
+    <p>Posted on Tue 15 September 2015 in <a href="https://jgsogo.es/category/bio.html">Bio</a></p>
+  </header>
+  <div>
+    <p>Esta semana he estado entretenido creando una arquitectura web para que el grupo
+de Lingẅars pueda publicar online juegos y desafíos de forma sencilla. Básicamente
+el objetivo que perseguía era que se puediera crear un juego implementando un par
+de funciones y que el sistema lo dotara automáticamente de presencia en la web,
+registro de las respuestas de los jugadores y, además, de jugabilidad a través de
+la línea de comandos (principalmente para pruebas).</p>
+<p>Y con más o menos éxito, con muchos cambios y mejoras aún pendientes, el objetivo
+creo que se ha cumplido y lo podéis ver funcionando en la <a class="reference external" href="http://games.lingwars.com/">web</a>.
+Como siempre, también tenéis disponible el <a class="reference external" href="https://github.com/lingwars/lingwars-games">código fuente en Github</a>.</p>
+<div class="section" id="arquitectura">
+<h2>Arquitectura</h2>
+<p>El proyecto está dividido en dos partes diferenciadas:</p>
+<ul class="simple">
+<li>el <strong>núcleo</strong> con el motor para ejecutar los juegos y la aplicación web,</li>
+<li>los <strong>juegos</strong> propiamente dichos.</li>
+</ul>
+<p>Básicamente he propuesto una arquitectura donde los juegos se añaden como <em>plugins</em>
+y podrían ser tanto clases aisladas como aplicaciones de Django que hicieran uso de
+la base de datos. En la primera versión ya planteo un ejemplo ilustrativo de cada
+una de estas opciones.</p>
+<p>El <strong>núcleo</strong> está formado por la aplicación <code>appweb.engine</code> que se encarga de
+buscar juegos en los directorios indicados en la configuración:</p>
+<pre class="code python literal-block">
+<span class="n">LINGWARS_GAMES_DIRS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">BASE_DIR</span><span class="p">,</span> <span class="s1">'../games'</span><span class="p">),</span>
+<span class="p">]</span>
+</pre>
+<p>Este motor buscará identificar juegos en las aplicaciones instaladas
+(<a class="reference external" href="https://github.com/Lingwars/lingwars-games/blob/7e2a3b0cbad1ad3ce08d39e92d8299f4c627a9ea/appweb/engine/apps.py#L29-L47">ver</a>):</p>
+<pre class="code python literal-block">
+<span class="c1"># Registered apps</span>
+<span class="n">app_games_module</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">app</span> <span class="ow">in</span> <span class="n">apps</span><span class="o">.</span><span class="n">get_app_configs</span><span class="p">():</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">GameConfig</span><span class="p">):</span>
+        <span class="n">app_games_module</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">__path__</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">u</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2"> - </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">app</span><span class="o">.</span><span class="n">verbose_name</span><span class="p">))</span>
+        <span class="nb">id</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s1">'.'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">game_model</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">,</span> <span class="n">available</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">u</span><span class="s2">&quot;A game with id '</span><span class="si">%s</span><span class="s2">' already exists&quot;</span> <span class="o">%</span> <span class="nb">id</span><span class="p">)</span>
+
+        <span class="n">game</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">get_game</span><span class="p">()</span>
+        <span class="n">assert_game</span><span class="p">(</span><span class="n">game</span><span class="p">)</span>
+
+        <span class="n">obj</span><span class="p">,</span> <span class="n">created</span> <span class="o">=</span> <span class="n">game_model</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">),</span> <span class="n">defaults</span><span class="o">=</span><span class="p">{</span><span class="s1">'title'</span><span class="p">:</span> <span class="n">app</span><span class="o">.</span><span class="n">verbose_name</span><span class="p">,</span> <span class="s1">'is_app'</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">available</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">is_app</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">author</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">game</span><span class="p">,</span> <span class="s1">'author'</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">games</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">game</span>
+</pre>
+<p>...y también en los paquetes y archivos presentes en los directorios indicados
+(<a class="reference external" href="https://github.com/Lingwars/lingwars-games/blob/7e2a3b0cbad1ad3ce08d39e92d8299f4c627a9ea/appweb/engine/apps.py#L52-L72">ver</a>):</p>
+<pre class="code python literal-block">
+<span class="c1"># Simple games, just a 'game.py' file inside dir</span>
+<span class="k">for</span> <span class="nb">dir</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s1">'LINGWARS_GAMES_DIRS'</span><span class="p">,</span> <span class="p">[]):</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="nb">dir</span><span class="p">):</span>
+        <span class="n">current_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">dir</span><span class="p">,</span> <span class="n">item</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">current_path</span> <span class="ow">in</span> <span class="n">app_games_module</span><span class="p">:</span>
+            <span class="c1">#log.debug(u&quot;\t%s already included as app-game&quot; % current_path)</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">module</span> <span class="o">=</span> <span class="s1">'</span><span class="si">%s</span><span class="s1">.game'</span> <span class="o">%</span> <span class="p">(</span><span class="n">item</span><span class="p">)</span>
+                <span class="n">game</span> <span class="o">=</span> <span class="n">import_string</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
+                <span class="n">assert_game</span><span class="p">(</span><span class="n">game</span><span class="p">)</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">u</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2"> - </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">module</span><span class="p">)</span>
+
+                <span class="n">obj</span><span class="p">,</span> <span class="n">created</span> <span class="o">=</span> <span class="n">game_model</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">item</span><span class="p">),</span> <span class="n">defaults</span><span class="o">=</span><span class="p">{</span><span class="s1">'title'</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">game</span><span class="p">,</span> <span class="s1">'title'</span><span class="p">,</span> <span class="n">item</span><span class="p">),</span> <span class="s1">'is_app'</span><span class="p">:</span> <span class="kc">False</span><span class="p">})</span>
+                <span class="n">obj</span><span class="o">.</span><span class="n">available</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">obj</span><span class="o">.</span><span class="n">is_app</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">obj</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">games</span><span class="p">[</span><span class="n">item</span><span class="p">]</span> <span class="o">=</span> <span class="n">game</span>
+            <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">u</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2"> - </span><span class="si">%s</span><span class="s2">: does not contain a game object&quot;</span> <span class="o">%</span> <span class="n">module</span><span class="p">)</span>
+</pre>
+<p>En el primer caso las aplicaciones deberán ser instancias de una clase <code>GameConfig</code> que debe proporcionar
+una instancia del juego. En el segundo caso los juegos deben estar disponibles como un objeto llamado
+<code>game</code> en la raíz del paquete.</p>
+<p>Para los dos casos se realiza una comprobación para cerciorarse de que el objeto devuelto
+tiene una interfaz válida para jugar, es decir, implementa un código como este:</p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyAwesomeGame</span><span class="p">(</span><span class="n">GameBase</span><span class="p">):</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;My Awesome Game&#39;</span>
+    <span class="n">author</span> <span class="o">=</span> <span class="s1">&#39;Me myself&#39;</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;In this game you blablabla&quot;</span>
+
+    <span class="k">def</span> <span class="nf">make_question</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">question</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;query&#39;</span><span class="p">:</span> <span class="s2">&quot;Question to the user&quot;</span><span class="p">,</span>
+            <span class="s1">&#39;options&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;list&quot;</span><span class="p">,</span> <span class="s2">&quot;of&quot;</span><span class="p">,</span> <span class="s2">&quot;answers&quot;</span><span class="p">,]</span>
+            <span class="p">}</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;answer&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">index</span> <span class="n">of</span> <span class="n">correct</span> <span class="n">answer</span><span class="o">&gt;</span><span class="p">,</span>  <span class="c1"># Esto debe ser el índice de la respuesta correcta en la lista.</span>
+            <span class="s1">&#39;info&#39;</span><span class="p">:</span> <span class="s2">&quot;Some info to the user&quot;</span>
+            <span class="p">}</span>
+        <span class="k">return</span> <span class="n">question</span><span class="p">,</span> <span class="n">response</span>
+
+    <span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="n">user_answer</span><span class="p">):</span>
+        <span class="c1"># Check the `user_answer`, it should be equal to response[&#39;answer&#39;]</span>
+        <span class="c1"># :param:`response` contains the same data created in `make_question`</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="n">user_answer</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;answer&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">u</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">u</span> <span class="o">==</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;answer&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<div class="section" id="resultados">
+<h2>Resultados</h2>
+<p>Con un trozo de código tan sencillo como éste, el sistema se encarga de añadir el juego
+a la página principal, proponer una interfaz de juego (actualmente sólo para juegos de
+tipo <em>multiple choice</em>), recoger estadísticas de uso y crear un ranking.</p>
+<div class="figure align-center">
+<img alt="Página principal" src="https://jgsogo.es/images/lingwars_games-main_page.png" />
+<p class="caption">En la página principal aparecen todos los juegos que no han sido desactivados en la
+interfaz de administración.</p>
+</div>
+<div class="figure align-center">
+<img alt="Playing a game" src="https://jgsogo.es/images/lingwars_games-play.png" />
+<p class="caption">Cada juego dispone de tres pestañas: una de información que muestra el histórico de
+utilización del juego, otra donde se plantea el juego (esta) y una tercera que
+muestra la clasificación de los usuarios registrados que la han utilizado.</p>
+</div>
+<p>Confío en que pronto haya más desafíos y juegos, y de mucha más calidad que los que
+he planteado como ejemplo. Pero mientras tanto:
+<a class="reference external" href="http://games.lingwars.com/">jugad, jugad y poneos a prueba</a>. ¡Aceptad el reto!</p>
+</div>
+
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="https://jgsogo.es/tag/lingwars.html">lingwars</a>
+      <a href="https://jgsogo.es/tag/django.html">django</a>
+      <a href="https://jgsogo.es/tag/architecture.html">architecture</a>
+      <a href="https://jgsogo.es/tag/plugins.html">plugins</a>
+    </p>
+  </div>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'jgsogoes';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</article>
+
+    <footer>
+<p>
+  &copy; Javier G. Sogo 2021 - This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>
+</p>
+<p>Built using <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a></p><p>
+  <a rel="license"
+     href="http://creativecommons.org/licenses/by-sa/4.0/"
+     target="_blank">
+    <img alt="Creative Commons License"
+         title="Creative Commons License"
+         style="border-width:0"
+         src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png"
+         width="80"
+         height="15"/>
+  </a>
+</p>    </footer>
+  </main>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "name": "Lingẅars: Desafíos y juegos",
+  "headline": "Lingẅars: Desafíos y juegos",
+  "datePublished": "2015-09-15 19:00:00+02:00",
+  "dateModified": "",
+  "author": {
+    "@type": "Person",
+    "name": "Javier G. Sogo",
+    "url": "https://jgsogo.es/author/javier-g-sogo.html"
+  },
+  "image": "http://localhost:8000/images/profile.png",
+  "url": "https://jgsogo.es/lingwars-games.html",
+  "description": "Esta semana he estado entretenido creando una arquitectura web para que el grupo de Lingẅars pueda publicar online juegos y desafíos de forma sencilla. Básicamente el objetivo que perseguía era que se puediera crear un juego implementando un par de funciones y que el sistema lo dotara automáticamente de presencia …"
+}
+</script></body>
+</html>

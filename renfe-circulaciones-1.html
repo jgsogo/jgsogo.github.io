@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="https://jgsogo.es/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="https://jgsogo.es/theme/css/pygments.min.css">
+  <link rel="stylesheet" type="text/css" href="https://jgsogo.es/theme/css/font-awesome.min.css">
+  <link href="https://jgsogo.es/static/custom.css" rel="stylesheet">
+  <link href="https://jgsogo.es/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Javier G. Sogo's blog Atom">
+  <link rel="shortcut icon" href="http://localhost:8000/images/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="http://localhost:8000/images/favicon.ico" type="image/x-icon">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="" />
+<meta name="author" content="Javier G. Sogo" />
+<meta name="description" content="El proyecto RENFE empieza a dar sus frutos a pesar de que no puedo dedicarle todo el tiempo que quisiera (y que probablemente se merezca), así que en un pequeño paréntesis os voy a contar los avances: ya saco los horarios de todos los trenes, he logrado posicionar la mayoría …" />
+<meta name="keywords" content="renfe, railway, geo, cartodb">
+<meta property="og:site_name" content="Javier G. Sogo's blog"/>
+<meta property="og:title" content="Mapa dinámico con los trenes (continuará...)"/>
+<meta property="og:description" content="El proyecto RENFE empieza a dar sus frutos a pesar de que no puedo dedicarle todo el tiempo que quisiera (y que probablemente se merezca), así que en un pequeño paréntesis os voy a contar los avances: ya saco los horarios de todos los trenes, he logrado posicionar la mayoría …"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="https://jgsogo.es/renfe-circulaciones-1.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2015-09-22 20:24:00+02:00"/>
+<meta property="article:modified_time" content=""/>
+<meta property="article:author" content="https://jgsogo.es/author/javier-g-sogo.html">
+<meta property="article:section" content="Projects"/>
+<meta property="article:tag" content="renfe"/>
+<meta property="article:tag" content="railway"/>
+<meta property="article:tag" content="geo"/>
+<meta property="article:tag" content="cartodb"/>
+<meta property="og:image" content="http://localhost:8000/images/profile.png">  <title>Javier G. Sogo's blog &ndash; Mapa dinámico con los trenes (continuará...)</title>
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="https://jgsogo.es">
+        <img src="http://localhost:8000/images/profile.png" alt="Javier G. Sogo" title="Javier G. Sogo">
+      </a>
+      <h1><a href="https://jgsogo.es">Javier G. Sogo</a></h1>
+      <p></p>
+      <nav>
+        <ul class="list">
+          <li><a href="https://jgsogo.es/pages/contact.html#contact">Contacto</a></li>
+          <li><a href="https://jgsogo.es/pages/about-me.html#about-me">Yo, mí, me, conmigo</a></li>
+          <li><a href="http://lingwars.github.io/blog/" target="_blank">Lingẅars</a></li>
+        </ul>
+      </nav>
+      <ul class="social">
+        <li><a class="sc-linkedin" href="https://es.linkedin.com/in/jgsogo" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+        <li><a class="sc-github" href="https://github.com/jgsogo" target="_blank"><i class="fa fa-github"></i></a></li>
+        <li><a class="sc-twitter" href="https://twitter.com/jgsogo" target="_blank"><i class="fa fa-twitter"></i></a></li>
+        <li><a class="sc-rss" href="http://localhost:8000feeds/all.atom.xml" target="_blank"><i class="fa fa-rss"></i></a></li>
+      </ul>
+    </div>
+  </aside>
+  <main>
+    <nav>
+      <a href="https://jgsogo.es">Home</a>
+      <a href="/archives.html">Archives</a>
+      <a href="/categories.html">Categories</a>
+      <a href="https://jgsogo.es/feeds/all.atom.xml">Atom</a>
+    </nav>
+
+<article>
+  <header>
+    <h1 id="renfe-circulaciones-1">Mapa dinámico con los trenes (continuará...)</h1>
+    <p>Posted on Tue 22 September 2015 in <a href="https://jgsogo.es/category/projects.html">Projects</a></p>
+  </header>
+  <div>
+    <p>El <a class="reference external" href="https://jgsogo.es/renfe-project.html">proyecto RENFE</a> empieza a dar sus frutos a pesar de que no puedo dedicarle todo el tiempo que
+quisiera (y que probablemente se merezca), así que en un pequeño paréntesis os voy a contar los
+avances: ya saco los horarios de todos los trenes, he logrado posicionar la mayoría de las estaciones
+(aunque aún me quedan más de 2000 alias por identificar) y ahora también sitúo los trenes dentro
+de su trayecto entre estaciones, es decir, que calculo su posición para cualquier instante temporal.</p>
+<p>Y aquí tenéis el resultado. A mí me hipnotiza, y me encanta ver dónde se cruzan los trenes ;D</p>
+<iframe width="100%" height="520" frameborder="0" src="https://jgsogo.cartodb.com/viz/1f707e86-613c-11e5-a7e5-0e9d821ea90d/embed_map" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe><p>No obstante todavía me queda trabajo por delante, dos <em>issues</em> principales:</p>
+<ul class="simple">
+<li>No están incluídos los trenes que tienes varias cabeceras o destinos como es el caso de varios que
+con origen o destino en Galicia, por lo que esa parte del mapa está infrarrepresentada.</li>
+<li>Los trenes viajan en línea recta entre las estaciones.</li>
+</ul>
+<p>Es segundo punto es un problema relativamente complejo. Gracias a &#64;jgcasta tengo las principales líneas
+de ferrocarril de España, pero estas líneas no están etiquetadas ni conectadas, son sólo dibujos, líneas.
+Lo que me propongo es construir un grafo donde los nodos sean las estaciones y estas líneas los arcos que
+las unen de tal manera que cuando un tren vaya de una estación a otra yo sepa sin ambigüedad cuál de los
+arcos está siguiendo y pueda proyectar su movimiento sobre él.</p>
+<p>Sin embargo, las líneas se cruzan de vez en cuando (sin existir aguja) y otras que deberían estar unidas
+están ligeramente separadas con lo que no es fácil identificar qué línea va a continuación de cual otra,
+algunos de estos casos se pueden ver en la siguiente figura:</p>
+<div class="figure align-center">
+<img alt="Intersecciones entre líneas en las proximidades de León." src="https://jgsogo.es/images/renfe-lines-leon.png" />
+<p class="caption">Mapa de intersecciones entre líneas (puntos blancos) en las proximidades de la ciudad de León.</p>
+</div>
+<p>Me temo que construir este grafo va a requerir bastante trabajo... os mantendré informados.</p>
+
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="https://jgsogo.es/tag/renfe.html">renfe</a>
+      <a href="https://jgsogo.es/tag/railway.html">railway</a>
+      <a href="https://jgsogo.es/tag/geo.html">geo</a>
+      <a href="https://jgsogo.es/tag/cartodb.html">cartodb</a>
+    </p>
+  </div>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'jgsogoes';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</article>
+
+    <footer>
+<p>
+  &copy; Javier G. Sogo 2021 - This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>
+</p>
+<p>Built using <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a></p><p>
+  <a rel="license"
+     href="http://creativecommons.org/licenses/by-sa/4.0/"
+     target="_blank">
+    <img alt="Creative Commons License"
+         title="Creative Commons License"
+         style="border-width:0"
+         src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png"
+         width="80"
+         height="15"/>
+  </a>
+</p>    </footer>
+  </main>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "name": "Mapa dinámico con los trenes (continuará...)",
+  "headline": "Mapa dinámico con los trenes (continuará...)",
+  "datePublished": "2015-09-22 20:24:00+02:00",
+  "dateModified": "",
+  "author": {
+    "@type": "Person",
+    "name": "Javier G. Sogo",
+    "url": "https://jgsogo.es/author/javier-g-sogo.html"
+  },
+  "image": "http://localhost:8000/images/profile.png",
+  "url": "https://jgsogo.es/renfe-circulaciones-1.html",
+  "description": "El proyecto RENFE empieza a dar sus frutos a pesar de que no puedo dedicarle todo el tiempo que quisiera (y que probablemente se merezca), así que en un pequeño paréntesis os voy a contar los avances: ya saco los horarios de todos los trenes, he logrado posicionar la mayoría …"
+}
+</script></body>
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="https://jgsogo.es/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="https://jgsogo.es/theme/css/pygments.min.css">
+  <link rel="stylesheet" type="text/css" href="https://jgsogo.es/theme/css/font-awesome.min.css">
+  <link href="https://jgsogo.es/static/custom.css" rel="stylesheet">
+  <link href="https://jgsogo.es/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Javier G. Sogo's blog Atom">
+  <link rel="shortcut icon" href="http://localhost:8000/images/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="http://localhost:8000/images/favicon.ico" type="image/x-icon">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="" />
+<meta name="author" content="Javier G. Sogo" />
+<meta name="description" content="Nadie tiene dudas de que PyPI es una de las joyas de Python, el simple hecho de tener a tu alcance infinitud de librerías con sólo escribir pip install library lo convierte en una herramienta tremendamente útil y probablemente sea una de las razones del éxito de Python entre los …" />
+<meta name="keywords" content="pypi, apicultur">
+<meta property="og:site_name" content="Javier G. Sogo's blog"/>
+<meta property="og:title" content="Mi primer paquete en PyPI"/>
+<meta property="og:description" content="Nadie tiene dudas de que PyPI es una de las joyas de Python, el simple hecho de tener a tu alcance infinitud de librerías con sólo escribir pip install library lo convierte en una herramienta tremendamente útil y probablemente sea una de las razones del éxito de Python entre los …"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="https://jgsogo.es/first-package-pypi.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2015-07-29 10:20:00+02:00"/>
+<meta property="article:modified_time" content=""/>
+<meta property="article:author" content="https://jgsogo.es/author/javier-g-sogo.html">
+<meta property="article:section" content="Python"/>
+<meta property="article:tag" content="pypi"/>
+<meta property="article:tag" content="apicultur"/>
+<meta property="og:image" content="http://localhost:8000/images/profile.png">  <title>Javier G. Sogo's blog &ndash; Mi primer paquete en PyPI</title>
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="https://jgsogo.es">
+        <img src="http://localhost:8000/images/profile.png" alt="Javier G. Sogo" title="Javier G. Sogo">
+      </a>
+      <h1><a href="https://jgsogo.es">Javier G. Sogo</a></h1>
+      <p></p>
+      <nav>
+        <ul class="list">
+          <li><a href="https://jgsogo.es/pages/contact.html#contact">Contacto</a></li>
+          <li><a href="https://jgsogo.es/pages/about-me.html#about-me">Yo, mí, me, conmigo</a></li>
+          <li><a href="http://lingwars.github.io/blog/" target="_blank">Lingẅars</a></li>
+        </ul>
+      </nav>
+      <ul class="social">
+        <li><a class="sc-linkedin" href="https://es.linkedin.com/in/jgsogo" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+        <li><a class="sc-github" href="https://github.com/jgsogo" target="_blank"><i class="fa fa-github"></i></a></li>
+        <li><a class="sc-twitter" href="https://twitter.com/jgsogo" target="_blank"><i class="fa fa-twitter"></i></a></li>
+        <li><a class="sc-rss" href="http://localhost:8000feeds/all.atom.xml" target="_blank"><i class="fa fa-rss"></i></a></li>
+      </ul>
+    </div>
+  </aside>
+  <main>
+    <nav>
+      <a href="https://jgsogo.es">Home</a>
+      <a href="/archives.html">Archives</a>
+      <a href="/categories.html">Categories</a>
+      <a href="https://jgsogo.es/feeds/all.atom.xml">Atom</a>
+    </nav>
+
+<article>
+  <header>
+    <h1 id="first-package-pypi">Mi primer paquete en PyPI</h1>
+    <p>Posted on Wed 29 July 2015 in <a href="https://jgsogo.es/category/python.html">Python</a></p>
+  </header>
+  <div>
+    <p>Nadie tiene dudas de que <a href="https://pypi.python.org/pypi">PyPI</a> es una de las joyas de Python, el simple hecho
+de tener a tu alcance infinitud de librerías con sólo escribir <code>pip install library</code> lo convierte en una
+herramienta tremendamente útil y probablemente sea una de las razones del éxito de Python entre los que
+empiezan a programar.</p>
+<p>Así que para el proyecto que estamos lanzando, <a href="http://lingwars.github.io/blog/">Lingẅars</a>,
+donde participa gente con poca experiencia
+en programación resulta prácticamente necesario enpaquetar el código que vamos a utilizar y subirlo al
+gestor de paquetes para que puedan empezar a ejecutar ejemplos desde el primer día.</p>
+<p>Con este objetivo he creado el paquete <code>apicultur</code> (<a href="https://pypi.python.org/pypi/apicultur">PyPI</a>,
+<a href="https://github.com/jgsogo/apicultur-python">source</a>) para acceder a las APIs lingüísticas de
+<a href="https://apicultur.io/">Apicultur</a>. Por supuesto, te lo puedes instalar escribiendo:</p>
+<div class="highlight"><pre><span></span><code>   pip install apicultur
+</code></pre></div>
+
+
+<p>Este <em>tutorial</em> está inspirado en estos posts de <a href="https://tom-christie.github.io/articles/pypi/">Tom Christie</a>,
+<a href="https://jamie.curle.io/posts/my-first-experience-adding-package-pypi/">Jamie Curle</a> y la documentación de la
+propia <a href="https://packaging.python.org/en/latest/distributing.html">Python Foundation</a>; cualquier duda que te
+surja seguro que está resuelta ahí, yo sólo intentaré ser breve e ir a lo imprescindible.</p>
+<h2>Estructura mínima</h2>
+<p>Para poder empaquetar una librería necesitamos como mínimo la siguiente estructura de archivos:</p>
+<div class="highlight"><pre><span></span><code><span class="err">DIRECTORIO-DEL-PROYECTO</span>
+<span class="err">├── setup.py</span>
+<span class="err">├── NOMBRE-DEL-PAQUETE</span>
+<span class="err">     ├── __init__.py</span>
+<span class="err">     ├── FILE1.py</span>
+<span class="err">     ├── FILE2.py</span>
+<span class="err">     └── MODULE (OPCIONAL)</span>
+<span class="err">           ├── __init__.py</span>
+<span class="err">           └── MOREFILES.py</span>
+</code></pre></div>
+
+
+<p>Vamos a ver qué significan los elementos anteriores:</p>
+<ul>
+<li>el DIRECTORIO-DEL-PROYECTO puede ser cualquiera, no afecta en absoluto, lo que cuenta es lo que hay dentro.</li>
+<li>NOMBRE-DEL-PAQUETE tiene que ser el nombre del paquete, si el nombre es <code>apicultur</code>, este directorio tiene
+   que llamarse también <code>apicultur</code>. Y esto es así. Dentro estarán todos los archivos que forman la librería.</li>
+<li><code>setup.py</code>: es el archivo donde se define el paquete, el formato es el mismo para <code>setuptools</code> y para
+   <code>distutils</code> así que no hay que preocuparse por nada más. Lo vemos a continuación.</li>
+</ul>
+<h2>setup.py</h2>
+<p>Este archivo, con toda la información del paquete, tiene que tener un contenido parecido al siguiente:</p>
+<div class="highlight"><pre><span></span><code>    <span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">setup</span><span class="p">,</span> <span class="n">find_packages</span>
+    <span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">path</span>
+
+    <span class="n">setup</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s1">&#39;NOMBRE-DEL-PAQUETE&#39;</span><span class="p">,</span>
+        <span class="n">version</span><span class="o">=</span><span class="s1">&#39;0.1.10&#39;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;A sample Python project&#39;</span><span class="p">,</span>
+        <span class="n">long_description</span><span class="o">=</span><span class="s1">&#39;More information about the sample project&#39;</span><span class="p">,</span>
+        <span class="n">url</span><span class="o">=</span><span class="s1">&#39;https://github.com/whatever/whatever&#39;</span><span class="p">,</span>
+        <span class="n">author</span><span class="o">=</span><span class="s1">&#39;yourname&#39;</span><span class="p">,</span>
+        <span class="n">author_email</span><span class="o">=</span><span class="s1">&#39;your@address.com&#39;</span><span class="p">,</span>
+
+        <span class="n">license</span><span class="o">=</span><span class="s1">&#39;MIT&#39;</span><span class="p">,</span>
+
+        <span class="c1"># See https://PyPI.python.org/PyPI?%3Aaction=list_classifiers</span>
+        <span class="n">classifiers</span><span class="o">=</span><span class="p">[</span>
+            <span class="c1"># How mature is this project? Common values are</span>
+            <span class="c1">#   3 - Alpha</span>
+            <span class="c1">#   4 - Beta</span>
+            <span class="c1">#   5 - Production/Stable</span>
+            <span class="s1">&#39;Development Status :: 4 - Beta&#39;</span><span class="p">,</span>
+
+            <span class="c1"># Indicate who your project is intended for</span>
+            <span class="s1">&#39;Intended Audience :: Developers&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;Topic :: Software Development :: Libraries&#39;</span><span class="p">,</span>
+
+            <span class="c1"># Pick your license as you wish (should match &quot;license&quot; above)</span>
+            <span class="s1">&#39;License :: OSI Approved :: MIT License&#39;</span><span class="p">,</span>
+
+            <span class="s1">&#39;Operating System :: OS Independent&#39;</span><span class="p">,</span>
+
+            <span class="c1"># Specify the Python versions you support here. In particular, ensure</span>
+            <span class="c1"># that you indicate whether you support Python 2, Python 3 or both.</span>
+            <span class="s1">&#39;Programming Language :: Python&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;Programming Language :: Python :: 2&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;Programming Language :: Python :: 2.6&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;Programming Language :: Python :: 2.7&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;Programming Language :: Python :: 3&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;Programming Language :: Python :: 3.2&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;Programming Language :: Python :: 3.3&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;Programming Language :: Python :: 3.4&#39;</span><span class="p">,</span>
+        <span class="p">],</span>
+
+        <span class="n">keywords</span><span class="o">=</span><span class="s1">&#39;sample setup&#39;</span><span class="p">,</span>
+        <span class="n">packages</span><span class="o">=</span><span class="n">find_packages</span><span class="p">(),</span>
+        <span class="n">install_requires</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;requests&#39;</span><span class="p">,</span> <span class="s1">&#39;more-deps&#39;</span><span class="p">,],</span>  <span class="c1">#</span>
+    <span class="p">)</span>
+</code></pre></div>
+
+
+<h2>Subiendo el código a PyPI</h2>
+<p>Verifica primero que el archivo es correcto:</p>
+<div class="highlight"><pre><span></span><code>   $ python setup.py <span class="nb">test</span>
+</code></pre></div>
+
+
+<p>Y ahora ya puedes generar los archivos que van a distribuirse en PyPI:</p>
+<div class="highlight"><pre><span></span><code>   $ python setup.py sdist
+</code></pre></div>
+
+
+<p>Este comando crea un archivo comprimido con todos lo que va a subirse al gestor de paquetes PyPI, este
+archivo se guarda en un directorio <code>dist/</code> que habrá sido creado en el directorio de tu proyecto (si estás utilizando
+un gestor de versiones acuérdate de añadir este directorio a los archivos ignorados).</p>
+<p>Vas a necesitar un usuario en PyPI para poder subir el paquete; una vez que lo tengas puedes registrar el
+paquete utilizando el formulario que hay en la web o bien directamente con</p>
+<div class="highlight"><pre><span></span><code>    $ python setup.py register
+</code></pre></div>
+
+
+<p>Este registro sólo lo tendrás que realizar una vez.</p>
+<p>Una vez que el paquete está registrado puede subir cada nueva versión (también la primera) utlizando <code>twine</code>:</p>
+<div class="highlight"><pre><span></span><code>    $ pip install twine
+    $ twine upload dist/NOMBRE-DEL-PAQUETE-VERSION.tar.gz
+</code></pre></div>
+
+
+<p>Y ya está listo para ser utilizado.</p>
+<h2>Otras recomendaciones</h2>
+<p>En este tutorial hemos ido a lo imprescindible, pero para que un paquete sea realmente reutilizable y que
+su mantenimiento no resulte una tarea titánica es muy recomendable seguir también otras recomendaciones:</p>
+<ul>
+<li>Escribe tests.</li>
+<li>Usa algún sistema de integración continua que ejecute esos tests automáticamente.</li>
+<li>¡Documenta!</li>
+<li>¡Y mantén la documentación actualizada!</li>
+</ul>
+<hr>
+<h3>Enlaces de interés</h3>
+<ul>
+<li>Reutilización de código en C++: hecha un vistazo a <a href="https://www.biicode.com/">BiiCode</a> ;D</li>
+</ul>
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="https://jgsogo.es/tag/pypi.html">pypi</a>
+      <a href="https://jgsogo.es/tag/apicultur.html">apicultur</a>
+    </p>
+  </div>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'jgsogoes';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</article>
+
+    <footer>
+<p>
+  &copy; Javier G. Sogo 2021 - This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>
+</p>
+<p>Built using <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a></p><p>
+  <a rel="license"
+     href="http://creativecommons.org/licenses/by-sa/4.0/"
+     target="_blank">
+    <img alt="Creative Commons License"
+         title="Creative Commons License"
+         style="border-width:0"
+         src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png"
+         width="80"
+         height="15"/>
+  </a>
+</p>    </footer>
+  </main>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "name": "Mi primer paquete en PyPI",
+  "headline": "Mi primer paquete en PyPI",
+  "datePublished": "2015-07-29 10:20:00+02:00",
+  "dateModified": "",
+  "author": {
+    "@type": "Person",
+    "name": "Javier G. Sogo",
+    "url": "https://jgsogo.es/author/javier-g-sogo.html"
+  },
+  "image": "http://localhost:8000/images/profile.png",
+  "url": "https://jgsogo.es/first-package-pypi.html",
+  "description": "Nadie tiene dudas de que PyPI es una de las joyas de Python, el simple hecho de tener a tu alcance infinitud de librerías con sólo escribir pip install library lo convierte en una herramienta tremendamente útil y probablemente sea una de las razones del éxito de Python entre los …"
+}
+</script></body>
+</html>

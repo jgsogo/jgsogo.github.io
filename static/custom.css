@@ -1,0 +1,17 @@
+
+@media screen and (min-width: 768px) {
+    main {
+        width: 800px;
+    }
+}
+
+article .align-center * {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+article .align-center .caption {
+    text-align: center;
+    font-size: 90%;
+}

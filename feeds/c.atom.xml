@@ -1,0 +1,540 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Javier G. Sogo's blog - C++</title><link href="https://jgsogo.es/" rel="alternate"></link><link href="https://jgsogo.es/feeds/c.atom.xml" rel="self"></link><id>https://jgsogo.es/</id><updated>2021-01-19T10:30:00+01:00</updated><entry><title>Webassembly, OpenGL y Qt - Un cubo interactivo en la web</title><link href="https://jgsogo.es/emscripten-cube.html" rel="alternate"></link><published>2021-01-19T10:30:00+01:00</published><updated>2021-01-19T10:30:00+01:00</updated><author><name>Javier G. Sogo</name></author><id>tag:jgsogo.es,2021-01-19:/emscripten-cube.html</id><summary type="html">
+&lt;p&gt;Hace mucho tiempo publiqué un tweet que tuvo cierta tracción, en él mostraba
+un cubo interactivo en el navegador que había hecho con C++. La magia detrás
+de ese cubo era una aplicación de Qt compilada para Webassembly utilizando un
+visor de OpenGL.&lt;/p&gt;
+&lt;blockquote class="twitter-tweet"&gt;&lt;p dir="ltr" lang="en"&gt;Here it is, a little &lt;a href="https://twitter.com/conan_io?ref_src=twsrc%5Etfw"&gt;@conan_io&lt;/a&gt;/&lt;a href="https://twitter.com/jfrog?ref_src=twsrc%5Etfw"&gt;@jfrog …&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;</summary><content type="html">
+&lt;p&gt;Hace mucho tiempo publiqué un tweet que tuvo cierta tracción, en él mostraba
+un cubo interactivo en el navegador que había hecho con C++. La magia detrás
+de ese cubo era una aplicación de Qt compilada para Webassembly utilizando un
+visor de OpenGL.&lt;/p&gt;
+&lt;blockquote class="twitter-tweet"&gt;&lt;p dir="ltr" lang="en"&gt;Here it is, a little &lt;a href="https://twitter.com/conan_io?ref_src=twsrc%5Etfw"&gt;@conan_io&lt;/a&gt;/&lt;a href="https://twitter.com/jfrog?ref_src=twsrc%5Etfw"&gt;@jfrog&lt;/a&gt;/&lt;a href="https://twitter.com/isocpp?ref_src=twsrc%5Etfw"&gt;@isocpp&lt;/a&gt; cube running in Chrome compiled to &lt;a href="https://twitter.com/hashtag/webassembly?src=hash&amp;amp;ref_src=twsrc%5Etfw"&gt;#webassembly&lt;/a&gt; using &lt;a href="https://twitter.com/hashtag/Qt?src=hash&amp;amp;ref_src=twsrc%5Etfw"&gt;#Qt&lt;/a&gt; 🤠. Just a couple of steps thanks to the packages and recipes provided by &lt;a href="https://twitter.com/bincrafters?ref_src=twsrc%5Etfw"&gt;@bincrafters&lt;/a&gt; 🤟 I'll write a making of, promise. &lt;a href="https://t.co/0XPbifrant"&gt;pic.twitter.com/0XPbifrant&lt;/a&gt;&lt;/p&gt;— jgsogo (@jgsogo) &lt;a href="https://twitter.com/jgsogo/status/1089562018355527680?ref_src=twsrc%5Etfw"&gt;January 27, 2019&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async="" charset="utf-8" src="https://platform.twitter.com/widgets.js"&gt;&lt;/script&gt;&lt;p&gt;En aquel momento dije que documentaría el proceso, pero no lo hice. Hoy, casualidades
+del destino, me siento en deuda con esto de nuevo y ha llegado el momento de comentar
+cómo se hizo... aunque haya que hacerlo de nuevo porque perdí el código fuente 😅.&lt;/p&gt;
+&lt;p&gt;He conseguido reproducir el proyecto de una manera más ordenada y quizá algunas de las
+cosas que se utlizan aquí podrían incorporarse a los paquetes correspondientes de
+&lt;a class="reference external" href="https://conan.io/center"&gt;ConanCenter&lt;/a&gt;, aunque ése no es el objetivo de este post ni condición para publicarlo.&lt;/p&gt;
+&lt;p&gt;Las tecnologías que he utilizado, como ya avanzaba, han sido el conocido framework &lt;a class="reference external" href="https://qt.io"&gt;Qt&lt;/a&gt;
+y &lt;a class="reference external" href="https://emscripten.org/index.html"&gt;Emscripten&lt;/a&gt; para compilar el código a Webassembly. Con Qt es muy sencillo hacer una
+aplicación de escritorio con un canvas de OpenGL en el que mostrar un cubo, con Emscripten
+resulta trivial compilar un proyecto para Webassembly y utilizar el navegador para
+renderizarlo. ¿Será muy complicado juntar ambos?&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Nota.- La documentación recomienda utilizar versiones de las diferentes herramientas
+que hayan sido probadas conjuntamente y se sepa que funcionan. En este blogpost seguiré
+esta recomendación, aunque algunas otras combinaciones también me han funcionado.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Nota.- El proceso ha sido probado en Macos, es esperable que en otros sistemas operativos
+sea algo parecido. De cualquier forma, son bienvenidos los comentarios para actualizar esta
+publicación e incluir más casos de uso.&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="section" id="id1"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="#id3"&gt;Emscripten&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;El primer paso consiste en preparar Emscripten para compilar código C++ a Webassembly. El
+proceso es muy sencillo y basta con seguir la &lt;a class="reference external" href="https://emscripten.org/docs/getting_started/downloads.html"&gt;documentación&lt;/a&gt; disponible en la web:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;git clone https://github.com/emscripten-core/emsdk.git
+&lt;span class="nb"&gt;cd&lt;/span&gt; emsdk
+git pull
+./emsdk install &lt;span class="m"&gt;1&lt;/span&gt;.39.8
+./emsdk activate &lt;span class="m"&gt;1&lt;/span&gt;.39.8
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Esta versión de Emscripten utiliza también Python3 aunque no lo instala, versiones más
+nuevas lo incluyen vendorizado. Suponemos que el lector si no lo tiene ya disponible en
+el &lt;tt class="docutils literal"&gt;PATH&lt;/tt&gt; sabe cómo conseguirlo.&lt;/p&gt;
+&lt;p&gt;En este proceso es importante notar el fichero &lt;tt class="docutils literal"&gt;emsdk_env.sh&lt;/tt&gt; que ha sido generado
+anteriormente. Este fichero es un &lt;strong&gt;script para activar Emscripten como entorno de
+desarrollo&lt;/strong&gt;, añadirá al &lt;tt class="docutils literal"&gt;PATH&lt;/tt&gt; algunos directorios y variables de entorno para utlizar
+los compiladores y herramientas que nos permitirán generan Webassembly.&lt;/p&gt;
+&lt;p&gt;Se recomienda al lector que pruebe algunos ejemplos básicos del &lt;a class="reference external" href="https://emscripten.org/docs/getting_started/Tutorial.html"&gt;getting started&lt;/a&gt;
+para verificar que el compilador funciona y tener una primera experiencia con el proceso.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="id2"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="#id4"&gt;Qt&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;El siguiente paso es compilar Qt para Webassembly. En realidad lo que haremos es compilar
+para nuestro sistema operativo el &lt;em&gt;build-system&lt;/em&gt; &lt;tt class="docutils literal"&gt;qmake&lt;/tt&gt; configurado como &lt;em&gt;cross&lt;/em&gt;-compilador
+que utiliza Webassembly como &lt;em&gt;target&lt;/em&gt;. Suena más complicado de lo que es, podemos seguir
+los pasos &lt;a class="reference external" href="https://doc.qt.io/qt-5/wasm.html"&gt;este tutorial&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;En primer lugar deberemos activar Emscripten como indicamos anteriormente:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;source&lt;/span&gt; emsdk/emsdk_env.sh
+emcc -v
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Y descargar y compilar Qt para Webassembly:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;wget http://download.qt.io/official_releases/qt/5.15/5.15.2/single/qt-everywhere-src-5.15.2.tar.xz
+xz -d qt-everywhere-src-5.15.2.tar.xz
+tar xopf qt-everywhere-src-5.15.2.tar
+
+&lt;span class="nb"&gt;cd&lt;/span&gt; qt-everywhere-src-5.15.2
+./configure -xplatform wasm-emscripten -nomake examples -nomake tests -prefix &lt;span class="k"&gt;$(&lt;/span&gt;&lt;span class="nb"&gt;pwd&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;/qtbase
+make -j16 module-qtbase module-qtdeclarative
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;El proceso anterior tomará su tiempo, aprovecha para repasar algún ejemplo con Emscripten o refrescar
+tus conocimientos de Qt. Tal vez sea un buen momento para buscar un &lt;tt class="docutils literal"&gt;Hello World!&lt;/tt&gt; sencillo y ver cómo
+funciona &lt;cite&gt;qmake&lt;/cite&gt; con los ficheros &lt;cite&gt;.pro&lt;/cite&gt; para generar las aplicaciones de Qt. Será útil en lo que viene
+a continuación.&lt;/p&gt;
+&lt;p&gt;Una vez terminado el proceso anterior debería haberse generado &lt;strong&gt;el ejecutable&lt;/strong&gt; &lt;tt class="docutils literal"&gt;qtbase/bin/qmake&lt;/tt&gt;, éste
+es nuestro &lt;em&gt;build-system&lt;/em&gt; preparado para &lt;em&gt;cross&lt;/em&gt;-compilar utilizando Emscripten.&lt;/p&gt;
+&lt;p&gt;Si creaste ese pequeño &lt;tt class="docutils literal"&gt;Hello world!&lt;/tt&gt;, ahora es el momento de comprobar que todo funciona. Dentro de su
+directorio sólo tienes que ejecutar:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; hello-world
+.../qtbase/bin/qmake
+make
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Ahora no tienes más que abrir el fichero &lt;tt class="docutils literal"&gt;.html&lt;/tt&gt; con tu navegador de cabecera. ¡&lt;em&gt;Voilá&lt;/em&gt;! Lo que antes
+era una aplicación de escritorio se ha convertido en una applicación web. El mismo código en C++ lo
+hemos utilizado para generar una aplicación para dos plataformas totalmente diferentes... esto abre
+un &lt;strong&gt;horizonte de posibilidades muy interesante para explorar&lt;/strong&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="el-cubo"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="#id5"&gt;El cubo&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Ya tenemos todas las piezas disponibles y únicamente nos falta el cubo. El cubo no es más que una
+aplicación de Qt con una ventana de OpenGL. Yo utilicé como base el &lt;a class="reference external" href="https://doc.qt.io/qt-5/qtopengl-cube-example.html"&gt;ejemplo de OpenGL ES 2.0&lt;/a&gt;,
+cambié la textura e hice unos ajustes.&lt;/p&gt;
+&lt;p&gt;En &lt;a class="reference external" href="https://github.com/jgsogo/qt-opengl-cube/tree/main/qt-opengl-example"&gt;este repositorio&lt;/a&gt; podéis encontrar el código fuente que yo utilicé. Utilizando los pasos
+anteriores debería compilarse una aplicación para Webassembly que podéis abrir en vuestro
+navegador:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;git clone https://github.com/jgsogo/qt-opengl-cube.git
+&lt;span class="nb"&gt;cd&lt;/span&gt; qt-opengl-cube/qt-opengl-example
+.../qtbase/bin/qmake
+make
+&lt;/pre&gt;&lt;/div&gt;
+&lt;hr class="docutils"/&gt;
+&lt;p&gt;&lt;strong&gt;Nota.- Todavía tengo que pulir algunos detalles en el blogpost y comprobar que no me he saltado
+ningún paso en la explicación.&lt;/strong&gt; Si eres de los primeros en llegar por aquí, ten en cuenta que en
+el futuro probablemente actualice el artículo añadiendo algunos detalles (optimizaciones para que
+la ejecución sea más rápida, cómo ejecutar todo el proceso con Conan en una única línea, más detalles
+sobre Webassembly, otras versiones de las aplicaciones,...). Stay tuned!&lt;/p&gt;
+&lt;/div&gt;
+</content><category term="C++"></category><category term="c++"></category><category term="wasm"></category><category term="qt"></category><category term="web"></category></entry><entry><title>Un bot de Telegram con C++</title><link href="https://jgsogo.es/telegram-bot-cpp-madridccppug.html" rel="alternate"></link><published>2019-03-24T13:30:00+01:00</published><updated>2019-03-24T13:30:00+01:00</updated><author><name>Javier G. Sogo</name></author><id>tag:jgsogo.es,2019-03-24:/telegram-bot-cpp-madridccppug.html</id><summary type="html">
+&lt;p&gt;Un punto de encuentro habitual entre la programación y la lingüística son los chatbots,
+se trata de aplicaciones que permiten interactuar con los usuarios a través de plataformas
+como WhatsApp o Telegram. Para alguien como yo, con interés en ambos campos, éste es un
+lugar habitaual al que vuelvo una …&lt;/p&gt;</summary><content type="html">
+&lt;p&gt;Un punto de encuentro habitual entre la programación y la lingüística son los chatbots,
+se trata de aplicaciones que permiten interactuar con los usuarios a través de plataformas
+como WhatsApp o Telegram. Para alguien como yo, con interés en ambos campos, éste es un
+lugar habitaual al que vuelvo una y otra vez, y así ha sido, esta vez desde el mundo
+del C++.&lt;/p&gt;
+&lt;p&gt;Hasta ahora siempre había hecho los chatbots utilizando Python, así funcionan el que
+planteamos para Neutrón o el que utilizo para enterarme de ofertas en Wallapop, los ejecuto en
+mi Raspberry y siempre tengo acceso a ellos a través de mi teléfono. Una interfaz sencilla,
+siempre disponible y que no requiere de ninguna configuración de red.&lt;/p&gt;
+&lt;p&gt;En el mundo del C++ todo parece más complicado, todo lo que se encuentra en torno al
+lenguaje parece estar relacionado con librerías, con técnicas para modernizar el código,
+pero muy pocas veces podemos leer sobre ejemplos de aplicaciones o pequeños prototipos
+creados con él. Pero yo creo que el ecosistema está madurando, que el lenguaje ha
+adquirido ciertas características que aumentan su expresividad y el ecosistema se ha
+dotado de herramientas que hacen más accesible el sentarse delante del ordenador y
+programar la parte que nos interesa sin preocuparnos por todo lo demás.&lt;/p&gt;
+&lt;p&gt;¡Vamos allá!&lt;/p&gt;
+&lt;div class="section" id="arquitectura-de-un-chatbot"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="#id1"&gt;Arquitectura de un chatbot&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Un bot de Telegram (extensible a prácticamente cualquier otro bot) es una aplicación
+conectada continuamente al sistema de mensajería de Telegram y que responde a
+notificaciones procedentes del servidor mensajes.&lt;/p&gt;
+&lt;div class="figure align-center"&gt;
+&lt;img alt="Arquitectura de un bot de Telegram" src="https://jgsogo.es/images/2019.03.telegram-bot/architecture.png"/&gt;
+&lt;p class="caption"&gt;Diagrama explicativo con la arquitectura de un bot de telegram&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;Los usuarios individualmente podrán iniciar una conversación con el bot como si fuera
+un usuario más y conversarán con él en su chat privado; por lo tanto, y esto lo
+tendremos que tener en cuenta a la hora de programar, el bot debe ser capaz de mantener
+un número arbitrario de conversaciones simultaneas, sabremos a cuál se refiere cada
+mensaje porque irá acompañado de un identificador único.&lt;/p&gt;
+&lt;p&gt;Apoyándonos en librerías existentes, nuestra tarea se reduce únicamente a programar cuáles
+son las respuestas del bot a cada uno de los mensajes que los usuarios pueden enviarnos.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="la-libreria-tgbot-cpp"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="#id2"&gt;La librería tgbot-cpp&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Para construir nuestro ejemplo utilizaremos la librería &lt;a class="reference external" href="https://github.com/reo7sp/tgbot-cpp"&gt;tgbot-cpp&lt;/a&gt; de &lt;a class="reference external" href="https://github.com/reo7sp"&gt;Oleg Morozenkov&lt;/a&gt;
+que podemos encontrar en Github. No necesitamos entrar en la librería para utilizarla, es
+más nos bastará con tener unos conocimientos muy básicos, incluso de C++, para poder
+echar a andar nuestro bot.&lt;/p&gt;
+&lt;p&gt;La librería tiene algunas dependencias que necesitaremos tener en nuestro sistema
+para poder compilarla, puedes utilizar diferentes estrategias para instalarlas en tu
+ordenador, personalmente te recomiendo que utilices &lt;a class="reference external" href="https://conan.io"&gt;Conan&lt;/a&gt;, pero siéntete libre de
+luchar contra los elementos utilizando las armas que consideres oportunas.&lt;/p&gt;
+&lt;p&gt;Si optas por Conan, simplemente tendrás que seguir los siguientes pasos:&lt;/p&gt;
+&lt;pre class="code bash literal-block"&gt;
+pip install conan
+conan profile show default
+&lt;/pre&gt;
+&lt;p&gt;Si utilizas GCC, échale un ojo a este trozo de la documentación donde se habla de la
+compatibilidad binaria: &lt;a class="reference external" href="https://docs.conan.io/en/latest/howtos/manage_gcc_abi.html"&gt;How to manage the GCC&amp;gt;=5 ABI&lt;/a&gt;, probablemente quieras
+modificar la &lt;em&gt;libcxx&lt;/em&gt; que Conan ha elegido por defecto.&lt;/p&gt;
+&lt;p&gt;Una vez instalado Conan, añade los repositorios remotos necesarios de donde se
+descargarán las recetas:&lt;/p&gt;
+&lt;pre class="code bash literal-block"&gt;
+conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
+conan remote add jgsogo https://api.bintray.com/conan/jgsogo/conan-packages
+&lt;/pre&gt;
+&lt;p&gt;E instala la librería, así la tendremos disponible para próximos pasos:&lt;/p&gt;
+&lt;pre class="code bash literal-block"&gt;
+conan install tgbot_cpp/1.1@jgsogo/stable --build&lt;span class="o"&gt;=&lt;/span&gt;missing
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div class="section" id="ejemplo-de-bot-lo-minimo-necesario"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="#id3"&gt;Ejemplo de bot, lo mínimo necesario&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;El mínimo ejemplo que podemos construir con un bot es uno que nos conteste siempre
+lo mismo, peor nos servirá de ejemplo para probar que todo funciona. Este ejemplo
+es el que ya nos ofrece la documentación de su librería: un bot que responde con
+un simple &lt;code&gt;"Hi!"&lt;/code&gt; cuando nos conectamos a él y que después nos devuelve el mismo
+mensaje que le hemos enviado:&lt;/p&gt;
+&lt;pre class="code cpp literal-block"&gt;
+&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;stdio.h&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;
+#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;tgbot/tgbot.h&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;
+&lt;/span&gt;
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="c1"&gt;// Initialize the bot
+&lt;/span&gt;    &lt;span class="n"&gt;TgBot&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;Bot&lt;/span&gt; &lt;span class="n"&gt;bot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"PLACE YOUR TOKEN HERE"&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+    &lt;span class="c1"&gt;// Connect to events and define actions using callbacks
+&lt;/span&gt;    &lt;span class="n"&gt;bot&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;getEvents&lt;/span&gt;&lt;span class="p"&gt;().&lt;/span&gt;&lt;span class="n"&gt;onCommand&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"start"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;bot&lt;/span&gt;&lt;span class="p"&gt;](&lt;/span&gt;&lt;span class="n"&gt;TgBot&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;Message&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;Ptr&lt;/span&gt; &lt;span class="n"&gt;message&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;bot&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;getApi&lt;/span&gt;&lt;span class="p"&gt;().&lt;/span&gt;&lt;span class="n"&gt;sendMessage&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;message&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;chat&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"Hi!"&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="p"&gt;});&lt;/span&gt;
+    &lt;span class="n"&gt;bot&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;getEvents&lt;/span&gt;&lt;span class="p"&gt;().&lt;/span&gt;&lt;span class="n"&gt;onAnyMessage&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;bot&lt;/span&gt;&lt;span class="p"&gt;](&lt;/span&gt;&lt;span class="n"&gt;TgBot&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;Message&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;Ptr&lt;/span&gt; &lt;span class="n"&gt;message&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"User wrote %s&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;message&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;text&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;c_str&lt;/span&gt;&lt;span class="p"&gt;());&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;StringTools&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;startsWith&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;message&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;text&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"/start"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="k"&gt;return&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+        &lt;span class="n"&gt;bot&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;getApi&lt;/span&gt;&lt;span class="p"&gt;().&lt;/span&gt;&lt;span class="n"&gt;sendMessage&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;message&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;chat&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"Your message is: "&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;message&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;text&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="p"&gt;});&lt;/span&gt;
+
+    &lt;span class="c1"&gt;// Run the infinite loop
+&lt;/span&gt;    &lt;span class="k"&gt;try&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"Bot username: %s&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;bot&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;getApi&lt;/span&gt;&lt;span class="p"&gt;().&lt;/span&gt;&lt;span class="n"&gt;getMe&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;username&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;c_str&lt;/span&gt;&lt;span class="p"&gt;());&lt;/span&gt;
+        &lt;span class="n"&gt;TgBot&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;TgLongPoll&lt;/span&gt; &lt;span class="n"&gt;longPoll&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;bot&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+        &lt;span class="k"&gt;while&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;true&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"Long poll started&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;"&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+            &lt;span class="n"&gt;longPoll&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;start&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;catch&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;TgBot&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;TgException&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"error: %s&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;what&lt;/span&gt;&lt;span class="p"&gt;());&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;En el código anterior hay tres partes diferenciadas:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p class="first"&gt;La construcción del bot, un objeto de la clase &lt;code&gt;TgBot::Bot&lt;/code&gt; al que hay que pasarle
+un &lt;em&gt;token&lt;/em&gt; (más adelante hablaremos de esto).&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;Conectar nuestras acciones a los eventos generados por el bot, hay dos tipos de estos
+eventos:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;los comandos, son aquellos que el usuario introduce precedidos por &lt;code&gt;/&lt;/code&gt;
+(ejemplos típicos serían &lt;code&gt;/start&lt;/code&gt; o &lt;code&gt;/help&lt;/code&gt;), y&lt;/li&gt;
+&lt;li&gt;los mensajes de texto, todos ellos entrarán a través del evento &lt;code&gt;onAnyMessage&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Como se puede ver en el ejemplo, se están conectando unos &lt;em&gt;callbacks&lt;/em&gt; a cada uno de los
+eventos anteriores, su implementación se corresponde con la que presentamos al introducir
+el ejemplo del bot.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;Ejecutar el bot utilizando un bucle infinito.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="section" id="como-compilarlo"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="#id4"&gt;Cómo compilarlo&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Si provienes de Python o de otros lenguajes interpretados quizá esto te sorprenda, pero el
+código de C++ hay que compilarlo, no basta con ejecutarlo como si fuera un &lt;em&gt;script&lt;/em&gt;, no;
+necesitamos generar el binario de la aplicación, el &lt;code&gt;.exe&lt;/code&gt;, que será lo que ejecutemos.
+En esto se basan los mayores logros y desencantos de este lenguaje.&lt;/p&gt;
+&lt;p&gt;Para compilarlo utilizaré &lt;a class="reference external" href="https://cmake.org/"&gt;CMake&lt;/a&gt; y por lo tanto hará falta un fichero &lt;code&gt;CMakeLists.txt&lt;/code&gt;
+para nuestro proyecto:&lt;/p&gt;
+&lt;pre class="code cmake literal-block"&gt;
+&lt;span class="nb"&gt;cmake_minimum_required&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;VERSION&lt;/span&gt; &lt;span class="s"&gt;2.8.12&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nb"&gt;project&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;BotHelloWorld&lt;/span&gt; &lt;span class="s"&gt;CXX&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="nb"&gt;include&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;CMAKE_BINARY_DIR&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;&lt;span class="s"&gt;/conanbuildinfo.cmake&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nb"&gt;conan_basic_setup&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+&lt;span class="nb"&gt;add_executable&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;bot_hello_world&lt;/span&gt; &lt;span class="s"&gt;main.cpp&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nb"&gt;target_link_libraries&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;bot_hello_world&lt;/span&gt; &lt;span class="o"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;CONAN_LIBS&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nb"&gt;set_target_properties&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;bot_hello_world&lt;/span&gt; &lt;span class="s"&gt;PROPERTIES&lt;/span&gt; &lt;span class="s"&gt;CXX_STANDARD&lt;/span&gt; &lt;span class="s"&gt;11&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;Mejor que copiar los &lt;em&gt;snippets&lt;/em&gt; de código que aparecen aquí es que te clones el repositorio que
+hemos preparado en el &lt;a class="reference external" href="https://madridccppug.github.io/meetups/"&gt;grupo de usuarios de C++ de Madrid&lt;/a&gt; con algunos ejemplos y que lo
+compiles desde allí:&lt;/p&gt;
+&lt;pre class="code bash literal-block"&gt;
+git clone https://github.com/madridccppug/workshop-telegram-bot.git
+&lt;span class="nb"&gt;cd&lt;/span&gt; workshop-telegram-bot/hello_world
+
+mkdir build &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="nb"&gt;cd&lt;/span&gt; build
+conan install .. --build&lt;span class="o"&gt;=&lt;/span&gt;missing
+cmake .. -DCMAKE_BUILD_TYPE&lt;span class="o"&gt;=&lt;/span&gt;Release
+cmake --build .
+
+./bin/bot_hello_world
+&lt;/pre&gt;
+&lt;div class="section" id="el-token-tu-bot"&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="#id5"&gt;El token, tu bot&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Si has llegado hasta aquí, habrás visto que el bot necesita un token para funcionar, y si has
+echado un vistazo al código fuente también sabrás que en nuestros utilizamos la variable de
+entorno &lt;code&gt;MADRIDCCPPUG_BOT_TOKEN&lt;/code&gt; para pasarle este token a nuestro bot.&lt;/p&gt;
+&lt;p&gt;Cada &lt;strong&gt;token identifica a un bot diferente&lt;/strong&gt;, es la clave que permite que tu programa se
+identifique contra los servidores de Telegram y que el intercambio de mensajes entre los usuarios
+y tu bot llegue a tu aplicación en vez de hacerlo a cualquier otra. Conseguir un &lt;em&gt;token&lt;/em&gt; es
+muy sencillo, sólo tendrás que iniciar una conversación (utilizando Telegram) con el
+&lt;a class="reference external" href="https://telegram.me/BotFather"&gt;BotFather&lt;/a&gt;, el bot de Telegram que te permite dar de alta nuevos bots.&lt;/p&gt;
+&lt;div class="figure align-center"&gt;
+&lt;img alt="Logotipo BotFather" src="https://jgsogo.es/images/2019.03.telegram-bot/botfather.png"/&gt;
+&lt;p class="caption"&gt;The BotFather&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="otros-bots-de-ejemplo"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="#id6"&gt;Otros bots de ejemplo&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;En el repositorio que te has clonado anteriormente tienes disponibles otros ejemplos de bots,
+todos ellos se compilan y funcionan de la misma forma:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;code&gt;random_chat&lt;/code&gt;: se trata de un bot que conecta dos a dos a los usuarios que están
+hablando con él en ese momento, tal y como hacía el &lt;a class="reference external" href="https://es.wikipedia.org/wiki/Chatroulette"&gt;Chatroulette&lt;/a&gt; pero en formato
+conversacional.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;wordnet_game&lt;/code&gt;: este bot es un trivial de definiciones en inglés. El bot muestra una
+definición y ofrece cuatro palabras, sólo una de ellas se corresponde con la definición.
+Para programar este juego he utilizado también la librería &lt;a class="reference external" href="https://github.com/jardon-u/wordnet-blast"&gt;wordnet-blast&lt;/a&gt; que permite
+el acceso desde C++ a la base de datos de &lt;a class="reference external" href="https://wordnet.princeton.edu/"&gt;WordNet&lt;/a&gt; de la cual, sin lugar a dudas, merece
+la pena hablar en otra ocasión.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;___&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="notas-y-materiales"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="#id7"&gt;Notas y materiales&lt;/a&gt;&lt;/h2&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Repositorio con ejemplos: &lt;a class="reference external" href="https://github.com/madridccppug/workshop-telegram-bot"&gt;https://github.com/madridccppug/workshop-telegram-bot&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Diapositivas correspondientes a la presentación del 21 de marzo de 2019 en grupo
+de usuarios de C++ de Madrid: &lt;a class="reference external" href="https://docs.google.com/presentation/d/1B5pPftL06dW1k87M5eyMk-MwfkqXWhzXmXrN0kKP0dk/edit?usp=sharing"&gt;https://docs.google.com/presentation/d/1B5pPftL06dW1k87M5eyMk-MwfkqXWhzXmXrN0kKP0dk/edit?usp=sharing&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</content><category term="C++"></category><category term="chatbot"></category><category term="c++"></category><category term="telegram"></category><category term="conan"></category></entry><entry><title>Variadic templates and std::tuple - Motivación</title><link href="https://jgsogo.es/variadic-templates-std-tuple-motivation.html" rel="alternate"></link><published>2016-03-21T12:54:00+01:00</published><updated>2016-03-21T12:54:00+01:00</updated><author><name>Javier G. Sogo</name></author><id>tag:jgsogo.es,2016-03-21:/variadic-templates-std-tuple-motivation.html</id><summary type="html">&lt;p&gt;Debo confesar que me he pasado prácticamente todo el fin de semana dándole
+vueltas a las &lt;em&gt;variadic templates&lt;/em&gt; para utilizarlas con las estructuras &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;std::tuple&lt;/span&gt;&lt;/tt&gt;.
+Y debo confesar que me parece impresionante lo que se puede conseguir (y eso
+que me imagino que no he raspado más que la superficie …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Debo confesar que me he pasado prácticamente todo el fin de semana dándole
+vueltas a las &lt;em&gt;variadic templates&lt;/em&gt; para utilizarlas con las estructuras &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;std::tuple&lt;/span&gt;&lt;/tt&gt;.
+Y debo confesar que me parece impresionante lo que se puede conseguir (y eso
+que me imagino que no he raspado más que la superficie), son una herramienta
+increiblemente potente para construir librerías genéricas sin incrementar la
+&lt;a class="reference external" href="https://en.wikipedia.org/wiki/Cyclomatic_complexity"&gt;complejidad ciclomática&lt;/a&gt; del programa.&lt;/p&gt;
+&lt;div class="section" id="motivacion"&gt;
+&lt;h2&gt;Motivación&lt;/h2&gt;
+&lt;p&gt;A raíz de un proyecto personal me he tenido que enfrentar a la ingesta de &lt;em&gt;grandes&lt;/em&gt;
+cantidades de datos en formato tabular (básicamente un dump de una base de datos)
+y, aunque ya había hecho algo al respecto &lt;a class="footnote-reference" href="#id2" id="id1"&gt;[1]&lt;/a&gt; quería darle una vuelta al tema y darme una
+excusa para probar las &lt;em&gt;variadic&lt;/em&gt; junto con las tuplas.&lt;/p&gt;
+&lt;p&gt;Quería reproducir una manera eficiente y fuertemente tipada de leer los datos de los archivos,
+acceder a ellos, filtrarlos, proyectarlos,... en cierto modo quería la simplicidad y
+potencia que pone a nuestra disposición los &lt;em&gt;managers&lt;/em&gt; y las &lt;em&gt;querysets&lt;/em&gt; de Django,
+pero quería descansar un poco de Python e implementarlo en C++.&lt;/p&gt;
+&lt;p&gt;Aún no lo he conseguido, ni mucho menos, todavía hay mucho trabajo por delante, pero creo
+que la línea de desarrollo elegida promete y quiero compartirlo.&lt;/p&gt;
+&lt;table class="docutils footnote" frame="void" id="id2" rules="none"&gt;
+&lt;colgroup&gt;&lt;col class="label" /&gt;&lt;col /&gt;&lt;/colgroup&gt;
+&lt;tbody valign="top"&gt;
+&lt;tr&gt;&lt;td class="label"&gt;&lt;a class="fn-backref" href="#id1"&gt;[1]&lt;/a&gt;&lt;/td&gt;&lt;td&gt;Hago referencia al proyecto &lt;a class="reference external" href="https://github.com/jgsogo/txt_table"&gt;txt_table&lt;/a&gt; que, visto lo visto, ya ha caducado.&lt;/td&gt;&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class="section" id="std-tuple-a-single-row"&gt;
+&lt;h2&gt;std::tuple - a single row&lt;/h2&gt;
+&lt;p&gt;La librería estándar proporciona desde hace tiempo (C++11) una clase que permite almacenar un
+conjunto heterogeneo de valores de tamaño fijo (no tienes excusa para no conocerla). Desde
+mi punto de vista es una estructura ideal para representar una fila de una tabla de una base
+de datos. El ejemplo de &lt;a class="reference external" href="http://en.cppreference.com/w/cpp/utility/tuple"&gt;cppreference&lt;/a&gt; me parece estupendo:&lt;/p&gt;
+&lt;pre class="code cpp literal-block"&gt;
+&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;tuple&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;
+#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;iostream&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;
+#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;string&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;
+#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;stdexcept&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;
+&lt;/span&gt;
+&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;tuple&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;double&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;get_student&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;make_tuple&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mf"&gt;3.8&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sc"&gt;'A'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Lisa Simpson&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;make_tuple&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mf"&gt;2.9&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sc"&gt;'C'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Milhouse Van Houten&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;make_tuple&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mf"&gt;1.7&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sc"&gt;'D'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Ralph Wiggum&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="k"&gt;throw&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;invalid_argument&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;id&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;student0&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;get_student&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;ID: 0, &amp;quot;&lt;/span&gt;
+              &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;GPA: &amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;student0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;, &amp;quot;&lt;/span&gt;
+              &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;grade: &amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;student0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;, &amp;quot;&lt;/span&gt;
+              &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;name: &amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;student0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="sc"&gt;'\n'&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="kt"&gt;double&lt;/span&gt; &lt;span class="n"&gt;gpa1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;grade1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="n"&gt;name1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;tie&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;gpa1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;grade1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;name1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;get_student&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;ID: 1, &amp;quot;&lt;/span&gt;
+              &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;GPA: &amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;gpa1&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;, &amp;quot;&lt;/span&gt;
+              &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;grade: &amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;grade1&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;, &amp;quot;&lt;/span&gt;
+              &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;name: &amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;name1&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="sc"&gt;'\n'&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;Si tuviéramos una tabla con el GPA, el &lt;em&gt;grade&lt;/em&gt; y el &lt;em&gt;name&lt;/em&gt; de un conjunto de estudiantes, yo
+querría representar cada fila de esta forma, fuertemente tipada, así no hay problemas y todo
+queda claro.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="std-vector-std-tuple-the-queryset"&gt;
+&lt;h2&gt;std::vector&amp;lt;std::tuple&amp;gt; - the queryset&lt;/h2&gt;
+&lt;p&gt;Pero en una base de datos lo que tenemos es un conjunto de filas, de elementos &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;std::tuple&amp;lt;...&amp;gt;&lt;/span&gt;&lt;/tt&gt;
+de los del apartado anterior; un vector de estos elementos sería la representación en memoria de
+un &lt;a class="reference external" href="https://docs.djangoproject.com/es/1.9/ref/models/querysets/"&gt;queryset&lt;/a&gt; de Django; sólo habría que dotarlo de la funcionalidad adecuada.&lt;/p&gt;
+&lt;pre class="code cpp literal-block"&gt;
+&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;tuple&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;
+#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;vector&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;
+&lt;/span&gt;
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;StudentsManager&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+        &lt;span class="k"&gt;typedef&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;tuple&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;double&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;row_type&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="k"&gt;typedef&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;vector&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;row_type&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;queryset_type&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+        &lt;span class="k"&gt;static&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;all&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;queryset_type&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;qs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="n"&gt;qs&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;push_back&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;make_tuple&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mf"&gt;3.8&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sc"&gt;'A'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Lisa Simpson&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
+            &lt;span class="n"&gt;qs&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;push_back&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;make_tuple&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mf"&gt;2.9&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sc"&gt;'C'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Milhouse Van Houten&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
+            &lt;span class="n"&gt;qs&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;push_back&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;make_tuple&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mf"&gt;1.7&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sc"&gt;'D'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Ralph Wiggum&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;};&lt;/span&gt;
+
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;StudentsManager&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;queryset_type&lt;/span&gt; &lt;span class="n"&gt;queryset&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;StudentsManager&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;all&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;queryset&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+    &lt;span class="c1"&gt;// Dump all students
+&lt;/span&gt;    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;auto&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="nl"&gt;item&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;queryset&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;ID: &amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;item&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;, &amp;quot;&lt;/span&gt;
+                  &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;GPA: &amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;item&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;, &amp;quot;&lt;/span&gt;
+                  &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;grade: &amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;item&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;, &amp;quot;&lt;/span&gt;
+                  &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;name: &amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;item&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="sc"&gt;'\n'&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;Y podríamos crear fácilmente funciones que sirvieran para realizar las operaciones más
+comunes con este conjunto de datos:&lt;/p&gt;
+&lt;pre class="code cpp literal-block"&gt;
+&lt;span class="p"&gt;[...]&lt;/span&gt;
+    &lt;span class="c1"&gt;// Sort according to function
+&lt;/span&gt;    &lt;span class="k"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;sorted_students&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;sort&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;queryset&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;begin&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt; &lt;span class="n"&gt;queryset&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;end&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt;
+        &lt;span class="p"&gt;[](&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;StudentsManager&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;row_type&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;lhs&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;StudentsManager&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;row_type&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;rhs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;lhs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;rhs&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+        &lt;span class="p"&gt;});&lt;/span&gt;
+
+    &lt;span class="c1"&gt;// Filter by field value
+&lt;/span&gt;    &lt;span class="k"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;gradeA_students&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;queryset&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sc"&gt;'A'&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+&lt;span class="p"&gt;[...]&lt;/span&gt;
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div class="section" id="el-problema-surge-al-generalizar"&gt;
+&lt;h2&gt;El problema surge al generalizar&lt;/h2&gt;
+&lt;p&gt;Como tengo alma de programador no me vale con crear una clase que actúe como &lt;em&gt;manager&lt;/em&gt; para
+cada uno de mis modelos, sino que quiero generalizar. Y el problema es que quiero &lt;strong&gt;generalizar
+en dos dimensiones: tipo de elementos y número de columnas de la tabla&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Generalizar en tipo de elementos es fácil, ahí están las plantillas. Algo como lo que sigue
+podría valer:&lt;/p&gt;
+&lt;pre class="code cpp literal-block"&gt;
+&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;tuple&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;
+#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;vector&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;
+&lt;/span&gt;
+&lt;span class="k"&gt;template&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;typename&lt;/span&gt; &lt;span class="n"&gt;T1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;typename&lt;/span&gt; &lt;span class="n"&gt;T2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;typename&lt;/span&gt; &lt;span class="n"&gt;T3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;typename&lt;/span&gt; &lt;span class="n"&gt;T4&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;GenericManager&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+        &lt;span class="k"&gt;typedef&lt;/span&gt; &lt;span class="k"&gt;typename&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;tuple&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;T1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;T2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;T3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;T4&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;row_type&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="k"&gt;typedef&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;vector&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;row_type&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;queryset_type&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+        &lt;span class="k"&gt;static&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;all&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;queryset_type&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;qs&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;Y ya tengo un manager genérico &lt;tt class="docutils literal"&gt;GenericManager&lt;/tt&gt; con el que puedo reutilizar el código, pero
+sólo para tablas que tengan cuatro columnas, eso sí, éstas pueden ser de cualquier tipo.&lt;/p&gt;
+&lt;p&gt;Un poco más difícil es generalizar el número de columnas, hace un tiempo lo habría hecho
+utilizando &lt;a class="reference external" href="http://www.boost.org/doc/libs/1_60_0/libs/preprocessor/doc/index.html"&gt;Boost.Preprocessor&lt;/a&gt;, tengo algunos ejemplos de hace 10 años donde lo usaba, realmente
+estoy orgulloso de haberme enfrentado a ese problema de esa forma en aquel momento; pero hoy
+no es ése el camino que quiero seguir.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="el-buen-camino"&gt;
+&lt;h2&gt;El buen camino&lt;/h2&gt;
+&lt;p&gt;Hay una solución mucho más elegante, las &lt;strong&gt;variadic-templates&lt;/strong&gt;, con ellas
+podemos generalizar de una manera tan maravillosa como ésta:&lt;/p&gt;
+&lt;pre class="code cpp literal-block"&gt;
+&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;tuple&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;
+#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;vector&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;
+&lt;/span&gt;
+&lt;span class="k"&gt;template&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;typename&lt;/span&gt;&lt;span class="p"&gt;...&lt;/span&gt; &lt;span class="n"&gt;Args&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;GenericManager&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+        &lt;span class="k"&gt;typedef&lt;/span&gt; &lt;span class="k"&gt;typename&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;tuple&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Args&lt;/span&gt;&lt;span class="p"&gt;...&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;row_type&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="k"&gt;typedef&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;vector&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;row_type&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;queryset_type&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+        &lt;span class="k"&gt;static&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;all&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;queryset_type&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;qs&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;¿No es fantástico? Con esta generalización puedo hacer cosas realmente útiles, puedo crear una clase
+que se comporte realmente como un &lt;em&gt;manager&lt;/em&gt; genérico y una clase &lt;em&gt;queryset&lt;/em&gt; que implemente
+una funcionalidad afín a la que está disponible en Django.&lt;/p&gt;
+&lt;p&gt;De momento estoy trabajando en ello, básicamente reuniendo respuestas de StackOverflow en un único
+sitio y haciéndolas funcionar. Pronto un segundo post con detalles de implementación y ejemplos.&lt;/p&gt;
+&lt;/div&gt;
+</content><category term="C++"></category><category term="variadic templates"></category><category term="metaprogramming"></category><category term="django queryset"></category></entry><entry><title>WordNet-blast. Con boost::add_edge hemos topado.</title><link href="https://jgsogo.es/wordnet-blast-profiling.html" rel="alternate"></link><published>2015-08-20T12:54:00+02:00</published><updated>2015-08-20T12:54:00+02:00</updated><author><name>Javier G. Sogo</name></author><id>tag:jgsogo.es,2015-08-20:/wordnet-blast-profiling.html</id><summary type="html">&lt;p&gt;&lt;a href="https://github.com/jardon-u/wordnet-blast"&gt;WordNet-blast&lt;/a&gt; es una biblioteca de C++ creada por
+&lt;a href="http://logserv.free.fr/"&gt;Ugo Jardonnet&lt;/a&gt; para construir en memoria el gráfico de
+&lt;a href="http://wordnet.princeton.edu/"&gt;WordNet&lt;/a&gt; y permitir un acceso rápido a los &lt;em&gt;synsets&lt;/em&gt; y sus
+relaciones.&lt;/p&gt;
+&lt;p&gt;Encontré esta librería buscando recursos lingüísticos para mi tesis de fin de máster, en ella
+necesitaba cálcular la distancia semántica entre …&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;a href="https://github.com/jardon-u/wordnet-blast"&gt;WordNet-blast&lt;/a&gt; es una biblioteca de C++ creada por
+&lt;a href="http://logserv.free.fr/"&gt;Ugo Jardonnet&lt;/a&gt; para construir en memoria el gráfico de
+&lt;a href="http://wordnet.princeton.edu/"&gt;WordNet&lt;/a&gt; y permitir un acceso rápido a los &lt;em&gt;synsets&lt;/em&gt; y sus
+relaciones.&lt;/p&gt;
+&lt;p&gt;Encontré esta librería buscando recursos lingüísticos para mi tesis de fin de máster, en ella
+necesitaba cálcular la distancia semántica entre conceptos y para ello utilizaba el grafo de WordNet,
+así que esta librería, que utiliza la Boost Graph Library (BGL), resultaba perfecta para lo que
+quería hacer.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;NOTA.- En todo lo que se sigue hay que tener en cuenta que las pruebas se han realizado con Microsoft Visual Studio Premium 2013. Version 12.0.40418.00 Update 5 RC.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Sin embargo, había un &lt;strong&gt;problema&lt;/strong&gt;: el tiempo empleado en la construcción del grafo en memoria era
+excesivo cuando se ejecutaba en &lt;em&gt;debug&lt;/em&gt; (hablo de minutos) lo que complicaba las tareas de depuración.
+Así que aprovechando unos días de relax me he dedicado a darle un lavado de cara a la librería y a
+tratar de acelerar la construcción del grafo en &lt;a href="https://github.com/jgsogo/wordnet-blast"&gt;mi repositorio&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Sin embargo, no he sido capaz (aún). Me he encontrado con un caballo de batalla contra el que no quiero
+pelear: la función &lt;code&gt;_Orphan_me&lt;/code&gt;, que, tal y como se ve en la imagen siguiente, supone más del 90% del tiempo
+de ejecución de la aplicación:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Profiling WordNet-blast" src="/images/wordnet-blast_profiling_1.png"&gt;&lt;/p&gt;
+&lt;p&gt;Esta función es llamada desde &lt;code&gt;boost::add_edge&lt;/code&gt; cuando se crea un nuevo arco en el grafo. es decir, cada
+vez que añadimos una nueva relación al grafo de WordNet que estamos construyendo en memoria:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="boost::add_edge" src="/images/wordnet-blast_profiling_2.png"&gt;&lt;/p&gt;
+&lt;p&gt;Si buscamos el código de la función podemos ver que sólo se ejecuta en caso de que la macro de preprocesador
+&lt;code&gt;_ITERATOR_DEBUG_LEVEL&lt;/code&gt; valga 2. Es decir, que sólo tenemos que preocuparnos si estamos compilando con
+Microsoft y en debug (salvo que establezcamos este valor nosotros mismos) (&lt;strong&gt;NOTA&lt;/strong&gt; Esta macro se añade en
+Microsoft Visual Studio 2010).&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;    &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;_Orphan_me&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+        &lt;span class="p"&gt;{&lt;/span&gt;   &lt;span class="c1"&gt;// cut ties with parent&lt;/span&gt;
+ &lt;span class="cp"&gt;#if _ITERATOR_DEBUG_LEVEL == 2&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;_Myproxy&lt;/span&gt; &lt;span class="o"&gt;!=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+            &lt;span class="p"&gt;{&lt;/span&gt;   &lt;span class="c1"&gt;// adopted, remove self from list&lt;/span&gt;
+            &lt;span class="n"&gt;_Iterator_base12&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;_Pnext&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;_Myproxy&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;_Myfirstiter&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+            &lt;span class="k"&gt;while&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;_Pnext&lt;/span&gt; &lt;span class="o"&gt;!=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;_Pnext&lt;/span&gt; &lt;span class="o"&gt;!=&lt;/span&gt; &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+                &lt;span class="n"&gt;_Pnext&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;_Pnext&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;_Mynextiter&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+            &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;_Pnext&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+                &lt;span class="n"&gt;_DEBUG_ERROR&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ITERATOR LIST CORRUPTED!&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+            &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;_Pnext&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;_Mynextiter&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+            &lt;span class="n"&gt;_Myproxy&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+            &lt;span class="p"&gt;}&lt;/span&gt;
+ &lt;span class="cp"&gt;#endif &lt;/span&gt;&lt;span class="cm"&gt;/* _ITERATOR_DEBUG_LEVEL == 2 */&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Para más información sobre &lt;code&gt;_ITERATOR_DEBUG_LEVEL&lt;/code&gt; puedes consultar esta
+&lt;a href="https://msdn.microsoft.com/en-us/library/hh697468.aspx"&gt;documentación de Microsoft&lt;/a&gt;, o este
+&lt;a href="https://channel9.msdn.com/Series/C9-Lectures-Stephan-T-Lavavej-Advanced-STL/C9-Lectures-Stephan-T-Lavavej-Advanced-STL-3-of-n"&gt;vídeo de Stephan T. Lavavej&lt;/a&gt;:&lt;/p&gt;
+&lt;iframe src="https://channel9.msdn.com/Series/C9-Lectures-Stephan-T-Lavavej-Advanced-STL/C9-Lectures-Stephan-T-Lavavej-Advanced-STL-3-of-n/player" width="640" height="360" allowFullScreen frameBorder="0"&gt;&lt;/iframe&gt;
+
+&lt;h3&gt;Workaround&lt;/h3&gt;
+&lt;p&gt;Entonces, ¿qué podemos hacer? Básicamente eliminar todas las comprobaciones que se realizan por defecto
+en debug (&lt;code&gt;_ITERATOR_DEBUG_LEVEL == 2&lt;/code&gt;) y cambiar el valor de esta macro. Debemos tener en cuenta que
+al eliminar todas estas comprobaciones, en caso de error en el código, tendremos un comportamiento indeterminado
+en vez de la &lt;em&gt;amigable&lt;/em&gt; alerta &lt;em&gt;Debug Assertion&lt;/em&gt; que nos indica que algo ha ido mal y nos permite ir al punto
+del código donde ha sucedido.&lt;/p&gt;
+&lt;p&gt;Como siempre, hay solución/workaround, pero hay que tener muy presente cuáles son las consecuencias (&lt;em&gt;side effects&lt;/em&gt;).&lt;/p&gt;
+&lt;p&gt;Seguimos trabajando en ello.&lt;/p&gt;</content><category term="C++"></category><category term="profiling"></category><category term="boost-graph-library"></category><category term="_ITERATOR_DEBUG_LEVEL"></category><category term="workaround"></category></entry></feed>

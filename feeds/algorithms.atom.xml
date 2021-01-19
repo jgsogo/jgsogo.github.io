@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Javier G. Sogo's blog - Algorithms</title><link href="https://jgsogo.es/" rel="alternate"></link><link href="https://jgsogo.es/feeds/algorithms.atom.xml" rel="self"></link><id>https://jgsogo.es/</id><updated>2015-07-29T10:49:00+02:00</updated><entry><title>Mejorar la corrección de textos producidos por OCR</title><link href="https://jgsogo.es/ocr-enhancement.html" rel="alternate"></link><published>2015-07-29T10:49:00+02:00</published><updated>2015-07-29T10:49:00+02:00</updated><author><name>Javier G. Sogo</name></author><id>tag:jgsogo.es,2015-07-29:/ocr-enhancement.html</id><summary type="html">&lt;p&gt;El lunes pasado Leticia planteaba si es posible &lt;a class="reference external" href="http://blog.leticiamfm.com/post/2015/07/24/Correctores-autom%C3%A1ticos-y-textos-producidos-por-OCR%3A-una-relaci%C3%B3n-que-no-funciona"&gt;mejorar la corrección automática de un texto producido por OCR&lt;/a&gt;,
+y recapitulaba algunas de las &lt;em&gt;dificultades&lt;/em&gt; que se había encontrado con más frecuencia. Yo quiero dividirlas en
+dos categorías diferentes: las debidas al proceso de reconocimiento del OCR y las que están …&lt;/p&gt;</summary><content type="html">&lt;p&gt;El lunes pasado Leticia planteaba si es posible &lt;a class="reference external" href="http://blog.leticiamfm.com/post/2015/07/24/Correctores-autom%C3%A1ticos-y-textos-producidos-por-OCR%3A-una-relaci%C3%B3n-que-no-funciona"&gt;mejorar la corrección automática de un texto producido por OCR&lt;/a&gt;,
+y recapitulaba algunas de las &lt;em&gt;dificultades&lt;/em&gt; que se había encontrado con más frecuencia. Yo quiero dividirlas en
+dos categorías diferentes: las debidas al proceso de reconocimiento del OCR y las que están relacionadas con las
+sugerencias de corrección.&lt;/p&gt;
+&lt;div class="section" id="errores-de-reconocimiento-de-caracteres"&gt;
+&lt;h2&gt;Errores de reconocimiento de caracteres&lt;/h2&gt;
+&lt;p&gt;El OCR (Reconocimiento Óptico de Caracteres) es un proceso de identificación automática de los caracteres
+contenidos en una imagen que se plantea como un problema de reconocimiento de patrones (las propias letras).
+En la bibliografía se considera un problema prácticamente resuelto que ofrece gran precisión cuando
+está entrenado adecuadamente; no obstante siempre hay algún error relacionado con la calidad de la imagen
+original que provoca una identificación incorrecta de algunas letras.&lt;/p&gt;
+&lt;p&gt;Leticia muestra algunos ejemplos de este problema que reproduzco en dos imágenes a continuación.
+En el primer caso la interpretación incorrecta de una cadena de caracteres en favor de una
+única letra visualmente muy semejante:&lt;/p&gt;
+&lt;div class="figure align-center"&gt;
+&lt;img alt="" src="https://jgsogo.es/images/nimbusaeta_ocr1.png" /&gt;
+&lt;p class="caption"&gt;Interpretación incorrecta de la secuencia de caracteres &lt;cite&gt;cl&lt;/cite&gt; y &lt;cite&gt;d&lt;/cite&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;En esta segunda imagen el OCR junta dos palabras en una, otro error relativamente habitual como consecuencia de los
+diferentes espaciados entre las letras (&lt;em&gt;kerning&lt;/em&gt;) y entre palabras.&lt;/p&gt;
+&lt;div class="figure align-center"&gt;
+&lt;img alt="" src="https://jgsogo.es/images/nimbusaeta_ocr2.png" /&gt;
+&lt;p class="caption"&gt;Problemas del OCR con el espaciado entre caracteres.&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;Sin embargo estos no son los problemas de los que quería hablar aquí.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="errores-asociados-a-las-sugerencias"&gt;
+&lt;h2&gt;Errores asociados a las sugerencias&lt;/h2&gt;
+&lt;p&gt;Mucho más interesante me parece el segundo grupo de problemas, los relacionados con las sugerencias que ofrece
+el editor de texto que utiliza (¿Microsoft Word?). Leticia ha reunido algunas características recurrentes:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;No tiene en cuenta secuencias de caracteres muy parecidas a la hora de ofrecer sugerencias.&lt;/li&gt;
+&lt;li&gt;No ordena las sugerencias por frecuencia de uso.&lt;/li&gt;
+&lt;li&gt;Nada de separar más de dos palabras que han quedado juntas.&lt;/li&gt;
+&lt;li&gt;Los guiones.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;/div&gt;
+&lt;div class="section" id="ideas-first-round"&gt;
+&lt;h2&gt;Ideas (first round)&lt;/h2&gt;
+&lt;p&gt;Creo que los que están relacionados con las sugerencias se pueden abordar desde la lingüística computacional
+con aproximaciones relativamente sencillas: una vez que se ha identificado una palabra mal deletreada (dejemos
+que sea el corrector profesional el que identifique palabras fuera de sitio) tenemos que crear un sistema
+que ofrezca sugerencias.&lt;/p&gt;
+&lt;p&gt;Creo que se pueden combinar dos aproximaciones para construir este listado de sugerencias:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;&lt;strong&gt;distancia entre palabras&lt;/strong&gt;: un índice de tipo Jaccard letra a letra o, mejor aún, en grupos de dos/tres
+letras puede darnos una idea de qué palabras están más próximas a qué otras. Construir una base de datos
+con esta información podría resolver nuestro problema prácticamente por si solo, pero tengo dudas sobre
+la explosión combinatoria a la que se enfrentaría una búsqueda de este tipo o la forma de construir
+índices y el almacenamiento (¿estás pensando en &lt;em&gt;buckets&lt;/em&gt;? ¿Cómo lo harías?).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;concordancia&lt;/strong&gt; (ahora dudo si se llama así): estamos hablando de palabras incorrectas, pero tenemos su
+contexto, ¡aprovechémoslo! Podemos construir una matriz de concordancia restringinda a bi-gramas de algún
+corpus que tengamos y, a través de esta matriz podemos obtener un primer conjunto de candidatos ordenado
+por frecuencia de uso.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Los dos planteamientos anteriores pueden combinarse fácilmente para obtener un listado de sugerencias ordenadas
+por proximidad a la palabra que está mal escrita y por frecuencia de uso. Si además incluímos un parseador
+morfológico podemos identificar la categoría gramatical de la palabra incorrecta para filtrar las sugerencias.&lt;/p&gt;
+&lt;p&gt;¿Qué os parece? ¿Seguimos con ello? ¿Se os ocurre alguna otra idea? ¿Creéis que sería útil algo así? Quien recoja
+el guante que se pronuncie en los comentarios...&lt;/p&gt;
+&lt;/div&gt;
+</content><category term="Algorithms"></category><category term="notebook"></category><category term="lingwars"></category><category term="ocr"></category><category term="machine learning"></category></entry></feed>

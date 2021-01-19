@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="https://jgsogo.es/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="https://jgsogo.es/theme/css/pygments.min.css">
+  <link rel="stylesheet" type="text/css" href="https://jgsogo.es/theme/css/font-awesome.min.css">
+  <link href="https://jgsogo.es/static/custom.css" rel="stylesheet">
+  <link href="https://jgsogo.es/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Javier G. Sogo's blog Atom">
+  <link rel="shortcut icon" href="http://localhost:8000/images/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="http://localhost:8000/images/favicon.ico" type="image/x-icon">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="" />
+<meta name="author" content="Javier G. Sogo" />
+<meta name="description" content="Hace unos días me propuse hacer un mapa dinámico con CartoDB en el que se mostraran los trenes de RENFE moviéndose con la intención de probar la herramienta y experimentar con sus posibilidades. El caso es que el proyecto crece, los datos no están tan disponibles como uno quisiera y …" />
+<meta name="keywords" content="renfe, railway, geo, cartodb">
+<meta property="og:site_name" content="Javier G. Sogo's blog"/>
+<meta property="og:title" content="RENFE -- Mapa dinámico de circulaciones"/>
+<meta property="og:description" content="Hace unos días me propuse hacer un mapa dinámico con CartoDB en el que se mostraran los trenes de RENFE moviéndose con la intención de probar la herramienta y experimentar con sus posibilidades. El caso es que el proyecto crece, los datos no están tan disponibles como uno quisiera y …"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="https://jgsogo.es/renfe-project.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2015-08-25 18:34:00+02:00"/>
+<meta property="article:modified_time" content=""/>
+<meta property="article:author" content="https://jgsogo.es/author/javier-g-sogo.html">
+<meta property="article:section" content="Projects"/>
+<meta property="article:tag" content="renfe"/>
+<meta property="article:tag" content="railway"/>
+<meta property="article:tag" content="geo"/>
+<meta property="article:tag" content="cartodb"/>
+<meta property="og:image" content="http://localhost:8000/images/profile.png">  <title>Javier G. Sogo's blog &ndash; RENFE -- Mapa dinámico de circulaciones</title>
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="https://jgsogo.es">
+        <img src="http://localhost:8000/images/profile.png" alt="Javier G. Sogo" title="Javier G. Sogo">
+      </a>
+      <h1><a href="https://jgsogo.es">Javier G. Sogo</a></h1>
+      <p></p>
+      <nav>
+        <ul class="list">
+          <li><a href="https://jgsogo.es/pages/contact.html#contact">Contacto</a></li>
+          <li><a href="https://jgsogo.es/pages/about-me.html#about-me">Yo, mí, me, conmigo</a></li>
+          <li><a href="http://lingwars.github.io/blog/" target="_blank">Lingẅars</a></li>
+        </ul>
+      </nav>
+      <ul class="social">
+        <li><a class="sc-linkedin" href="https://es.linkedin.com/in/jgsogo" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+        <li><a class="sc-github" href="https://github.com/jgsogo" target="_blank"><i class="fa fa-github"></i></a></li>
+        <li><a class="sc-twitter" href="https://twitter.com/jgsogo" target="_blank"><i class="fa fa-twitter"></i></a></li>
+        <li><a class="sc-rss" href="http://localhost:8000feeds/all.atom.xml" target="_blank"><i class="fa fa-rss"></i></a></li>
+      </ul>
+    </div>
+  </aside>
+  <main>
+    <nav>
+      <a href="https://jgsogo.es">Home</a>
+      <a href="/archives.html">Archives</a>
+      <a href="/categories.html">Categories</a>
+      <a href="https://jgsogo.es/feeds/all.atom.xml">Atom</a>
+    </nav>
+
+<article>
+  <header>
+    <h1 id="renfe-project">RENFE -- Mapa dinámico de circulaciones</h1>
+    <p>Posted on Tue 25 August 2015 in <a href="https://jgsogo.es/category/projects.html">Projects</a></p>
+  </header>
+  <div>
+    
+<p>Hace unos días me propuse hacer un mapa dinámico con <a class="reference external" href="https://cartodb.com/">CartoDB</a> en el que se
+mostraran los trenes de RENFE moviéndose con la intención de probar la herramienta y experimentar
+con sus posibilidades. El caso es que el proyecto crece, los datos no están tan disponibles como
+uno quisiera y empiezan a aparecer los famosos <em>"ya que..."</em>.</p>
+<p>Durante la recogida de datos para este mapa surgen algunas ideas relacionadas como la construcción
+de un grafo con la infraestructura de transporte para realizar análisis que permitan optimizar
+costes, tiempos, o estudiar problemas en la infraestructura. Es de imaginar que ADIF dispone de
+algo parecido y lo utiliza, así que el objetivo es fundamentalmente exploratorio para empezar a
+estudiar sistemas de transporte <a class="footnote-reference" href="#id2" id="id1">[1]</a>.</p>
+<table class="docutils footnote" frame="void" id="id2" rules="none">
+<colgroup><col class="label"/><col/></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Andrew Sherratt, 2005. Portages. <a class="reference external" href="http://www.archatlas.org/Portages/Portages.php">http://www.archatlas.org/Portages/Portages.php</a></td></tr>
+</tbody>
+</table>
+<div class="section" id="ideas-previas">
+<h2><a class="toc-backref" href="#id4">Ideas previas</a></h2>
+<p>Como siempre lo primero es buscar un poco por Internet para ver quién ha hecho algo ya y, como siempre,
+sin necesidad de bucear demasiado, aparecen algunos buenos resultados:</p>
+<ul>
+<li><p class="first"><a class="reference external" href="https://twitter.com/victorianoi">Victoriano</a> tiene un mapa donde muestra los <a class="reference external" href="https://victoriano-v21.cartodb.com/viz/aac847aa-e882-11e2-bc2b-d90ab36db2dd/public_map">trenes de larga distancia en 2013</a> (ver imagen más abajo),
+sin embargo no es exactamente lo que busco. De todos modos, una pena que los datasets sean privados.</p>
+<div class="figure align-center">
+<img alt="Renfe - Trenes de larga distancia 2013" src="https://jgsogo.es/images/renfe-stations-victoriano.png"/>
+<p class="caption"><strong>Renfe - Trenes de larga distancia 2013</strong>.
+Los puntos naranjas son la estaciones según el nº de trenes que salen de esa estación.
+El azul es el nº de conexiones posibles con billete único que vende Renfe en viaje directo
+o con transbordo. Autor: <a class="reference external" href="https://twitter.com/victorianoi">Victoriano</a></p>
+</div>
+</li>
+<li><p class="first">Buscando un poco más encontramos los mapas de <a class="reference external" href="https://astroide.cartodb.com/maps">Astroide</a>, otro usuario de CartoDB que nos ofrece unos
+mapas mucho más interesantes para lo que quiero hacer, y que además ofrece públicamente los
+datasets: un mapa dinámico con los <a class="reference external" href="https://astroide.cartodb.com/viz/83f346cc-18bc-11e5-a62d-0e9d821ea90d/public_map">trenes de largo recorrido</a> y otro con los <a class="reference external" href="https://astroide.cartodb.com/viz/5b6b5838-1aa7-11e5-858b-0e018d66dc29/public_map">trenes de mercancias</a>,
+que reproduzco a continuación:</p>
+<div class="figure align-center">
+<img alt="Renfe - Trenes de larga distancia" src="https://jgsogo.es/images/renfe-stations-astroide-largadistancia.png"/>
+<p class="caption"><strong>Renfe - Trenes de Larga Distancia</strong>.
+Recorrido efectuado por trenes de Larga Distancia. Estudio del uso de bases de datos NoSQL en
+la Fundación de los Ferrocarriles Españoles. Autor: <a class="reference external" href="https://astroide.cartodb.com/maps">Astroide</a></p>
+</div>
+<div class="figure align-center">
+<img alt="Renfe - Trenes de mercancias" src="https://jgsogo.es/images/renfe-stations-astroide-mercancias.png"/>
+<p class="caption"><strong>Trenes de mercancías</strong>.
+Reconstrucción del movimiento de los trenes de mercancías. Estudio del uso de bases de datos NoSQL en
+la Fundación de los Ferrocarriles Españoles. Autor: <a class="reference external" href="https://astroide.cartodb.com/maps">Astroide</a></p>
+</div>
+<p>Estos dos mapas son públicos y los datasets pueden descargarse, uno de ellos me será de muchísima
+utilidad: la información con las líneas de la infraestructura, ¿están todas las líneas activas? Por
+si acaso contacto con el usuario para confirmarlo y para saber si puede también proporcionarme los
+datos de las líneas desmanteladas que ya no están operativas.</p>
+</li>
+</ul>
+<p>Los mapas de Astroide muestran básicamente el resultado al que quiero llegar, pero el problema que
+me planteo no es tanto obtener el mapa como disfrutar del camino hasta conseguirlo. Además, echo de
+menos los trenes de media distancia y regionales, ¡y las estaciones!. Me pregunto: ¿cómo quedará el
+mapa si se combinan todos estos trenes en una única visualización y mostramos también las estaciones?</p>
+</div>
+<div class="section" id="definicion-del-problema">
+<h2><a class="toc-backref" href="#id5">Definición del problema</a></h2>
+<p>El reto sigue presente a pesar de los recursos que se han encontrado: para realizar mi mapa dinámico con
+las circulaciones de trenes necesito posicionar las estaciones, conseguir los horarios de los trenes y
+luego muestrear su posición a lo largo de un día o de una semana para mostrarlos en el mapa.</p>
+<div class="section" id="la-infraestructura-estaciones-y-lineas">
+<h3><a class="toc-backref" href="#id6">La infraestructura: estaciones y líneas</a></h3>
+<p>Uno de los primeros pasos que me propongo dar es crear un mapa estático con la infraestructura, básicamente
+reproducir la capa de ferrocarriles que supongo que estará disponible en muchos GIS. Para ello necesito:</p>
+<ul class="simple">
+<li>los recorridos de las líneas (<a class="reference external" href="https://jgsogo.es/renfe-project-lines.html">ver artículo</a>), y</li>
+<li>la posición de las estaciones (<a class="reference external" href="https://jgsogo.es/renfe-project-geo-stations.html">ver artículo</a>).</li>
+</ul>
+<p>En la infraestructura quiero mostrar tanto las líneas que actualmente están en funcionamiento como las
+líneas que ya han sido desmanteladas. Asimismo quiero diferenciar por colores según los anchos (FEVE,
+métrico, internacional, ibérico) y también identificar qué tramos están electrificados.</p>
+<p>En cuanto a las estaciones, el objetivo será mostrar en el mapa la posición de todos los edificios
+que hayan ofrecido este servicio. Podrían categorizarse en función de las prestaciones de cada uno
+de ellos: accesibilidad, área comercial,...</p>
+<p>Una vez que tenga disponibles estos datos visuales, el objetivo será crear un <strong>grafo de la infraestructura
+donde los nodos sea estaciones o bifurcaciones y los arcos estén formados por los itinerarios</strong>. Gracias
+a este grafo se podrán reconstruir las circulaciones de trenes entre estaciones no contiguas, analizar la
+demanda de la infraestructura, las consecuencias de fallos en el servicio, alternativas de recuperación, etc.
+No obstante, su construcción resulta compleja, tal y como se mostrará en el artículo correspondiente.</p>
+<div class="figure align-center">
+<img alt="Visualización de un sistema de transporte sobre el mapa de Europa" src="https://jgsogo.es/images/jgraph-transport-system.png"/>
+<p class="caption">Visualización como grafo de una red de transporte sobre el mapa de Europa. Fuente: <a class="reference external" href="https://jgraph.github.io/mxgraph/docs/manual_javavis.html">JGraphX User Manual</a>.</p>
+</div>
+</div>
+<div class="section" id="circulaciones-de-trenes">
+<h3><a class="toc-backref" href="#id7">Circulaciones de trenes</a></h3>
+<p>El otro elemento del mapa son los datos de explotación de la infraestructura: la circulación de los
+trenes. Necesito obtener los horarios de todos ellos (estaciones, hora de salida y llegada,...)
+para poder identificar en qué lugar se encuentran en cada momento.</p>
+<p>RENFE no ofrece esta información de una forma amigable a través de algún tipo de API, tampoco es una
+información que haya encontrado en alguna web de la administración como <a class="reference external" href="http://datos.gob.es/">datos.gob.es</a>, así que
+habrá que obtenerlos de alguna otra manera (scraping).</p>
+<p>Estos datos de los trenes se podrán combinar con los datos del grafo de la infraestructura (y
+ayudarán también a construirlo) para generar el mapa dinámico pretendido. Además,
+la información disponible de esta manera permitirá realizar diferentes estudios.</p>
+</div>
+</div>
+<div class="section" id="mas-sobre-el-proyecto">
+<h2><a class="toc-backref" href="#id8">Más sobre el proyecto</a></h2>
+<p>El proyecto se desarrolla en los siguientes artículos:</p>
+<ul class="simple">
+<li>Geolocalización de estaciones (ADIF) (<a class="reference external" href="https://jgsogo.es/renfe-project-geo-stations.html">ver artículo</a>).</li>
+<li>La infraestructura ferroviaria (ADIF) (<a class="reference external" href="https://jgsogo.es/renfe-project-lines.html">ver artículo</a>).</li>
+<li>Circulaciones de trenes (RENFE) (<a class="reference external" href="https://jgsogo.es/renfe-project-trains.html">ver artículo</a>).</li>
+</ul>
+</div>
+
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="https://jgsogo.es/tag/renfe.html">renfe</a>
+      <a href="https://jgsogo.es/tag/railway.html">railway</a>
+      <a href="https://jgsogo.es/tag/geo.html">geo</a>
+      <a href="https://jgsogo.es/tag/cartodb.html">cartodb</a>
+    </p>
+  </div>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'jgsogoes';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</article>
+
+    <footer>
+<p>
+  &copy; Javier G. Sogo 2021 - This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>
+</p>
+<p>Built using <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a></p><p>
+  <a rel="license"
+     href="http://creativecommons.org/licenses/by-sa/4.0/"
+     target="_blank">
+    <img alt="Creative Commons License"
+         title="Creative Commons License"
+         style="border-width:0"
+         src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png"
+         width="80"
+         height="15"/>
+  </a>
+</p>    </footer>
+  </main>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "name": "RENFE -- Mapa dinámico de circulaciones",
+  "headline": "RENFE -- Mapa dinámico de circulaciones",
+  "datePublished": "2015-08-25 18:34:00+02:00",
+  "dateModified": "",
+  "author": {
+    "@type": "Person",
+    "name": "Javier G. Sogo",
+    "url": "https://jgsogo.es/author/javier-g-sogo.html"
+  },
+  "image": "http://localhost:8000/images/profile.png",
+  "url": "https://jgsogo.es/renfe-project.html",
+  "description": "Hace unos días me propuse hacer un mapa dinámico con CartoDB en el que se mostraran los trenes de RENFE moviéndose con la intención de probar la herramienta y experimentar con sus posibilidades. El caso es que el proyecto crece, los datos no están tan disponibles como uno quisiera y …"
+}
+</script></body>
+</html>

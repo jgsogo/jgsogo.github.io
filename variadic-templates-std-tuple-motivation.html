@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="https://jgsogo.es/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="https://jgsogo.es/theme/css/pygments.min.css">
+  <link rel="stylesheet" type="text/css" href="https://jgsogo.es/theme/css/font-awesome.min.css">
+  <link href="https://jgsogo.es/static/custom.css" rel="stylesheet">
+  <link href="https://jgsogo.es/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Javier G. Sogo's blog Atom">
+  <link rel="shortcut icon" href="http://localhost:8000/images/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="http://localhost:8000/images/favicon.ico" type="image/x-icon">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="" />
+<meta name="author" content="Javier G. Sogo" />
+<meta name="description" content="Debo confesar que me he pasado prácticamente todo el fin de semana dándole vueltas a las variadic templates para utilizarlas con las estructuras std::tuple. Y debo confesar que me parece impresionante lo que se puede conseguir (y eso que me imagino que no he raspado más que la superficie …" />
+<meta name="keywords" content="variadic templates, metaprogramming, django queryset">
+<meta property="og:site_name" content="Javier G. Sogo's blog"/>
+<meta property="og:title" content="Variadic templates and std::tuple - Motivación"/>
+<meta property="og:description" content="Debo confesar que me he pasado prácticamente todo el fin de semana dándole vueltas a las variadic templates para utilizarlas con las estructuras std::tuple. Y debo confesar que me parece impresionante lo que se puede conseguir (y eso que me imagino que no he raspado más que la superficie …"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="https://jgsogo.es/variadic-templates-std-tuple-motivation.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2016-03-21 12:54:00+01:00"/>
+<meta property="article:modified_time" content=""/>
+<meta property="article:author" content="https://jgsogo.es/author/javier-g-sogo.html">
+<meta property="article:section" content="C++"/>
+<meta property="article:tag" content="variadic templates"/>
+<meta property="article:tag" content="metaprogramming"/>
+<meta property="article:tag" content="django queryset"/>
+<meta property="og:image" content="http://localhost:8000/images/profile.png">  <title>Javier G. Sogo's blog &ndash; Variadic templates and std::tuple - Motivación</title>
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="https://jgsogo.es">
+        <img src="http://localhost:8000/images/profile.png" alt="Javier G. Sogo" title="Javier G. Sogo">
+      </a>
+      <h1><a href="https://jgsogo.es">Javier G. Sogo</a></h1>
+      <p></p>
+      <nav>
+        <ul class="list">
+          <li><a href="https://jgsogo.es/pages/contact.html#contact">Contacto</a></li>
+          <li><a href="https://jgsogo.es/pages/about-me.html#about-me">Yo, mí, me, conmigo</a></li>
+          <li><a href="http://lingwars.github.io/blog/" target="_blank">Lingẅars</a></li>
+        </ul>
+      </nav>
+      <ul class="social">
+        <li><a class="sc-linkedin" href="https://es.linkedin.com/in/jgsogo" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+        <li><a class="sc-github" href="https://github.com/jgsogo" target="_blank"><i class="fa fa-github"></i></a></li>
+        <li><a class="sc-twitter" href="https://twitter.com/jgsogo" target="_blank"><i class="fa fa-twitter"></i></a></li>
+        <li><a class="sc-rss" href="http://localhost:8000feeds/all.atom.xml" target="_blank"><i class="fa fa-rss"></i></a></li>
+      </ul>
+    </div>
+  </aside>
+  <main>
+    <nav>
+      <a href="https://jgsogo.es">Home</a>
+      <a href="/archives.html">Archives</a>
+      <a href="/categories.html">Categories</a>
+      <a href="https://jgsogo.es/feeds/all.atom.xml">Atom</a>
+    </nav>
+
+<article>
+  <header>
+    <h1 id="variadic-templates-std-tuple-motivation">Variadic templates and std::tuple - Motivación</h1>
+    <p>Posted on Mon 21 March 2016 in <a href="https://jgsogo.es/category/c.html">C++</a></p>
+  </header>
+  <div>
+    <p>Debo confesar que me he pasado prácticamente todo el fin de semana dándole
+vueltas a las <em>variadic templates</em> para utilizarlas con las estructuras <tt class="docutils literal"><span class="pre">std::tuple</span></tt>.
+Y debo confesar que me parece impresionante lo que se puede conseguir (y eso
+que me imagino que no he raspado más que la superficie), son una herramienta
+increiblemente potente para construir librerías genéricas sin incrementar la
+<a class="reference external" href="https://en.wikipedia.org/wiki/Cyclomatic_complexity">complejidad ciclomática</a> del programa.</p>
+<div class="section" id="motivacion">
+<h2>Motivación</h2>
+<p>A raíz de un proyecto personal me he tenido que enfrentar a la ingesta de <em>grandes</em>
+cantidades de datos en formato tabular (básicamente un dump de una base de datos)
+y, aunque ya había hecho algo al respecto <a class="footnote-reference" href="#id2" id="id1">[1]</a> quería darle una vuelta al tema y darme una
+excusa para probar las <em>variadic</em> junto con las tuplas.</p>
+<p>Quería reproducir una manera eficiente y fuertemente tipada de leer los datos de los archivos,
+acceder a ellos, filtrarlos, proyectarlos,... en cierto modo quería la simplicidad y
+potencia que pone a nuestra disposición los <em>managers</em> y las <em>querysets</em> de Django,
+pero quería descansar un poco de Python e implementarlo en C++.</p>
+<p>Aún no lo he conseguido, ni mucho menos, todavía hay mucho trabajo por delante, pero creo
+que la línea de desarrollo elegida promete y quiero compartirlo.</p>
+<table class="docutils footnote" frame="void" id="id2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Hago referencia al proyecto <a class="reference external" href="https://github.com/jgsogo/txt_table">txt_table</a> que, visto lo visto, ya ha caducado.</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="std-tuple-a-single-row">
+<h2>std::tuple - a single row</h2>
+<p>La librería estándar proporciona desde hace tiempo (C++11) una clase que permite almacenar un
+conjunto heterogeneo de valores de tamaño fijo (no tienes excusa para no conocerla). Desde
+mi punto de vista es una estructura ideal para representar una fila de una tabla de una base
+de datos. El ejemplo de <a class="reference external" href="http://en.cppreference.com/w/cpp/utility/tuple">cppreference</a> me parece estupendo:</p>
+<pre class="code cpp literal-block">
+<span class="cp">#include</span> <span class="cpf">&lt;tuple&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdexcept&gt;</span><span class="cp">
+</span>
+<span class="n">std</span><span class="o">::</span><span class="n">tuple</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">,</span> <span class="kt">char</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">get_student</span><span class="p">(</span><span class="kt">int</span> <span class="n">id</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">make_tuple</span><span class="p">(</span><span class="mf">3.8</span><span class="p">,</span> <span class="sc">'A'</span><span class="p">,</span> <span class="s">&quot;Lisa Simpson&quot;</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">id</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">make_tuple</span><span class="p">(</span><span class="mf">2.9</span><span class="p">,</span> <span class="sc">'C'</span><span class="p">,</span> <span class="s">&quot;Milhouse Van Houten&quot;</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">id</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">make_tuple</span><span class="p">(</span><span class="mf">1.7</span><span class="p">,</span> <span class="sc">'D'</span><span class="p">,</span> <span class="s">&quot;Ralph Wiggum&quot;</span><span class="p">);</span>
+    <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">invalid_argument</span><span class="p">(</span><span class="s">&quot;id&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">student0</span> <span class="o">=</span> <span class="n">get_student</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;ID: 0, &quot;</span>
+              <span class="o">&lt;&lt;</span> <span class="s">&quot;GPA: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span><span class="p">(</span><span class="n">student0</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span>
+              <span class="o">&lt;&lt;</span> <span class="s">&quot;grade: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">(</span><span class="n">student0</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span>
+              <span class="o">&lt;&lt;</span> <span class="s">&quot;name: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">(</span><span class="n">student0</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="sc">'\n'</span><span class="p">;</span>
+
+    <span class="kt">double</span> <span class="n">gpa1</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">grade1</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">name1</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">tie</span><span class="p">(</span><span class="n">gpa1</span><span class="p">,</span> <span class="n">grade1</span><span class="p">,</span> <span class="n">name1</span><span class="p">)</span> <span class="o">=</span> <span class="n">get_student</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;ID: 1, &quot;</span>
+              <span class="o">&lt;&lt;</span> <span class="s">&quot;GPA: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">gpa1</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span>
+              <span class="o">&lt;&lt;</span> <span class="s">&quot;grade: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">grade1</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span>
+              <span class="o">&lt;&lt;</span> <span class="s">&quot;name: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">name1</span> <span class="o">&lt;&lt;</span> <span class="sc">'\n'</span><span class="p">;</span>
+<span class="p">}</span>
+</pre>
+<p>Si tuviéramos una tabla con el GPA, el <em>grade</em> y el <em>name</em> de un conjunto de estudiantes, yo
+querría representar cada fila de esta forma, fuertemente tipada, así no hay problemas y todo
+queda claro.</p>
+</div>
+<div class="section" id="std-vector-std-tuple-the-queryset">
+<h2>std::vector&lt;std::tuple&gt; - the queryset</h2>
+<p>Pero en una base de datos lo que tenemos es un conjunto de filas, de elementos <tt class="docutils literal"><span class="pre">std::tuple&lt;...&gt;</span></tt>
+de los del apartado anterior; un vector de estos elementos sería la representación en memoria de
+un <a class="reference external" href="https://docs.djangoproject.com/es/1.9/ref/models/querysets/">queryset</a> de Django; sólo habría que dotarlo de la funcionalidad adecuada.</p>
+<pre class="code cpp literal-block">
+<span class="cp">#include</span> <span class="cpf">&lt;tuple&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp">
+</span>
+<span class="k">class</span> <span class="nc">StudentsManager</span> <span class="p">{</span>
+    <span class="k">public</span><span class="o">:</span>
+        <span class="k">typedef</span> <span class="n">std</span><span class="o">::</span><span class="n">tuple</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">double</span><span class="p">,</span> <span class="kt">char</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">row_type</span><span class="p">;</span>
+        <span class="k">typedef</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">row_type</span><span class="o">&gt;</span> <span class="n">queryset_type</span><span class="p">;</span>
+    <span class="k">public</span><span class="o">:</span>
+        <span class="k">static</span> <span class="kt">void</span> <span class="n">all</span><span class="p">(</span><span class="n">queryset_type</span><span class="o">&amp;</span> <span class="n">qs</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">qs</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">make_tuple</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">3.8</span><span class="p">,</span> <span class="sc">'A'</span><span class="p">,</span> <span class="s">&quot;Lisa Simpson&quot;</span><span class="p">));</span>
+            <span class="n">qs</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">make_tuple</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">2.9</span><span class="p">,</span> <span class="sc">'C'</span><span class="p">,</span> <span class="s">&quot;Milhouse Van Houten&quot;</span><span class="p">));</span>
+            <span class="n">qs</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">make_tuple</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mf">1.7</span><span class="p">,</span> <span class="sc">'D'</span><span class="p">,</span> <span class="s">&quot;Ralph Wiggum&quot;</span><span class="p">));</span>
+        <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">StudentsManager</span><span class="o">::</span><span class="n">queryset_type</span> <span class="n">queryset</span><span class="p">;</span>
+    <span class="n">StudentsManager</span><span class="o">::</span><span class="n">all</span><span class="p">(</span><span class="n">queryset</span><span class="p">);</span>
+
+    <span class="c1">// Dump all students
+</span>    <span class="k">for</span> <span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span> <span class="nl">item</span><span class="p">:</span> <span class="n">queryset</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;ID: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span>
+                  <span class="o">&lt;&lt;</span> <span class="s">&quot;GPA: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span>
+                  <span class="o">&lt;&lt;</span> <span class="s">&quot;grade: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, &quot;</span>
+                  <span class="o">&lt;&lt;</span> <span class="s">&quot;name: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="mi">3</span><span class="o">&gt;</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="sc">'\n'</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre>
+<p>Y podríamos crear fácilmente funciones que sirvieran para realizar las operaciones más
+comunes con este conjunto de datos:</p>
+<pre class="code cpp literal-block">
+<span class="p">[...]</span>
+    <span class="c1">// Sort according to function
+</span>    <span class="k">auto</span> <span class="n">sorted_students</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">sort</span><span class="p">(</span><span class="n">queryset</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">queryset</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span>
+        <span class="p">[](</span><span class="k">const</span> <span class="n">StudentsManager</span><span class="o">::</span><span class="n">row_type</span><span class="o">&amp;</span> <span class="n">lhs</span><span class="p">,</span> <span class="k">const</span> <span class="n">StudentsManager</span><span class="o">::</span><span class="n">row_type</span><span class="o">&amp;</span> <span class="n">rhs</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">(</span><span class="n">rhs</span><span class="p">);</span>
+        <span class="p">});</span>
+
+    <span class="c1">// Filter by field value
+</span>    <span class="k">auto</span> <span class="n">gradeA_students</span> <span class="o">=</span> <span class="n">filter</span><span class="p">(</span><span class="n">queryset</span><span class="p">,</span> <span class="sc">'A'</span><span class="p">);</span>
+
+<span class="p">[...]</span>
+</pre>
+</div>
+<div class="section" id="el-problema-surge-al-generalizar">
+<h2>El problema surge al generalizar</h2>
+<p>Como tengo alma de programador no me vale con crear una clase que actúe como <em>manager</em> para
+cada uno de mis modelos, sino que quiero generalizar. Y el problema es que quiero <strong>generalizar
+en dos dimensiones: tipo de elementos y número de columnas de la tabla</strong>.</p>
+<p>Generalizar en tipo de elementos es fácil, ahí están las plantillas. Algo como lo que sigue
+podría valer:</p>
+<pre class="code cpp literal-block">
+<span class="cp">#include</span> <span class="cpf">&lt;tuple&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp">
+</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T1</span><span class="p">,</span> <span class="k">typename</span> <span class="n">T2</span><span class="p">,</span> <span class="k">typename</span> <span class="n">T3</span><span class="p">,</span> <span class="k">typename</span> <span class="n">T4</span><span class="o">&gt;</span>
+<span class="k">class</span> <span class="nc">GenericManager</span> <span class="p">{</span>
+    <span class="k">public</span><span class="o">:</span>
+        <span class="k">typedef</span> <span class="k">typename</span> <span class="n">std</span><span class="o">::</span><span class="n">tuple</span><span class="o">&lt;</span><span class="n">T1</span><span class="p">,</span> <span class="n">T2</span><span class="p">,</span> <span class="n">T3</span><span class="p">,</span> <span class="n">T4</span><span class="o">&gt;</span> <span class="n">row_type</span><span class="p">;</span>
+        <span class="k">typedef</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">row_type</span><span class="o">&gt;</span> <span class="n">queryset_type</span><span class="p">;</span>
+    <span class="k">public</span><span class="o">:</span>
+        <span class="k">static</span> <span class="kt">void</span> <span class="n">all</span><span class="p">(</span><span class="n">queryset_type</span><span class="o">&amp;</span> <span class="n">qs</span><span class="p">);</span>
+
+<span class="p">};</span>
+</pre>
+<p>Y ya tengo un manager genérico <tt class="docutils literal">GenericManager</tt> con el que puedo reutilizar el código, pero
+sólo para tablas que tengan cuatro columnas, eso sí, éstas pueden ser de cualquier tipo.</p>
+<p>Un poco más difícil es generalizar el número de columnas, hace un tiempo lo habría hecho
+utilizando <a class="reference external" href="http://www.boost.org/doc/libs/1_60_0/libs/preprocessor/doc/index.html">Boost.Preprocessor</a>, tengo algunos ejemplos de hace 10 años donde lo usaba, realmente
+estoy orgulloso de haberme enfrentado a ese problema de esa forma en aquel momento; pero hoy
+no es ése el camino que quiero seguir.</p>
+</div>
+<div class="section" id="el-buen-camino">
+<h2>El buen camino</h2>
+<p>Hay una solución mucho más elegante, las <strong>variadic-templates</strong>, con ellas
+podemos generalizar de una manera tan maravillosa como ésta:</p>
+<pre class="code cpp literal-block">
+<span class="cp">#include</span> <span class="cpf">&lt;tuple&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp">
+</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span><span class="p">...</span> <span class="n">Args</span><span class="o">&gt;</span>
+<span class="k">class</span> <span class="nc">GenericManager</span> <span class="p">{</span>
+    <span class="k">public</span><span class="o">:</span>
+        <span class="k">typedef</span> <span class="k">typename</span> <span class="n">std</span><span class="o">::</span><span class="n">tuple</span><span class="o">&lt;</span><span class="n">Args</span><span class="p">...</span><span class="o">&gt;</span> <span class="n">row_type</span><span class="p">;</span>
+        <span class="k">typedef</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">row_type</span><span class="o">&gt;</span> <span class="n">queryset_type</span><span class="p">;</span>
+    <span class="k">public</span><span class="o">:</span>
+        <span class="k">static</span> <span class="kt">void</span> <span class="n">all</span><span class="p">(</span><span class="n">queryset_type</span><span class="o">&amp;</span> <span class="n">qs</span><span class="p">);</span>
+
+<span class="p">};</span>
+</pre>
+<p>¿No es fantástico? Con esta generalización puedo hacer cosas realmente útiles, puedo crear una clase
+que se comporte realmente como un <em>manager</em> genérico y una clase <em>queryset</em> que implemente
+una funcionalidad afín a la que está disponible en Django.</p>
+<p>De momento estoy trabajando en ello, básicamente reuniendo respuestas de StackOverflow en un único
+sitio y haciéndolas funcionar. Pronto un segundo post con detalles de implementación y ejemplos.</p>
+</div>
+
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="https://jgsogo.es/tag/variadic-templates.html">variadic templates</a>
+      <a href="https://jgsogo.es/tag/metaprogramming.html">metaprogramming</a>
+      <a href="https://jgsogo.es/tag/django-queryset.html">django queryset</a>
+    </p>
+  </div>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'jgsogoes';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</article>
+
+    <footer>
+<p>
+  &copy; Javier G. Sogo 2021 - This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>
+</p>
+<p>Built using <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a></p><p>
+  <a rel="license"
+     href="http://creativecommons.org/licenses/by-sa/4.0/"
+     target="_blank">
+    <img alt="Creative Commons License"
+         title="Creative Commons License"
+         style="border-width:0"
+         src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png"
+         width="80"
+         height="15"/>
+  </a>
+</p>    </footer>
+  </main>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "name": "Variadic templates and std::tuple - Motivación",
+  "headline": "Variadic templates and std::tuple - Motivación",
+  "datePublished": "2016-03-21 12:54:00+01:00",
+  "dateModified": "",
+  "author": {
+    "@type": "Person",
+    "name": "Javier G. Sogo",
+    "url": "https://jgsogo.es/author/javier-g-sogo.html"
+  },
+  "image": "http://localhost:8000/images/profile.png",
+  "url": "https://jgsogo.es/variadic-templates-std-tuple-motivation.html",
+  "description": "Debo confesar que me he pasado prácticamente todo el fin de semana dándole vueltas a las variadic templates para utilizarlas con las estructuras std::tuple. Y debo confesar que me parece impresionante lo que se puede conseguir (y eso que me imagino que no he raspado más que la superficie …"
+}
+</script></body>
+</html>

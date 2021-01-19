@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Javier G. Sogo's blog - Bio</title><link href="https://jgsogo.es/" rel="alternate"></link><link href="https://jgsogo.es/feeds/bio.atom.xml" rel="self"></link><id>https://jgsogo.es/</id><updated>2015-09-27T19:00:00+02:00</updated><entry><title>ChimpPunch</title><link href="https://jgsogo.es/chimppunch.html" rel="alternate"></link><published>2015-09-27T19:00:00+02:00</published><updated>2015-09-27T19:00:00+02:00</updated><author><name>Javier G. Sogo</name></author><id>tag:jgsogo.es,2015-09-27:/chimppunch.html</id><summary type="html">&lt;p&gt;Como últimamente mucha gente me pregunta por &lt;strong&gt;ChimpPunch&lt;/strong&gt; voy a dejar escritas aquí
+algunas cosas para tenerlas como referencia. ChimpPunch fue un proyecto de &lt;em&gt;startup&lt;/em&gt; que
+inicié junto a &lt;a class="reference external" href="https://twitter.com/rafacampoamor"&gt;Rafael P. Campoamor&lt;/a&gt; (CEO) y &lt;a class="reference external" href="https://twitter.com/oneeyedman"&gt;Carlos Mañas&lt;/a&gt; (UI/UX) allá por 2012, con la idea de
+hacer un sistema que facilitara …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Como últimamente mucha gente me pregunta por &lt;strong&gt;ChimpPunch&lt;/strong&gt; voy a dejar escritas aquí
+algunas cosas para tenerlas como referencia. ChimpPunch fue un proyecto de &lt;em&gt;startup&lt;/em&gt; que
+inicié junto a &lt;a class="reference external" href="https://twitter.com/rafacampoamor"&gt;Rafael P. Campoamor&lt;/a&gt; (CEO) y &lt;a class="reference external" href="https://twitter.com/oneeyedman"&gt;Carlos Mañas&lt;/a&gt; (UI/UX) allá por 2012, con la idea de
+hacer un sistema que facilitara la gestión de redes sociales (la tríada &lt;em&gt;discover&lt;/em&gt;,
+&lt;em&gt;stream&lt;/em&gt;, &lt;em&gt;analyze&lt;/em&gt;) para las pequeñas empresas o marcas personales.&lt;/p&gt;
+&lt;div class="figure align-center"&gt;
+&lt;img alt="Logotipo de ChimpPunch" src="https://jgsogo.es/images/chimppunch.png" /&gt;
+&lt;p class="caption"&gt;El monete, imagen de ChimpPunch (dibujo de &amp;#64;oneyedman).&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;El producto no llegó a buen puerto; si no, en vez de estar utilizando &lt;a class="reference external" href="https://twitter.com/buffer"&gt;&amp;#64;buffer&lt;/a&gt;
+ahora, tendríais a un monete mucho más simpático trabajando para vosotros ;D Sí llegamos a tener
+un &lt;em&gt;MVP&lt;/em&gt;, pero para salir en aquel momento nos faltaba (o eso creímos nosotros) mucho más de
+&lt;em&gt;machine-learning&lt;/em&gt; y de &lt;em&gt;analytics&lt;/em&gt; de lo que teníamos; y una sucesión de desafortunadas casualidades
+provocó que nos detuviéramos y ya no supimos arrancar de nuevo.&lt;/p&gt;
+&lt;p&gt;Aunque abandonamos el proyecto formalmente yo continué interesándome por la parte de
+recolección de contenidos, clasificación,... y seguí mejorando y desarrollando algunos módulos,
+convirtiéndolos en servicios y automatizando su funcionamiento. Fruto de ello he creado &lt;em&gt;bots&lt;/em&gt;
+para Twitter que mantienen con vida algunas cuentas como &lt;a class="reference external" href="https://twitter.com/estudiahistoria"&gt;&amp;#64;EstudiaHistoria&lt;/a&gt;,  &lt;a class="reference external" href="https://twitter.com/chimp_news"&gt;&amp;#64;chimp_news&lt;/a&gt; o &lt;a class="reference external" href="https://twitter.com/grupoalpino"&gt;&amp;#64;grupoalpino&lt;/a&gt; y
+también me he interesado más formalmente por la Inteligencia Artificial y el Procesamiento de
+Lenguaje Natural, que se manifiestan hoy en el &lt;a class="reference external" href="http://www.dia.fi.upm.es/masteria/?q=es/MUIA"&gt;Máster Universitario en Inteligencia Artificial&lt;/a&gt;
+que hice el año pasado y el grupo de &lt;a class="reference external" href="http://lingwars.github.io/blog/"&gt;Lingẅars&lt;/a&gt; que estamos creando.&lt;/p&gt;
+&lt;div class="section" id="diseno-conceptual"&gt;
+&lt;h2&gt;Diseño conceptual&lt;/h2&gt;
+&lt;p&gt;Como he indicado antes, ChimpPunch estaba dividido en tres módulos principales:&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;Recuperación de información: obtención, clasificación y recomendación de contenidos.&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Stream&lt;/em&gt; de publicaciones: el cliente tiene a su alcance una herramienta para
+programar publicaciones y centralizar el trabajo de todas sus redes sociales y de
+todo su equipo.&lt;/li&gt;
+&lt;li&gt;Análisis: nuestra herramienta realiza un análisis &lt;em&gt;a posteriori&lt;/em&gt; del comportamiento
+de las publicaciones para actualizar los modelos del motor de recomendación.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="section" id="recuperacion-de-informacion"&gt;
+&lt;h3&gt;Recuperación de información&lt;/h3&gt;
+&lt;p&gt;En la figura de abajo muestro el diseño conceptual de la parte correspondiente a
+&lt;strong&gt;recuperación de información&lt;/strong&gt; de ChimpPunch:&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;El sistema está recogiendo continuamente documentos de un conjunto de fuentes dinámico
+(según clientes y sus comunidades) y clasificándolos por todo tipo de criterios:
+fuentes, autores, temáticas,...&lt;/li&gt;
+&lt;li&gt;Los clientes pueden establecer criterios y filtros de selección de contenidos, o bien dejar
+que ChimpPunch aprenda estos criterios en base a los intereses de la comunidad de seguidores
+de cada cliente.&lt;/li&gt;
+&lt;li&gt;El comportamiento de las noticias originales en los medios da un índice de popularidad, interés
+o viralidad que se utiliza para puntuarlas. Se crea así el conjunto de datos etiquetado sobre
+el que se trabaja para puntuar los nuevos contenidos que van recuperándose.&lt;/li&gt;
+&lt;li&gt;Cada cliente tiene acceso a una lista de contenidos adecuados a sus intereses (&lt;em&gt;discover&lt;/em&gt;),
+clasificados por relevancia e impacto, que van a ser bien recibidos por su comunidad.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="figure align-center"&gt;
+&lt;img alt="Diseño conceptual de ChimpPunch" src="https://jgsogo.es/images/chimppunch-conceptual.png" /&gt;
+&lt;p class="caption"&gt;Diseño conceptual de ChimpPunch con la división en módulos principales.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="stream-de-publicaciones"&gt;
+&lt;h3&gt;Stream de publicaciones&lt;/h3&gt;
+&lt;p&gt;En ChimpPunch dábamos la posibilidad de gestionar todas las redes sociales desde un único sitio
+y además facilitábamos la posibilidad de que varias personas compartieran un único espacio
+de trabajo online para realizar esta tarea.&lt;/p&gt;
+&lt;p&gt;Permitíamos al usuario definir horarios de publicación y programar tweets, nada nuevo hoy en día
+cuando existen tantas herramientas de gestión de redes sociales.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="analitycs"&gt;
+&lt;h3&gt;Analitycs&lt;/h3&gt;
+&lt;p&gt;El último módulo, en el que no llegamos a profundizar, consistía en la parte de análitica del
+comportamiento de las publicaciones realizadas por el usuario. Habría dos niveles de análisis:&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;Estadística descriptiva: gráficos y tablas mostrando cómo se habían comportado las publicaciones,
+típicos dibujitos que muestran muchos datos, pero poca información realmente útil para el usuario.
+No obstante, estos datos se utilizarían para actualizar el modelo de recomendación de contenidos
+y personalizarlo para cada cliente (¿os suena Bayes?)&lt;/li&gt;
+&lt;li&gt;Información: en base a las interacciones con los contenidos pretendíamos facilitar al
+usuario datos sobre sus clientes que permitieran segmentarlos e identificar el tipo de
+publicaciones que consumían para ayudar en el diseño de campañas de marketing y maximizar
+las métricas de conversión.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="chimppunch-hoy"&gt;
+&lt;h2&gt;ChimpPunch hoy&lt;/h2&gt;
+&lt;p&gt;Aunque el proyecto en su conjunto se detuvo yo continué el desarrollo centrado en la parte de
+recuperación de información y, a partir de ahí, he desarrollado dos aplicaciones que funcionan
+como servicio y que están envejeciendo bastante bien:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;strong&gt;chimp_scraper&lt;/strong&gt;: se trata de un servicio para obtener información estructurada de una web;
+parte de una base de datos introducida por el usuario (yo) con cadenas XPath y regex para
+obtener datos característicos de un post (autor, tags, fecha de publicación, fotos, contenido,...)
+y con ellos trata de obtener la misma información de cualquier otra URL que se le pase.
+Supongo que algo así debió ser el MVP de &lt;a class="reference external" href="https://import.io"&gt;import.io&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;strong&gt;chimp_social_monitor&lt;/strong&gt;: servicio para monitorizar el comportamiento de una URL en redes
+sociales. Una vez que la URL está dada de alta se encarga de recoger información de Twitter,
+Facebook, G+ y LinkedIn, almacenarla y devolverla aplicando diferentes filtros.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Ambas aplicaciones las orquesto a través de una interfaz web &lt;strong&gt;chimp_discovery&lt;/strong&gt; que se encarga
+de interactuar con el usuario, almacenar sus preferencias, sus horarios de publicación y la
+lista de publicaciones.&lt;/p&gt;
+&lt;hr class="docutils" /&gt;
+&lt;p&gt;Como podéis ver el proyecto era completito y muy interesante. Una pena que se quedara en el cajón,
+aunque indudablemente es una experiencia más que incorporar a la mochila de herramientas
+y un conjunto de conocimientos muy importante. Quien sabe si algún día seguirá creciendo otro
+poco.&lt;/p&gt;
+&lt;/div&gt;
+</content><category term="Bio"></category><category term="information retrieval"></category><category term="startup"></category><category term="chimppunch"></category><category term="rafapcampoamor"></category><category term="oneeyedman"></category></entry><entry><title>Lingẅars: Desafíos y juegos</title><link href="https://jgsogo.es/lingwars-games.html" rel="alternate"></link><published>2015-09-15T19:00:00+02:00</published><updated>2015-09-15T19:00:00+02:00</updated><author><name>Javier G. Sogo</name></author><id>tag:jgsogo.es,2015-09-15:/lingwars-games.html</id><summary type="html">&lt;p&gt;Esta semana he estado entretenido creando una arquitectura web para que el grupo
+de Lingẅars pueda publicar online juegos y desafíos de forma sencilla. Básicamente
+el objetivo que perseguía era que se puediera crear un juego implementando un par
+de funciones y que el sistema lo dotara automáticamente de presencia …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Esta semana he estado entretenido creando una arquitectura web para que el grupo
+de Lingẅars pueda publicar online juegos y desafíos de forma sencilla. Básicamente
+el objetivo que perseguía era que se puediera crear un juego implementando un par
+de funciones y que el sistema lo dotara automáticamente de presencia en la web,
+registro de las respuestas de los jugadores y, además, de jugabilidad a través de
+la línea de comandos (principalmente para pruebas).&lt;/p&gt;
+&lt;p&gt;Y con más o menos éxito, con muchos cambios y mejoras aún pendientes, el objetivo
+creo que se ha cumplido y lo podéis ver funcionando en la &lt;a class="reference external" href="http://games.lingwars.com/"&gt;web&lt;/a&gt;.
+Como siempre, también tenéis disponible el &lt;a class="reference external" href="https://github.com/lingwars/lingwars-games"&gt;código fuente en Github&lt;/a&gt;.&lt;/p&gt;
+&lt;div class="section" id="arquitectura"&gt;
+&lt;h2&gt;Arquitectura&lt;/h2&gt;
+&lt;p&gt;El proyecto está dividido en dos partes diferenciadas:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;el &lt;strong&gt;núcleo&lt;/strong&gt; con el motor para ejecutar los juegos y la aplicación web,&lt;/li&gt;
+&lt;li&gt;los &lt;strong&gt;juegos&lt;/strong&gt; propiamente dichos.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Básicamente he propuesto una arquitectura donde los juegos se añaden como &lt;em&gt;plugins&lt;/em&gt;
+y podrían ser tanto clases aisladas como aplicaciones de Django que hicieran uso de
+la base de datos. En la primera versión ya planteo un ejemplo ilustrativo de cada
+una de estas opciones.&lt;/p&gt;
+&lt;p&gt;El &lt;strong&gt;núcleo&lt;/strong&gt; está formado por la aplicación &lt;code&gt;appweb.engine&lt;/code&gt; que se encarga de
+buscar juegos en los directorios indicados en la configuración:&lt;/p&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="n"&gt;LINGWARS_GAMES_DIRS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
+    &lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;BASE_DIR&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'../games'&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;Este motor buscará identificar juegos en las aplicaciones instaladas
+(&lt;a class="reference external" href="https://github.com/Lingwars/lingwars-games/blob/7e2a3b0cbad1ad3ce08d39e92d8299f4c627a9ea/appweb/engine/apps.py#L29-L47"&gt;ver&lt;/a&gt;):&lt;/p&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="c1"&gt;# Registered apps&lt;/span&gt;
+&lt;span class="n"&gt;app_games_module&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;app&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;apps&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_app_configs&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="nb"&gt;isinstance&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;app&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;GameConfig&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;app_games_module&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;append&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;app&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;module&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__path__&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+        &lt;span class="n"&gt;log&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;debug&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;u&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\t&lt;/span&gt;&lt;span class="s2"&gt; - &lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s2"&gt;: &lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;app&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;app&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;verbose_name&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+        &lt;span class="nb"&gt;id&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;app&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;rsplit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'.'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;game_model&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;objects&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;filter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;id&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nb"&gt;id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;available&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;exists&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+            &lt;span class="k"&gt;raise&lt;/span&gt; &lt;span class="ne"&gt;RuntimeError&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;u&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;A game with id '&lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s2"&gt;' already exists&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="nb"&gt;id&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+        &lt;span class="n"&gt;game&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;app&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_game&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+        &lt;span class="n"&gt;assert_game&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;game&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+        &lt;span class="n"&gt;obj&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;created&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;game_model&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;objects&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_or_create&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;id&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nb"&gt;str&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;id&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;defaults&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;'title'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;app&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;verbose_name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'is_app'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kc"&gt;True&lt;/span&gt;&lt;span class="p"&gt;})&lt;/span&gt;
+        &lt;span class="n"&gt;obj&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;available&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;True&lt;/span&gt;
+        &lt;span class="n"&gt;obj&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;is_app&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;True&lt;/span&gt;
+        &lt;span class="n"&gt;obj&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;author&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;getattr&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;game&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'author'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;obj&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;save&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;games&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nb"&gt;id&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;game&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;...y también en los paquetes y archivos presentes en los directorios indicados
+(&lt;a class="reference external" href="https://github.com/Lingwars/lingwars-games/blob/7e2a3b0cbad1ad3ce08d39e92d8299f4c627a9ea/appweb/engine/apps.py#L52-L72"&gt;ver&lt;/a&gt;):&lt;/p&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="c1"&gt;# Simple games, just a 'game.py' file inside dir&lt;/span&gt;
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nb"&gt;dir&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;getattr&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'LINGWARS_GAMES_DIRS'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;[]):&lt;/span&gt;
+    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;item&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;listdir&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;dir&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;current_path&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;abspath&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;dir&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;item&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;current_path&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;app_games_module&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="c1"&gt;#log.debug(u&amp;quot;\t%s already included as app-game&amp;quot; % current_path)&lt;/span&gt;
+            &lt;span class="k"&gt;pass&lt;/span&gt;
+        &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="k"&gt;try&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+                &lt;span class="n"&gt;module&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;'&lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s1"&gt;.game'&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;item&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+                &lt;span class="n"&gt;game&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;import_string&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;module&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+                &lt;span class="n"&gt;assert_game&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;game&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+                &lt;span class="n"&gt;log&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;debug&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;u&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\t&lt;/span&gt;&lt;span class="s2"&gt; - &lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="n"&gt;module&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+                &lt;span class="n"&gt;obj&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;created&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;game_model&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;objects&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_or_create&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;id&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nb"&gt;str&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;item&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;defaults&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;'title'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;getattr&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;game&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'title'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;item&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="s1"&gt;'is_app'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kc"&gt;False&lt;/span&gt;&lt;span class="p"&gt;})&lt;/span&gt;
+                &lt;span class="n"&gt;obj&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;available&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;True&lt;/span&gt;
+                &lt;span class="n"&gt;obj&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;is_app&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;False&lt;/span&gt;
+                &lt;span class="n"&gt;obj&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;save&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+                &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;games&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;item&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;game&lt;/span&gt;
+            &lt;span class="k"&gt;except&lt;/span&gt; &lt;span class="ne"&gt;ImportError&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+                &lt;span class="n"&gt;log&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;warn&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;u&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\t&lt;/span&gt;&lt;span class="s2"&gt; - &lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s2"&gt;: does not contain a game object&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="n"&gt;module&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;En el primer caso las aplicaciones deberán ser instancias de una clase &lt;code&gt;GameConfig&lt;/code&gt; que debe proporcionar
+una instancia del juego. En el segundo caso los juegos deben estar disponibles como un objeto llamado
+&lt;code&gt;game&lt;/code&gt; en la raíz del paquete.&lt;/p&gt;
+&lt;p&gt;Para los dos casos se realiza una comprobación para cerciorarse de que el objeto devuelto
+tiene una interfaz válida para jugar, es decir, implementa un código como este:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;MyAwesomeGame&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;GameBase&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;title&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;My Awesome Game&amp;#39;&lt;/span&gt;
+    &lt;span class="n"&gt;author&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;Me myself&amp;#39;&lt;/span&gt;
+    &lt;span class="n"&gt;description&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;In this game you blablabla&amp;quot;&lt;/span&gt;
+
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;make_question&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;question&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="s1"&gt;&amp;#39;query&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Question to the user&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+            &lt;span class="s1"&gt;&amp;#39;options&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;list&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;of&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;answers&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,]&lt;/span&gt;
+            &lt;span class="p"&gt;}&lt;/span&gt;
+        &lt;span class="n"&gt;response&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="s1"&gt;&amp;#39;answer&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;index&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="n"&gt;correct&lt;/span&gt; &lt;span class="n"&gt;answer&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="c1"&gt;# Esto debe ser el índice de la respuesta correcta en la lista.&lt;/span&gt;
+            &lt;span class="s1"&gt;&amp;#39;info&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Some info to the user&amp;quot;&lt;/span&gt;
+            &lt;span class="p"&gt;}&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;question&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;response&lt;/span&gt;
+
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;score&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;response&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;user_answer&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="c1"&gt;# Check the `user_answer`, it should be equal to response[&amp;#39;answer&amp;#39;]&lt;/span&gt;
+        &lt;span class="c1"&gt;# :param:`response` contains the same data created in `make_question`&lt;/span&gt;
+        &lt;span class="n"&gt;u&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;user_answer&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;answer&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="k"&gt;try&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="n"&gt;u&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;int&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;u&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="k"&gt;except&lt;/span&gt; &lt;span class="ne"&gt;TypeError&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
+        &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;u&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;response&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;answer&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="resultados"&gt;
+&lt;h2&gt;Resultados&lt;/h2&gt;
+&lt;p&gt;Con un trozo de código tan sencillo como éste, el sistema se encarga de añadir el juego
+a la página principal, proponer una interfaz de juego (actualmente sólo para juegos de
+tipo &lt;em&gt;multiple choice&lt;/em&gt;), recoger estadísticas de uso y crear un ranking.&lt;/p&gt;
+&lt;div class="figure align-center"&gt;
+&lt;img alt="Página principal" src="https://jgsogo.es/images/lingwars_games-main_page.png" /&gt;
+&lt;p class="caption"&gt;En la página principal aparecen todos los juegos que no han sido desactivados en la
+interfaz de administración.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="figure align-center"&gt;
+&lt;img alt="Playing a game" src="https://jgsogo.es/images/lingwars_games-play.png" /&gt;
+&lt;p class="caption"&gt;Cada juego dispone de tres pestañas: una de información que muestra el histórico de
+utilización del juego, otra donde se plantea el juego (esta) y una tercera que
+muestra la clasificación de los usuarios registrados que la han utilizado.&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;Confío en que pronto haya más desafíos y juegos, y de mucha más calidad que los que
+he planteado como ejemplo. Pero mientras tanto:
+&lt;a class="reference external" href="http://games.lingwars.com/"&gt;jugad, jugad y poneos a prueba&lt;/a&gt;. ¡Aceptad el reto!&lt;/p&gt;
+&lt;/div&gt;
+</content><category term="Bio"></category><category term="lingwars"></category><category term="django"></category><category term="architecture"></category><category term="plugins"></category></entry><entry><title>Clustering -- presentación en h4ckademy</title><link href="https://jgsogo.es/h4ckademy-clustering-talk.html" rel="alternate"></link><published>2015-03-17T13:34:00+01:00</published><updated>2015-03-17T13:34:00+01:00</updated><author><name>Javier G. Sogo</name></author><id>tag:jgsogo.es,2015-03-17:/h4ckademy-clustering-talk.html</id><summary type="html">&lt;p&gt;El otro día os presentaba &lt;a href="https://jgsogo.es/h4ckademy.html"&gt;h4ckademy&lt;/a&gt;, la escuela de programación
+de mi amigo Israel Gutiérrez (&lt;a href="https://twitter.com/gootyfer"&gt;@gootyfer&lt;/a&gt;). Después de visitarla ese día decidí que podía
+ser una buena oportunidad para salir de mi zona de confort y ofrecer a los &lt;em&gt;alumnos&lt;/em&gt; una breve &lt;em&gt;clase&lt;/em&gt;
+como introducción al clustering (clasificación no supervisada …&lt;/p&gt;</summary><content type="html">&lt;p&gt;El otro día os presentaba &lt;a href="https://jgsogo.es/h4ckademy.html"&gt;h4ckademy&lt;/a&gt;, la escuela de programación
+de mi amigo Israel Gutiérrez (&lt;a href="https://twitter.com/gootyfer"&gt;@gootyfer&lt;/a&gt;). Después de visitarla ese día decidí que podía
+ser una buena oportunidad para salir de mi zona de confort y ofrecer a los &lt;em&gt;alumnos&lt;/em&gt; una breve &lt;em&gt;clase&lt;/em&gt;
+como introducción al clustering (clasificación no supervisada).&lt;/p&gt;
+&lt;p&gt;Hoy ha llegado la hora, es el momento de enfrentarse a la realidad. Para la charla me he preparado dos
+presentaciones, espero que no sean muy densas, pero es que tampoco tenía nada claro cuál es el nivel
+de la gente ni qué esperan de mí, así que espero no haber metido la pata. Confío en sembrar algunas
+inquietudes, algunas ideas fundamentales acerca de esta técnica que les permita evaluar los resultados
+con mejor criterio la próxima vez que la ejecuten.&lt;/p&gt;
+&lt;p&gt;En los siguientes enlaces podéis encontrar las transparencias de ambas presentaciones:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://jgsogo.es/pdfs/clustering.pdf"&gt;Clustering&lt;/a&gt; es una introducción al clustering y las principales consideraciones
+   a tener en cuenta cuando uno se enfrenta a él: medidas de distancia, outliers, intepretación de resultados,...&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://jgsogo.es/pdfs/algoritmo.pdf"&gt;Algoritmos&lt;/a&gt; de clustering: k-means, BRF y CURE. Una muestra de tres algoritmos
+   con características muy distintas que permiten aproximarse al clustering desde diferentes puntos de vista.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Las presentaciones &lt;strong&gt;no son definitivas&lt;/strong&gt;, faltan algunas cosas fundamentales como la referencias bibliográficas, 
+pero ya las iré incluyendo poco a poco a medida que yo mismo vaya trabajando en el tema. De todas formas, podéis
+seguir su evolución en &lt;a href="https://github.com/jgsogo/talks" title="Github - jgsogo - talks"&gt;este repositorio&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;... A ver qué tal se me da hoy, ya os contaré ;D&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;Información complementaria:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://elvex.ugr.es/idbis/dm/slides/43%20Clustering%20-%20Density.pdf"&gt;DECSAI - Clustering basado en densidad&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.stuartreid.co.za/clustering-countries-real-gdp-growth-part2/"&gt;Monte Carlo K-Means clustering of Countries with Python (Part 2/3)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;refs de Coursera, MUIA,...&lt;/li&gt;
+&lt;/ul&gt;</content><category term="Bio"></category><category term="h4ckademy"></category><category term="talk"></category></entry></feed>

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="https://jgsogo.es/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="https://jgsogo.es/theme/css/pygments.min.css">
+  <link rel="stylesheet" type="text/css" href="https://jgsogo.es/theme/css/font-awesome.min.css">
+  <link href="https://jgsogo.es/static/custom.css" rel="stylesheet">
+  <link href="https://jgsogo.es/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Javier G. Sogo's blog Atom">
+  <link rel="shortcut icon" href="http://localhost:8000/images/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="http://localhost:8000/images/favicon.ico" type="image/x-icon">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="" />
+<meta name="author" content="Javier G. Sogo" />
+<meta name="description" content="El Procesamiento de Lenguaje Natural tiene que apoyarse necesariamente en los profesionales del lenguaje, lingüistas y filólogos que desde los inicios de la Inteligencia Artificial han propuesto modelos para trabajar con él, analizarlo y extraer información. Los enfoques simbólico y estadístico con los que se trabaja en PLN actualmente deben …" />
+<meta name="keywords" content="pln, ontology, semantics, word2vec, chatbot">
+<meta property="og:site_name" content="Javier G. Sogo's blog"/>
+<meta property="og:title" content="No hay PLN sin lingüística"/>
+<meta property="og:description" content="El Procesamiento de Lenguaje Natural tiene que apoyarse necesariamente en los profesionales del lenguaje, lingüistas y filólogos que desde los inicios de la Inteligencia Artificial han propuesto modelos para trabajar con él, analizarlo y extraer información. Los enfoques simbólico y estadístico con los que se trabaja en PLN actualmente deben …"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="https://jgsogo.es/no-pln-without-linguistics.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2017-12-22 18:30:00+01:00"/>
+<meta property="article:modified_time" content=""/>
+<meta property="article:author" content="https://jgsogo.es/author/javier-g-sogo.html">
+<meta property="article:section" content="PLN"/>
+<meta property="article:tag" content="pln"/>
+<meta property="article:tag" content="ontology"/>
+<meta property="article:tag" content="semantics"/>
+<meta property="article:tag" content="word2vec"/>
+<meta property="article:tag" content="chatbot"/>
+<meta property="og:image" content="http://localhost:8000/images/profile.png">  <title>Javier G. Sogo's blog &ndash; No hay PLN sin lingüística</title>
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="https://jgsogo.es">
+        <img src="http://localhost:8000/images/profile.png" alt="Javier G. Sogo" title="Javier G. Sogo">
+      </a>
+      <h1><a href="https://jgsogo.es">Javier G. Sogo</a></h1>
+      <p></p>
+      <nav>
+        <ul class="list">
+          <li><a href="https://jgsogo.es/pages/contact.html#contact">Contacto</a></li>
+          <li><a href="https://jgsogo.es/pages/about-me.html#about-me">Yo, mí, me, conmigo</a></li>
+          <li><a href="http://lingwars.github.io/blog/" target="_blank">Lingẅars</a></li>
+        </ul>
+      </nav>
+      <ul class="social">
+        <li><a class="sc-linkedin" href="https://es.linkedin.com/in/jgsogo" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+        <li><a class="sc-github" href="https://github.com/jgsogo" target="_blank"><i class="fa fa-github"></i></a></li>
+        <li><a class="sc-twitter" href="https://twitter.com/jgsogo" target="_blank"><i class="fa fa-twitter"></i></a></li>
+        <li><a class="sc-rss" href="http://localhost:8000feeds/all.atom.xml" target="_blank"><i class="fa fa-rss"></i></a></li>
+      </ul>
+    </div>
+  </aside>
+  <main>
+    <nav>
+      <a href="https://jgsogo.es">Home</a>
+      <a href="/archives.html">Archives</a>
+      <a href="/categories.html">Categories</a>
+      <a href="https://jgsogo.es/feeds/all.atom.xml">Atom</a>
+    </nav>
+
+<article>
+  <header>
+    <h1 id="no-pln-without-linguistics">No hay PLN sin lingüística</h1>
+    <p>Posted on Fri 22 December 2017 in <a href="https://jgsogo.es/category/pln.html">PLN</a></p>
+  </header>
+  <div>
+    
+<p>El Procesamiento de Lenguaje Natural tiene que apoyarse necesariamente en los profesionales del
+lenguaje, lingüistas y filólogos que desde los inicios de la Inteligencia Artificial han propuesto
+modelos para trabajar con él, analizarlo y extraer información. Los enfoques simbólico y estadístico
+con los que se trabaja en PLN actualmente deben colaborar estrechamente para generar las
+herramientas que nos permitirán interactuar con las máquinas utilizando el lenguaje.</p>
+<p>Este artículo resume la charla que ofrecí el 21 de diciembre de 2017 en Google Campus (Madrid) en
+el encuentro de <a class="reference external" href="https://madrid.city.ai/">Madrid.ai</a> <a class="footnote-reference" href="#id6" id="id1">[1]</a> <a class="footnote-reference" href="#id7" id="id2">[2]</a>. En aquel encuentro también participaron <a class="reference external" href="https://www.linkedin.com/in/cristinasantamarina/">Cristina Santamarina</a> hablando
+sobre desarrollo de chatbots, y <a class="reference external" href="https://www.linkedin.com/in/nievesabalosserrano/">Nieves Ábalos</a> y <a class="reference external" href="https://www.linkedin.com/in/carlosmunozromero/">Carlos Muñoz-Romero</a> exponiendo los desafíos que supone dotar
+a una inteligencia artificial de emociones y personalidad.</p>
+<div class="section" id="introduccion">
+<h2><a class="toc-backref" href="#id11">Introducción</a></h2>
+<blockquote class="twitter-tweet" data-lang="es"><p dir="ltr" lang="es">"No hay PLN sin lingüística", <a href="https://twitter.com/jgsogo?ref_src=twsrc%5Etfw">@jgsogo</a> en <a href="https://twitter.com/Madrid_City_AI?ref_src=twsrc%5Etfw">@Madrid_City_AI</a> <a href="https://t.co/Olw37AOKV9">pic.twitter.com/Olw37AOKV9</a></p>— Elena Álvarez Mellado (@lirondos) <a href="https://twitter.com/lirondos/status/943904699522207744?ref_src=twsrc%5Etfw">21 de diciembre de 2017</a></blockquote>
+<script async="" charset="utf-8" src="https://platform.twitter.com/widgets.js"></script><p>Quienes me conocéis sabéis perfectamente que mantengo una cruzada personal por recuperar a los lingüistas
+para la tarea en la que han sido formados durante años. Me da rabia que personas con varios años de Universidad
+acaben haciendo un trabajo de etiquetado que, aunque necesario, no necesita su nivel de formación. Así que aprovecho
+cualquier oportunidad para intentar poner en valor los estudios de letras, la filología y la lingüística.</p>
+<p>Esta charla sigue la de otra que dí en la Facultad de Filología de la Universidad de Valladolid para estudiantes de grado
+y que después adapté para el colectivo de desarrolladores de <a class="reference external" href="https://twitter.com/cylicon_valley">CyliconValley</a>. En aquellas charlas me centraba en las ontologías,
+en la primera de ellas trataba de hacer ver a los estudiantes que ellos eran necesarios para generarlas y en la segunda pretendía
+mostrar a los programadores cómo necesitan la ayuda de estos profesionales para hacer una ontología de calidad. Pero lo cierto es
+que a día de hoy los lingüistas ya están trabajando en la industria del PLN, ya hay puestos importantes cubiertos por
+personas cuya formación es puramente de letras, llevan equipos, toman decisiones e indican a los técnicos el enfoque que
+debe darse a los desarrollos. A los alumnos hay que animarles con ese tiempo futuro para que piensen que el mundo les está
+esperando, pero en auditorios más curtidos debemos reconocer que <strong>no hay PLN sin lingüística</strong>, ni puede haberlo, que si
+queremos montar un negocio que trabaje con el lenguaje debemos contar con la ayuda de un especialista.</p>
+<div class="figure align-center">
+<img alt="Mapa con el primer viaje de Cristóbal Colón donde se muestra la ruta seguida por las naves y su coincidencia con las corrientes y vientos dominantes en el Océano Atlántico." src="https://jgsogo.es/images/2017.12_madridai/colon_viaje.jpg"/>
+<p class="caption">Podemos abordar los problemas de PLN tirándonos al mar y experimentando o podemos estudiar todo lo relacionado y partir únicamente cuando conozcamos en detalle todos los fenómenos de la lengua.</p>
+</div>
+<p>En el mundo del PLN aún no están definidos los problemas que deben resolverse, no hay pruebas que permitan determinar si un
+algoritmo ha superado cierta tarea o no; el objetivo de comprender el lenguaje natural incluye una dosis de subjetividad sobre la
+que es complicado evaluar los avances tecnológicos. La parte más tecnológica y la industria ha echado las naves al mar y navega
+en busca de la solución creando gran expectación en torno a ella y quizá una sensación de <em>hype</em> a la que puede sucederse una
+decepción importante; por su parte, los investigadores aún se encuentran estudiando el detalle de los vientos y las mareas del lenguaje,
+proponiendo soluciones a un ritmo constante, pero mucho más pausado. Lo que está claro es que la industria en su vagar por el Océano no
+puede hacer otra cosa que utilizar las mareas y los vientos cuando se encuentra con ellos y, en algún momento, algún barco llegará
+al destino.</p>
+</div>
+<div class="section" id="que-entiendo-por-pln">
+<h2><a class="toc-backref" href="#id12">¿Qué entiendo por PLN?</a></h2>
+<p>El Procesamiento de Lenguaje Natural (PLN) es una rama de la Inteligencia Artificial que comprende problemas muy variados con
+un grado de madurez muy diferente entre ellos (esta <a class="reference external" href="https://github.com/Kyubyong/nlp_tasks">recopilación de Kyubyong</a> ofrece un listado bastante completo), aunque cuando
+yo hablo de PLN quiero referirme al <strong>conjunto de herramientas, algoritmos, modelos,... que me permiten convertir un texto expresado
+correctamente en lenguaje natural en un conjunto de datos que pueden ser procesados por un algoritmo</strong>. Desde mi punto de vista es la
+tarea más dependiente del PLN y, en consecuencia, una de las más difíciles de productivizar en un entorno industrial.</p>
+<div class="figure align-center">
+<img alt="Charla en Campus Madrid: ¿Qué entiendo por PLN?" src="https://jgsogo.es/images/2017.12_madridai/pln_yo.jpg"/>
+</div>
+<p>El algoritmo del PLN, por lo tanto, contaría con el texto plano como principal entrada de datos y adicionalmente podría recibir
+información contextual sobre el tono del mensaje y el contexto del hablante. Su tarea principal consistiría en convertir ese
+documento en datos estructurados, aunque si tenemos en cuenta Collobert et al. (2011) <em>"Will a computer program ever be able to
+convert a piece of English text into a programmer friendly data structure that describes the meaning of the natural language text?
+Unfortunately, no consensus has emerged about the form or the existence of such a data structure"</em> <a class="footnote-reference" href="#id8" id="id3">[3]</a> debemos ser bastante
+pesimistas. Sin embargo, quiero creer que aquí se habla de codificar el lenguaje con todos sus matices, pero que la duda
+no es tal si pensamos en codificar una información más fáctica.</p>
+<p>La carencia de un <em>standard</em> de codificación dificulta la aparición de empresas que se ocupen exclusivamente de esta parte del
+PLN (desde el texto en bruto hasta la información estructurada) y la mayoría de las empresas intentan abordar por ellas mismas
+el problema de extremo a extremo, es decir, desde la entrada de texto hasta la aplicación de negocio.</p>
+</div>
+<div class="section" id="la-linguistica-en-el-pln">
+<h2><a class="toc-backref" href="#id13">La lingüística en el PLN</a></h2>
+<p>El nacimiento de la Inteligencia Artificial estuvo muy condicionado por los trabajos en torno a la traducción automática de los
+años 1950s y 1960s, en esta época se seguía un enfoque puramente simbólico y basado en reglas para abordar el problema y, sin
+duda alguna, el papel de los lingüistas en aquella época fue muy relevante. Posteriormente la evolución de la IA confió en la
+potencia de cálculo de los procesadores y primó el desarrollo basado en métodos estadísticos, sin embargo, hoy en día se vuelve
+a mirar el enfoque simbólico y su combinación con la potencia de cálculo actual y la gran abundancia de datos disponibles.</p>
+<div class="section" id="la-semantica-distribucional">
+<h3><a class="toc-backref" href="#id14">La semántica distribucional</a></h3>
+<div class="figure align-center">
+<img alt="El caballero negro exige a los protagonistas de Los Caballeros de la Mesa Cuadrada (Monty Python) que le traigan una almáciga para poder cruzar el bosque." src="https://jgsogo.es/images/2017.12_madridai/semantica_distribucional.jpg"/>
+<p class="caption">A través del contexto de una palabra podemos inferir rasgos de su significado.</p>
+</div>
+<p>En 1957, en la primera etapa del PLN, el lingüista británico <a class="reference external" href="https://es.wikipedia.org/wiki/John_Rupert_Firth">John Rupert Firth</a> exponía su noción del contexto de situación según
+la cual el significado de una palabra podía extraerse del contexto en el que aparece: <em>"You shall know a word by the company it keeps"</em> <a class="footnote-reference" href="#id9" id="id4">[4]</a>,
+la aplicación de este principio está en la base de los conocidos algoritmos de <em>word embeddings</em> que aparecerieron hace algunos
+años: word2vec (Mikolov <em>et al.</em>, 2013) y GloVe (Pennington <em>et al.</em>, 2014). Estos algoritmos permiten extraer información semántica de
+texto sin anotar, simplemente calculando las probabilidades de aparición de una palabra en un contexto (o de un contexto en el
+entorno de una palabra).</p>
+<p>El ejemplo de <tt class="docutils literal">word2vec</tt> que se hizo famoso fue el que relacionaba las palabras rey y reina: <tt class="docutils literal">king - man + woman = queen</tt>. Como
+se observa en la imagen inferior, el algoritmo ha podido capturar significados semánticos a partir del texto. En uno de ellos se
+codifica el cambio de rol de género (flecha roja) de tal forma que aplicado a una palabra con rol masculino nos lleva a su
+correspondiente femenina, así al aplicarlo a <em>king</em> obtenemos <em>queen</em>, al hacerlo con <em>man</em> obtenemos <em>woman</em>,... La otra relación
+que se observa en la imagen codifica el incremento de autoridad o realeza (flecha verda), así aplicando este vector a <em>man</em> obtenemos
+<em>king</em>, haciéndolo sobre <em>woman</em> llegamos a <em>queen</em> y cabe esperar que si lo aplicáramos sobre la palabra <em>kid</em> nos conduciría
+a <em>princeps</em>.</p>
+<div class="figure align-center">
+<img alt="Ejemplo de word2vec en el que se muestra los vectores semánticos que relacionan algunos conceptos." src="https://jgsogo.es/images/2017.12_madridai/word2vec.png"/>
+<p class="caption">Ejemplo de word2vec (adaptado). El algoritmo captura sentidos semánticos a partir de texto sin anotar.</p>
+</div>
+<p>Esto es bastante sorprendente, a partir de texto tal cual, tenemos un algoritmo capaz de extraer información semántica sin
+necesidad de decirle nada, sin necesidad de etiquetar el texto. Sin embargo, también tiene otros inconvenientes:</p>
+<ul class="simple">
+<li>El tiempo y la cantidad de datos necesarios para su entrenamiento.</li>
+<li>La interpretabilidad: las palabras se codifican en vectores de números reales en los que se ha perdido toda referencia al
+dato original del lenguaje, por lo tanto no sabremos qué hemos de tocar si queremos evitar (o premiar) ciertos
+comportamientos del modelo.</li>
+<li>Ética: al apartarnos del dato en crudo se pierde la perspectiva de los posibles sesgos que hayan aparecido como
+consecuencia de la elección de unos datos de entrada.</li>
+<li>Cómo aplicar estos algoritmos a la comprensión del lenguaje, resolución de inferencias, preguntas complejas.</li>
+</ul>
+</div>
+<div class="section" id="el-filologo-estructurado">
+<h3><a class="toc-backref" href="#id15">El filólogo estructurado</a></h3>
+<p>Ya en los orígenes del Procesamiento de Lenguaje Natural surgió la preocupación por la representación del lenguaje en
+estructuras formales que permitieran trabajar con él y una de las más relevantes fue la representanción a través de
+grafos que está en el origen de los tesauros y las ontologías.</p>
+<p>Un ontología no es más que la formalización del conocimiento sobre el mundo en conceptos y relaciones entre ellos de una
+forma no ambigua, explícita y compartida. Así las ontologías generalmente están formadas por un tesauro (una jerarquía de
+conceptos según sus relaciones de hiperonimia e hiponimia) y un amplio conjunto de relaciones entre ellas. En principio
+cualquier ontología suficientemente explícita sobre un dominio de conocimiento es capaz de codificar cualquier
+información relativa al mismo.</p>
+<div class="figure align-center">
+<img alt='Codificación en un grafo ontológico de la oración "¿Qué persona trabaja en BiText y contribuye en la misma asociación que @jgsogo?".' src="https://jgsogo.es/images/2017.12_madridai/ontologia.jpg"/>
+<p class="caption">Un grafo ontológico nos permite codificar la información contenida en cualquier oración de su dominio, así las inferencias se convierten en búsquedas.</p>
+</div>
+<p>Si incluímos en el <em>pipeline</em> convencional (<em>tokeninazión</em>, <em>pos-tagging</em>, lematización, NER,...) la conversión de la
+oración a su grafo ontológico, podríamos codificar la información de un texto en forma de grafo, así la respuesta
+a preguntas complejas no sería más que la búsqueda en el grafo de un nodo y otros problemas como inferencias, resumen,...
+se reducirían a operaciones sobre grafos ampliamente documentadas en la literatura.</p>
+<p>El problema principal de las ontologías no es ya su coste de generación puesto que requiere de la participación de un
+especialista del lenguaje, sino el coste prohibitivo que supone mantenerlas actualizadas (el lenguaje evoluciona
+continuamente, incorpora nuevas palabras, cambia significados, usos,...). Sin embargo son una de las herramientas
+más potentes para trabajar en la resolución de las ambigüedades que aparecen en cada etapa del PLN.</p>
+</div>
+</div>
+<div class="section" id="conclusion">
+<h2><a class="toc-backref" href="#id16">Conclusión</a></h2>
+<p>Desde mi punto de vista el futuro del PLN necesita de las contribuciones de ambos campos, del enfoque simbólico y
+del estadístico. De la conjunción de ambos saldrán las aplicaciones que triunfarán en el futuro próximo, aquella
+empresa que cuente entre sus trabajadores con filólogos y recursos lingüísticos posee una ventaja competitiva
+fundamental frente a las que sólo confían en los algoritmos, el <em>big data</em> y la potencia de cálculo. Un enfoque
+como el siguiente tendría muchas probabilidades de éxito:</p>
+<ol class="arabic simple">
+<li>Centrarse en un único dominio (domótica, legal, restaurantes,...), problema e idioma.</li>
+<li>Construir una ontología básica de partida.</li>
+<li>Utilizar <em>embeddings</em> y otros algoritmos para mantener la ontología y añadir nuevos términos.</li>
+<li>Generar un corpus de preguntas para entrenar.</li>
+<li>Programar el <em>pipeline</em> de PLN.</li>
+<li>Diseñar el algoritmo de generación de grafos a partir de oraciones.</li>
+<li>Construir el motor de inferencias.</li>
+</ol>
+<p>Este enfoque industrial también deberá estar muy pendiente de los principales problemas que hoy ocupan a la investigación
+en Inteligencia Artificial y cuyas soluciones deberán ser incorporadas cuanto antes a cualquier solución comercial:</p>
+<ul class="simple">
+<li>Módulo de lenguaje controlado: cómo normativizar los textos para que nuestro algoritmo de comprensión no tenga
+que preocuparse por idiolectos singulares o de grupo.</li>
+<li>Interpretabilidad: el comportamiento de seguir las directrices de la empresa, debemos saber qué parámetros hay que
+tocar para evitar comportamientos indeseados.</li>
+<li>Ética: trabajar sobre los sesgos, originados como consecuencia de los datos de partida, del proceso de entrenamiento
+o de programación del propio algoritmo.</li>
+<li>Legalidad: hay que tener en cuenta que “[Salvo consentimiento explícito
+o autorización legal específicos,] todo interesado tendrá derecho a no ser objeto de una decisión basada únicamente en
+el tratamiento automatizado, incluida la elaboración de perfiles, que produzca efectos jurídicos en él o le afecte
+significativamente de modo similar” <a class="footnote-reference" href="#id10" id="id5">[5]</a>.</li>
+</ul>
+<p>El Procesamiento de Lenguaje Natural es un campo de investigación y de aplicación práctica de rabiosa actualidad.
+La industria hoy comete el error de querer ir más rápido que la tecnología y la investigación con el ánimo de aprovechar las expectativas
+generadas por la ciencia ficción en las películas, así genera un <em>hype</em> con poco fundamento y es posible
+que en los próximo años se disipe parte de todo este humo y sintamos la decepción de enfrentarnos a la realidad de
+lo que se ha conseguido hasta ahora. Esta decepción desplazará los recursos hacia otras áreas de la IA más atractivas,
+pero de la mano de la investigación, de los lingüistas y de los desarrolladores preocupados por el origen de los datos,
+seguiremos avanzando con paso firme en la exploración de este mundo apasionante.</p>
+<div class="figure align-center">
+<img alt="Público asistente al evento de Madrid AI en Campus Madrid el 21 de diciembre de 2017." src="https://jgsogo.es/images/2017.12_madridai/publico.jpg"/>
+<p class="caption">Público asistente al evento de Madrid AI en Campus Madrid el 21 de diciembre de 2017.</p>
+</div>
+<p>___</p>
+</div>
+<div class="section" id="notas-y-materiales">
+<h2><a class="toc-backref" href="#id17">Notas y materiales</a></h2>
+<ul class="simple">
+<li>Puedes descargarte la presentación correspondiente a la charla <a class="reference external" href="{filename}/pdf/2017.12-Madrid.ai-PLN_linguistics.pdf">aquí</a>.</li>
+<li>Mira algunas de las fotos del evento en <a class="reference external" href="https://www.flickr.com/photos/76867403@N04/albums/72157691335577525">Flickr</a></li>
+</ul>
+<table class="docutils footnote" frame="void" id="id6" rules="none">
+<colgroup><col class="label"/><col/></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Convocatoria en Meetup: <a class="reference external" href="https://www.meetup.com/es-ES/MADRID-AI/events/245802179/">https://www.meetup.com/es-ES/MADRID-AI/events/245802179/</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id7" rules="none">
+<colgroup><col class="label"/><col/></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td>Reseña en Planeta Chatbot: <a class="reference external" href="https://planetachatbot.com/madrid-city-ai-chatbots-y-emociones-a57836487b14">https://planetachatbot.com/madrid-city-ai-chatbots-y-emociones-a57836487b14</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id8" rules="none">
+<colgroup><col class="label"/><col/></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[3]</a></td><td>Collobert et al., 2011. <em>Natural Language Processing (Almost) from Scratch</em>. Journal of Machine Learning Research 12 (2011) 2493-2537. <a class="reference external" href="/pdf/Collobert_2011.pdf">Download</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id9" rules="none">
+<colgroup><col class="label"/><col/></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id4">[4]</a></td><td>Citado en: Kenneth Church (2007). <em>A Pendulum Swung too Far</em>. Linguistic Issues in Language Technology 6 (4): 5.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id10" rules="none">
+<colgroup><col class="label"/><col/></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id5">[5]</a></td><td>Reglamento (UE) 2016/679 de Protección de Datos Personales.</td></tr>
+</tbody>
+</table>
+</div>
+
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="https://jgsogo.es/tag/pln.html">pln</a>
+      <a href="https://jgsogo.es/tag/ontology.html">ontology</a>
+      <a href="https://jgsogo.es/tag/semantics.html">semantics</a>
+      <a href="https://jgsogo.es/tag/word2vec.html">word2vec</a>
+      <a href="https://jgsogo.es/tag/chatbot.html">chatbot</a>
+    </p>
+  </div>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'jgsogoes';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</article>
+
+    <footer>
+<p>
+  &copy; Javier G. Sogo 2021 - This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>
+</p>
+<p>Built using <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a></p><p>
+  <a rel="license"
+     href="http://creativecommons.org/licenses/by-sa/4.0/"
+     target="_blank">
+    <img alt="Creative Commons License"
+         title="Creative Commons License"
+         style="border-width:0"
+         src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png"
+         width="80"
+         height="15"/>
+  </a>
+</p>    </footer>
+  </main>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "name": "No hay PLN sin lingüística",
+  "headline": "No hay PLN sin lingüística",
+  "datePublished": "2017-12-22 18:30:00+01:00",
+  "dateModified": "",
+  "author": {
+    "@type": "Person",
+    "name": "Javier G. Sogo",
+    "url": "https://jgsogo.es/author/javier-g-sogo.html"
+  },
+  "image": "http://localhost:8000/images/profile.png",
+  "url": "https://jgsogo.es/no-pln-without-linguistics.html",
+  "description": "El Procesamiento de Lenguaje Natural tiene que apoyarse necesariamente en los profesionales del lenguaje, lingüistas y filólogos que desde los inicios de la Inteligencia Artificial han propuesto modelos para trabajar con él, analizarlo y extraer información. Los enfoques simbólico y estadístico con los que se trabaja en PLN actualmente deben …"
+}
+</script></body>
+</html>
