@@ -1,23 +1,20 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- #
-from __future__ import unicode_literals
 
-AUTHOR = u'Javier G. Sogo'
-SITEURL = u'http://localhost:8000'
-SITENAME = u"Javier G. Sogo's blog"
+AUTHOR = 'Javier G. Sogo'
 SITETITLE = AUTHOR
-SITESUBTITLE = u'Software engineer | Data Scientist'
+SITENAME = "Javier G. Sogo's blog"
+SITEURL = 'http://localhost:8000'
 SITEDESCRIPTION = 'Thoughts and Writings'
 SITELOGO = SITEURL + '/images/profile.png'
 FAVICON = SITEURL + '/images/favicon.ico'
 
-ROBOTS = 'index, follow'
+THEME = 'Flex'
+PATH = 'content'
 
-THEME = u'Flex'  # https://github.com/alexandrevicenzi/Flex
-PATH = u'content'
 TIMEZONE = 'Europe/Madrid'
-DEFAULT_LANG = u'es'
-OG_LOCALE = u'es_ES'
+
+DEFAULT_LANG = 'es'
 
 # Feed generation is usually not desired when developing
 FEED_ALL_ATOM = 'feeds/all.atom.xml'
@@ -47,10 +44,13 @@ CC_LICENSE = {
     'version':'4.0', 
     'slug': 'by-sa',
 }
-COPYRIGHT_YEAR = 2015
+COPYRIGHT_YEAR = 2021
 
 DEFAULT_PAGINATION = 10
 SUMMARY_MAX_LENGTH = 50
+
+# Uncomment following line if you want document-relative URLs when developing
+#RELATIVE_URLS = True
 
 STATIC_PATHS = ['images', 'extra', 'pdfs',]
 EXTRA_PATH_METADATA = {'extra/CNAME': {'path': 'CNAME'},
@@ -60,8 +60,4 @@ EXTRA_PATH_METADATA = {'extra/CNAME': {'path': 'CNAME'},
 
 PLUGIN_PATHS = ['./pelican-plugins']
 PLUGINS = ['extract_toc']
-
-# Uncomment following line if you want document-relative URLs when developing
-#RELATIVE_URLS = True
-
 CUSTOM_CSS = 'static/custom.css'

@@ -109,8 +109,8 @@ tus conocimientos de Qt. Tal vez sea un buen momento para buscar un ``Hello Worl
 funciona `qmake` con los ficheros `.pro` para generar las aplicaciones de Qt. Será útil en lo que viene
 a continuación.
 
-Una vez terminado el proceso anterior debería haberse generado **el ejecutable ``qtbase/bin/qmake``, éste
-es nuestro *build-system* preparado para *cross*-compilar utilizando Emscripten**.
+Una vez terminado el proceso anterior debería haberse generado **el ejecutable** ``qtbase/bin/qmake``, éste
+es nuestro *build-system* preparado para *cross*-compilar utilizando Emscripten.
 
 Si creaste ese pequeño ``Hello world!``, ahora es el momento de comprobar que todo funciona. Dentro de su
 directorio sólo tienes que ejecutar:
@@ -127,8 +127,8 @@ hemos utilizado para generar una aplicación para dos plataformas totalmente dif
 un **horizonte de posibilidades muy interesante para explorar**.
 
 
-Aplicación
-----------
+El cubo
+-------
 
 Ya tenemos todas las piezas disponibles y únicamente nos falta el cubo. El cubo no es más que una
 aplicación de Qt con una ventana de OpenGL. Yo utilicé como base el `ejemplo de OpenGL ES 2.0`_, 
@@ -149,6 +149,8 @@ navegador:
    .../qtbase/bin/qmake
    make
 
+
+____
 
 **Nota.- Todavía tengo que pulir algunos detalles en el blogpost y comprobar que no me he saltado
 ningún paso en la explicación.** Si eres de los primeros en llegar por aquí, ten en cuenta que en 
