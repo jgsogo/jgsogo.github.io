@@ -1,5 +1,7 @@
 <template>
   <article>
+    <AppSearchInput />
+
     <nav>
       <ul>
         <li
@@ -43,17 +45,17 @@ export default {
     console.log(`blog/_slug: ${JSON.stringify(params)}`);
     const article = await $content("articles", params.slug).fetch();
 
-    const [prev, next] = await $content('articles')
-      .only(['title', 'slug'])
-      .sortBy('createdAt', 'asc')
+    const [prev, next] = await $content("articles")
+      .only(["title", "slug"])
+      .sortBy("createdAt", "asc")
       .surround(params.slug)
-      .fetch()
+      .fetch();
 
     return {
       article,
       prev,
-      next
-    }
+      next,
+    };
   },
   methods: {
     formatDate(date) {
