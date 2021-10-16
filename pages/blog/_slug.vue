@@ -29,10 +29,6 @@
     <author :author="article.author" />
     <nuxt-content :document="article" />
     <prev-next :prev="prev" :next="next" />
-    <!--
-    <hr />
-    <pre> {{ article }} </pre>
-    -->
   </article>
 </template>
 
