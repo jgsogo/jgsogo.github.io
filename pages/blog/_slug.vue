@@ -1,8 +1,13 @@
 <template>
   <article class="flex flex-col gap-4">
     <h1 class="text-4xl text-bold">{{ article.title }}</h1>
-    <p class="text-gray-500">Post last updated: {{ formatDate(article.date) }}</p>
-    <nuxt-content class="text-justifyd" :document="article" />
+    <div class="flex justify-start gap-2">
+      <div class="text-gray-500">{{ formatDate(article.date) }}</div>
+      <div class="px-3 py-1 text-xs text-white bg-gray-300 rounded-full" v-for="tag of article.tags" :key="tag">
+      {{ tag }}
+      </div>
+    </div>
+    <nuxt-content :document="article" />
 
     <hr />
     <prev-next :prev="prev" :next="next" />
