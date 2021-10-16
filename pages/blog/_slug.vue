@@ -1,33 +1,10 @@
 <template>
-  <article>
-    <nav>
-      <ul>
-        <li
-          v-for="link of article.toc"
-          :key="link.id"
-          :class="{
-            'font-semibold': link.depth === 2,
-          }"
-        >
-          <nuxtLink
-            :to="`#${link.id}`"
-            class="hover:underline"
-            :class="{
-              'py-2': link.depth === 2,
-              'ml-2 pb-2': link.depth === 3,
-            }"
-            >{{ link.text }}</nuxtLink
-          >
-        </li>
-      </ul>
-    </nav>
-
+  <article class="flex flex-col gap-4">
     <h1 class="text-4xl text-bold">{{ article.title }}</h1>
-    <img :src="article.img" :alt="article.alt" />
-    <p>Post last updated: {{ formatDate(article.updatedAt) }}</p>
-    <nuxt-content class="text-justify" :document="article" />
-    
-    <hr>
+    <p class="text-gray-500">Post last updated: {{ formatDate(article.date) }}</p>
+    <nuxt-content class="text-justifyd" :document="article" />
+
+    <hr />
     <prev-next :prev="prev" :next="next" />
   </article>
 </template>
