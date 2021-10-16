@@ -934,6 +934,37 @@
   "resolved" "https://registry.npmjs.org/@csstools/convert-colors/-/convert-colors-1.4.0.tgz"
   "version" "1.4.0"
 
+"@fortawesome/fontawesome-common-types@^0.2.36":
+  "integrity" "sha1-tE5S2ztrIFI+DFfvjELTFVMsuQM="
+  "resolved" "https://repo.jfrog.io/artifactory/api/npm/npmjs/@fortawesome/fontawesome-common-types/-/fontawesome-common-types-0.2.36.tgz"
+  "version" "0.2.36"
+
+"@fortawesome/fontawesome-svg-core@^1.2.27", "@fortawesome/fontawesome-svg-core@>= 1.2.0 < 1.3":
+  "integrity" "sha1-Ty6m93gpjgxHxlJM4uf9WOtpMOM="
+  "resolved" "https://repo.jfrog.io/artifactory/api/npm/npmjs/@fortawesome/fontawesome-svg-core/-/fontawesome-svg-core-1.2.36.tgz"
+  "version" "1.2.36"
+  dependencies:
+    "@fortawesome/fontawesome-common-types" "^0.2.36"
+
+"@fortawesome/free-brands-svg-icons@^5.15.4":
+  "integrity" "sha1-7IpE3Tg7zdWKp9HJbzglHm/slzM="
+  "resolved" "https://repo.jfrog.io/artifactory/api/npm/npmjs/@fortawesome/free-brands-svg-icons/-/free-brands-svg-icons-5.15.4.tgz"
+  "version" "5.15.4"
+  dependencies:
+    "@fortawesome/fontawesome-common-types" "^0.2.36"
+
+"@fortawesome/free-solid-svg-icons@^5.15.4":
+  "integrity" "sha1-Kmjz/D3doS5SZFZUFCueTo+7bMU="
+  "resolved" "https://repo.jfrog.io/artifactory/api/npm/npmjs/@fortawesome/free-solid-svg-icons/-/free-solid-svg-icons-5.15.4.tgz"
+  "version" "5.15.4"
+  dependencies:
+    "@fortawesome/fontawesome-common-types" "^0.2.36"
+
+"@fortawesome/vue-fontawesome@^0.1.9":
+  "integrity" "sha1-7u7B5OiFC+0EaPk4KSsGzaeTvzQ="
+  "resolved" "https://repo.jfrog.io/artifactory/api/npm/npmjs/@fortawesome/vue-fontawesome/-/vue-fontawesome-0.1.10.tgz"
+  "version" "0.1.10"
+
 "@gar/promisify@^1.0.1":
   "integrity" "sha512-82cpyJyKRoQoRi+14ibCeGPu0CwypgtBAdBhq1WfvagpCZNKqwXbKwXllYSMG91DhmG4jt9gN8eP6lGOtozuaw=="
   "resolved" "https://registry.npmjs.org/@gar/promisify/-/promisify-1.1.2.tgz"
@@ -1595,6 +1626,14 @@
     "webpack-hot-middleware" "^2.25.0"
     "webpack-node-externals" "^3.0.0"
     "webpackbar" "^4.0.0"
+
+"@nuxtjs/fontawesome@^1.1.2":
+  "integrity" "sha1-Ct1lGQlbOSvf+2461A8wJtIPXEQ="
+  "resolved" "https://repo.jfrog.io/artifactory/api/npm/npmjs/@nuxtjs/fontawesome/-/fontawesome-1.1.2.tgz"
+  "version" "1.1.2"
+  dependencies:
+    "@fortawesome/fontawesome-svg-core" "^1.2.27"
+    "@fortawesome/vue-fontawesome" "^0.1.9"
 
 "@nuxtjs/tailwindcss@^4.2.1":
   "integrity" "sha1-vQ3F4NfwKuvhW8I4TAA2h+bl1Qg="
@@ -11625,7 +11664,7 @@
   "resolved" "https://registry.npmjs.org/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz"
   "version" "1.9.1"
 
-"vue@^2.0.0", "vue@^2.6.12", "vue@^2.x", "vue@2.x":
+"vue@^2.0.0", "vue@^2.6.12", "vue@^2.x", "vue@~2", "vue@2.x":
   "integrity" "sha512-x2284lgYvjOMj3Za7kqzRcUSxBboHqtgRE2zlos1qWaOye5yUmHn42LB1250NJBLRwEcdrB0JRwyPTEPhfQjiQ=="
   "resolved" "https://registry.npmjs.org/vue/-/vue-2.6.14.tgz"
   "version" "2.6.14"

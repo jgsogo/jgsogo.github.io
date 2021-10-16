@@ -38,6 +38,7 @@ export default {
     // https://go.nuxtjs.dev/typescript
     '@nuxt/typescript-build',
     '@nuxtjs/tailwindcss',
+    '@nuxtjs/fontawesome'
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -52,6 +53,22 @@ export default {
       }
     },
     nestedProperties: ['author.name']
+  },
+
+  // Adding fontawesome: https://mitesh.dev/blog/font-awesome-integration-with-nuxtjs
+  fontawesome: {
+    component: 'fa',
+    suffix: true,
+    icons: {
+      solid: true,
+      brands: [
+        'faFacebook',
+        'faTwitter',
+        'faLinkedin',
+        'faYoutube',
+        'faGithub'
+      ]
+    },
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
