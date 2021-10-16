@@ -1,33 +1,24 @@
 <template>
-  <div>
-    <h1>Blog Posts</h1>
-    <ul>
-      <li v-for="article of articles" :key="article.slug">
-        <NuxtLink :to="{ name: 'blog-slug', params: { slug: article.slug } }">
-          <img :src="article.img" />
-          <div>
-            <h2>{{ article.title }}</h2>
-            <p>by {{ article.author.name }}</p>
-            <p>{{ article.description }}</p>
-          </div>
-        </NuxtLink>
-      </li>
-    </ul>
-  </div>
+  <ul class="grid gap-10">
+    <li v-for="article of articles" :key="article.slug">
+      <index-post-mini :article="article"></index-post-mini>
+      <hr />
+    </li>
+  </ul>
 </template>
 
 <script>
-  export default {
-    layout: 'blog',
-    async asyncData({ $content, params }) {
-      const articles = await $content('articles')
-        .only(['title', 'description', 'img', 'slug', 'author'])
-        .sortBy('createdAt', 'asc')
-        .fetch()
+export default {
+  layout: "blog",
+  async asyncData({ $content, params }) {
+    const articles = await $content("articles")
+      //.only(['title', 'description', 'img', 'slug', 'author'])
+      .sortBy("date", "asc")
+      .fetch();
 
-      return {
-        articles
-      }
-    }
-  }
+    return {
+      articles,
+    };
+  },
+};
 </script>

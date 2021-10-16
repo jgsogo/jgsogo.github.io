@@ -1,7 +1,5 @@
 <template>
   <article>
-    <AppSearchInput />
-
     <nav>
       <ul>
         <li
@@ -40,6 +38,7 @@
 
 <script>
 export default {
+  layout: "blog",
   async asyncData({ $content, params }) {
     // fetch our article here
     console.log(`blog/_slug: ${JSON.stringify(params)}`);

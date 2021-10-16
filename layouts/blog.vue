@@ -8,11 +8,16 @@
           <p class="">Software engineer</p>
         </div>
       </div>
+      <AppSearchInput />
     </div>
     <div class="w-3/4 bg-green-100">
-      <TheHeader />
-      <Nuxt />
-      <TheFooter />
+      <div class="w-4/6">
+        <TheHeader />
+        <div class="p-10">
+          <Nuxt />
+        </div>
+        <TheFooter />
+      </div>
     </div>
   </div>
 </template>
