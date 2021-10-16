@@ -1,13 +1,7 @@
 <template>
   <div class="flex w-screen">
-    <div class="w-1/4 bg-yellow-100">
-      <img class="" src="/img/javi.jpeg" alt="Javier G. Sogo" />
-      <div class="">
-        <div class="">
-          <p class="">Javier G. Sogo</p>
-          <p class="">Software engineer</p>
-        </div>
-      </div>
+    <div class="flex flex-col w-1/4 bg-yellow-100">
+      <author-card :author="owner"></author-card>
       <AppSearchInput />
     </div>
     <div class="w-3/4 bg-green-100">
@@ -21,3 +15,15 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  layout: "blog",
+  data: () => ({
+    owner: null,
+  }),
+  async fetch() {
+    this.owner = await this.$content("authors", "jgsogo").fetch();
+  },
+};
+</script>
