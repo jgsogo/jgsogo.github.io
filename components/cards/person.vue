@@ -5,36 +5,36 @@
     <div
       class="inline-flex w-40 h-40 overflow-hidden border border-gray-200 rounded-full shadow-lg "
     >
-      <img :src="author.image" :alt="author.name" class="w-full h-full" />
+      <img :src="person.image" :alt="person.name" class="w-full h-full" />
     </div>
 
-    <h2 class="mt-4 text-xl font-bold">{{ author.name }}</h2>
-    <h6 class="mt-2 text-sm font-medium">{{ author.role }}</h6>
+    <h2 class="mt-4 text-xl font-bold">{{ person.name }}</h2>
+    <h6 class="mt-2 text-sm font-medium">{{ person.role }}</h6>
 
     <p class="mt-3 text-xs text-center text-gray-500">
-      {{ author.bio }}
+      {{ person.bio }}
     </p>
 
     <ul class="flex flex-row mt-4 space-x-2">
-      <li v-if="author.social && author.social.github">
+      <li v-if="person.social && person.social.github">
         <a
-          :href="linkGithub(author.social.github)"
+          :href="linkGithub(person.social.github)"
           class="flex items-center justify-center w-8 h-8 text-gray-800 border border-gray-800 rounded-full "
         >
           <fa-icon :icon="['fab', 'github']" />
         </a>
       </li>
-      <li v-if="author.social && author.social.twitter">
+      <li v-if="person.social && person.social.twitter">
         <a
-          :href="linkTwitter(author.social.twitter)"
+          :href="linkTwitter(person.social.twitter)"
           class="flex items-center justify-center w-8 h-8 text-gray-800 border border-gray-800 rounded-full "
         >
           <fa-icon :icon="['fab', 'twitter']" />
         </a>
       </li>
-      <li v-if="author.social && author.social.linkedin">
+      <li v-if="person.social && person.social.linkedin">
         <a
-          :href="linkLinkedIn(author.social.linkedin)"
+          :href="linkLinkedIn(person.social.linkedin)"
           class="flex items-center justify-center w-8 h-8 text-gray-800 border border-gray-800 rounded-full "
         >
           <fa-icon :icon="['fab', 'linkedin']" />
@@ -47,7 +47,7 @@
 <script>
 export default {
   props: {
-    author: {
+    person: {
       type: Object,
       required: true,
     },
