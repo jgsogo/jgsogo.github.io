@@ -1,7 +1,7 @@
 <template>
   <div class="flex w-screen">
     <div class="flex flex-col w-1/4 bg-yellow-100">
-      <author-card :author="owner"></author-card>
+      <data-person :person="owner"></data-person>
       <AppSearchInput />
     </div>
     <div class="w-3/4 bg-green-100">
