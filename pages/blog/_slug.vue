@@ -22,12 +22,12 @@
       </ul>
     </nav>
 
-    <h1>{{ article.title }}</h1>
-    <p>{{ article.description }}</p>
+    <h1 class="text-4xl text-bold">{{ article.title }}</h1>
     <img :src="article.img" :alt="article.alt" />
     <p>Post last updated: {{ formatDate(article.updatedAt) }}</p>
-    <author :author="article.author" />
-    <nuxt-content :document="article" />
+    <nuxt-content class="text-justify" :document="article" />
+    
+    <hr>
     <prev-next :prev="prev" :next="next" />
   </article>
 </template>
