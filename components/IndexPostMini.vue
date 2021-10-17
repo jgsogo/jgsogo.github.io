@@ -1,24 +1,24 @@
 <template>
-  <article class="flex flex-col">
-    <header>
-      <h2 class="text-4xl font-bold">
+  <article class="flex flex-col gap-4">
+    <h1 class="text-4xl">
         <NuxtLink :to="{ name: 'blog-slug', params: { slug: article.slug } }">
-          {{ article.title }}
-        </NuxtLink>
-      </h2>
-      <p class="text-sm text-gray-400">
-        Posted on {{ formatDate(article.date) }} in {{ article.category }} ·
-        Tagged with {{ article.tags.join(", ") }}
-      </p>
-    </header>
+        {{ article.title }}
+      </NuxtLink>
+    </h1>
+    <div class="flex justify-start gap-2">
+      <div class="text-gray-500">{{ formatDate(article.date) }}</div>
+      <div
+        class="px-3 py-1 text-xs text-white bg-gray-300 rounded-full"
+        v-for="tag of article.tags"
+        :key="tag"
+      >
+        {{ tag }}
+      </div>
+    </div>
     <div>
       {{ article.description }}
     </div>
-    <p>
-      <NuxtLink :to="{ name: 'blog-slug', params: { slug: article.slug } }">
-        Read...
-      </NuxtLink>
-    </p>
+    <hr />
   </article>
 </template>
 
