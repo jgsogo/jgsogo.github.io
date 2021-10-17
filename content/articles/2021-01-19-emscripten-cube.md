@@ -49,6 +49,7 @@ sea algo parecido. De cualquier forma, son bienvenidos los comentarios para actu
 publicación e incluir más casos de uso.
 </base-alert>
 
+
 ## Emscripten
 
 El primer paso consiste en preparar Emscripten para compilar código C++ a Webassembly. El
