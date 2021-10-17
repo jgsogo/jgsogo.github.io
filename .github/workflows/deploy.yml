@@ -1,0 +1,24 @@
+name: Deploy to GitHub pages
+
+on:
+  push:
+    branches:
+      - vuejs
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to gh-pages
+        run: |
+          cd _output
+          echo ".nojekyll" > .nojekyll
+          echo "<!doctype html><html><head></head><body><h1>Conan Center</h1>(<a href="graph.pdf">pdf</a> | <a href="graph.png">png</a>)<br/><img src=\"graph.png\"/></body></html>" > index.html
+          git init .
+          git checkout -b gh-pages
+          git add .
+          git config user.email "actions@github.com"
+          git config user.name "GitHub actions"
+          git commit -m "Automatic from Github actions"
+          git remote add origin-pages https://jgsogo:${{ secrets.GITHUB_TOKEN }}@github.com/jgsogo/conan-center-index-graph.git > /dev/null 2>&1
+          git push --quiet --force --set-upstream origin-pages gh-pages
