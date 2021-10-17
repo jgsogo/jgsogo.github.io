@@ -1,5 +1,5 @@
 <template>
-  <article class="flex flex-col bg-yellow-100">
+  <article class="flex flex-col">
     <header>
       <h2 class="text-4xl font-bold">
         <NuxtLink :to="{ name: 'blog-slug', params: { slug: article.slug } }">

@@ -1,5 +1,6 @@
 <template>
   <div>
+    
     <!--Search-->
     <div
       class="fixed top-0 left-0 hidden w-full bg-white shadow-xl"
@@ -27,7 +28,8 @@
     <div
       id="search-toggle"
       class="space-x-2 cursor-pointer"
-      v-on:click="searchToggle"
+      @click="$emit('show-search-modal')"
+      v-on:click="doShowModal"
     >
       <fa-icon :icon="['fa', 'search']" /><span>Search</span>
 
@@ -56,11 +58,14 @@
 </template>
 
 <script>
+import SearchModal from "~/components/SearchModal.vue";
+
 export default {
   data() {
     return {
       searchQuery: "",
       articles: [],
+      showModal: false,
     };
   },
   watch: {
@@ -75,7 +80,11 @@ export default {
         .fetch();
     },
   },
+  components: { SearchModal },
   methods: {
+    doShowModal: function (e) {
+      this.showModal = true;
+    },
     searchToggle: function (event) {
       //var searchMenuDiv = this.$refs["search-content"];
       var searchMenuDiv = document.getElementById("search-content");
