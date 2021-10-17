@@ -37,21 +37,17 @@ aplicación de escritorio con un canvas de OpenGL en el que mostrar un cubo, con
 resulta trivial compilar un proyecto para Webassembly y utilizar el navegador para
 renderizarlo. ¿Será muy complicado juntar ambos?
 
-<info-box>
-  <template #info-box>
-**Nota.- La documentación recomienda utilizar versiones de las diferentes herramientas
+<base-alert type="next">
+La documentación recomienda utilizar versiones de las diferentes herramientas
 que hayan sido probadas conjuntamente y se sepa que funcionan. En este blogpost seguiré
-esta recomendación, aunque algunas otras combinaciones también me han funcionado.**
-  </template>
-</info-box>
+esta recomendación, aunque algunas otras combinaciones también me han funcionado.
+</base-alert>
 
-<info-box>
-  <template #info-box>
-**Nota.- El proceso ha sido probado en Macos, es esperable que en otros sistemas operativos
+<base-alert type="next">
+El proceso ha sido probado en Macos, es esperable que en otros sistemas operativos
 sea algo parecido. De cualquier forma, son bienvenidos los comentarios para actualizar esta
-publicación e incluir más casos de uso.**
-  </template>
-</info-box>
+publicación e incluir más casos de uso.
+</base-alert>
 
 ## Emscripten
 
@@ -147,12 +143,10 @@ make
 ```
 
 ____
-<info-box>
-  <template #info-box>
-**Nota.- Todavía tengo que pulir algunos detalles en el blogpost y comprobar que no me he saltado
-ningún paso en la explicación.** Si eres de los primeros en llegar por aquí, ten en cuenta que en 
+<base-alert type="next">
+<strong>Todavía tengo que pulir algunos detalles en el blogpost y comprobar que no me he saltado
+ningún paso en la explicación.</strong> Si eres de los primeros en llegar por aquí, ten en cuenta que en 
 el futuro probablemente actualice el artículo añadiendo algunos detalles (optimizaciones para que
 la ejecución sea más rápida, cómo ejecutar todo el proceso con Conan en una única línea, más detalles
 sobre Webassembly, otras versiones de las aplicaciones,...). Stay tuned!
-  </template>
-</info-box>
+</base-alert>
