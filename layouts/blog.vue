@@ -4,7 +4,11 @@
       <div class="fixed w-1/4 top-10">
         <ul class="float-right text-right">
           <li class="px-3 space-x-2">
-            <NuxtLink :to="{ name: 'index' }"><fa-icon :icon="['fa', 'home']" /><!--<span>Home</span>--></NuxtLink>
+            <NuxtLink :to="{ name: 'index' }"
+              ><fa-icon
+                :icon="['fa', 'home']"
+              /><!--<span>Home</span>--></NuxtLink
+            >
           </li>
           <li class="px-3 space-x-2 cursor-pointer" v-on:click="doShowModal">
             <fa-icon :icon="['fa', 'search']" /><!--<span>Search</span>-->
@@ -49,11 +53,12 @@ export default {
   },
 
   methods: {
-    startSearch() {
-      console.log("HEY!");
-    },
     doShowModal: function (e) {
       this.showModal = true;
+      this.$nextTick(function () {
+        let searchfield = document.getElementById("searchfield");
+        searchfield.focus();
+      });
     },
     onEscape: function (e) {
       if (this.showModal && e.keyCode === 27) {
