@@ -49,3 +49,23 @@ jobs:
 
       - name: Run tests 🧪
         run: yarn test
+
+  deploy:
+    needs: ci
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate
+        run: yarn generate
+
+      - name: Deploy to gh-pages
+        run: |
+          cd dist
+          echo ".nojekyll" > .nojekyll
+          git init .
+          git checkout -b gh-pages
+          git add .
+          git config user.email "actions@github.com"
+          git config user.name "GitHub actions"
+          git commit -m "Automatic from Github actions"
+          git remote add origin-pages https://jgsogo:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git > /dev/null 2>&1
+          git push --quiet --force --set-upstream origin-pages gh-pages
