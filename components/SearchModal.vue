@@ -7,7 +7,7 @@ Follow here: https://dev.to/davidemaye/how-to-create-a-modal-component-in-nuxt-3
     @click="doCloseModal"
   >
     <div
-      class="w-1/2 p-20 mt-20 space-y-4 text-center bg-white bg-opacity-100 rounded h-1/3"
+      class="w-1/2 p-5 mt-20 space-y-4 text-center bg-white bg-opacity-100 rounded h-1/2"
       @click.stop
     >
       <div class="mx-auto text-black">
@@ -58,6 +58,7 @@ export default {
         return;
       }
       this.articles = await this.$content("articles")
+        .sortBy("date", "desc")
         .limit(6)
         .search(searchQuery)
         .fetch();
