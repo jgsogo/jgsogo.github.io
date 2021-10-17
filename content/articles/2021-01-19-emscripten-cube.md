@@ -19,9 +19,9 @@ visor de OpenGL.
 
 <!--more-->
 
-
-<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Here it is, a little <a href="https://twitter.com/conan_io?ref_src=twsrc%5Etfw">@conan_io</a>/<a href="https://twitter.com/jfrog?ref_src=twsrc%5Etfw">@jfrog</a>/<a href="https://twitter.com/isocpp?ref_src=twsrc%5Etfw">@isocpp</a> cube running in Chrome compiled to <a href="https://twitter.com/hashtag/webassembly?src=hash&amp;ref_src=twsrc%5Etfw">#webassembly</a> using <a href="https://twitter.com/hashtag/Qt?src=hash&amp;ref_src=twsrc%5Etfw">#Qt</a> 🤠. Just a couple of steps thanks to the packages and recipes provided by <a href="https://twitter.com/bincrafters?ref_src=twsrc%5Etfw">@bincrafters</a> 🤟 I&#39;ll write a making of, promise. <a href="https://t.co/0XPbifrant">pic.twitter.com/0XPbifrant</a></p>&mdash; jgsogo (@jgsogo) <a href="https://twitter.com/jgsogo/status/1089562018355527680?ref_src=twsrc%5Etfw">January 27, 2019</a></blockquote> 
+<blockquote class="twitter-tweet tw-align-center"><p lang="en" dir="ltr">Here it is, a little <a href="https://twitter.com/conan_io?ref_src=twsrc%5Etfw">@conan_io</a>/<a href="https://twitter.com/jfrog?ref_src=twsrc%5Etfw">@jfrog</a>/<a href="https://twitter.com/isocpp?ref_src=twsrc%5Etfw">@isocpp</a> cube running in Chrome compiled to <a href="https://twitter.com/hashtag/webassembly?src=hash&amp;ref_src=twsrc%5Etfw">#webassembly</a> using <a href="https://twitter.com/hashtag/Qt?src=hash&amp;ref_src=twsrc%5Etfw">#Qt</a> 🤠. Just a couple of steps thanks to the packages and recipes provided by <a href="https://twitter.com/bincrafters?ref_src=twsrc%5Etfw">@bincrafters</a> 🤟 I&#39;ll write a making of, promise. <a href="https://t.co/0XPbifrant">pic.twitter.com/0XPbifrant</a></p>&mdash; jgsogo (@jgsogo) <a href="https://twitter.com/jgsogo/status/1089562018355527680?ref_src=twsrc%5Etfw">January 27, 2019</a></blockquote> 
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
 
 En aquel momento dije que documentaría el proceso, pero no lo hice. Hoy, casualidades
 del destino, me siento en deuda con esto de nuevo y ha llegado el momento de comentar
