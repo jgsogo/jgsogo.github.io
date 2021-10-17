@@ -3,10 +3,12 @@ name: ci
 on:
   push:
     branches:
+      - vuejs
       - main
       - master
   pull_request:
     branches:
+      - vuejs
       - main
       - master
 
@@ -44,7 +46,6 @@ jobs:
 
       - name: Install dependencies 👨🏻‍💻
         run: yarn
-
 
       - name: Run tests 🧪
         run: yarn test
