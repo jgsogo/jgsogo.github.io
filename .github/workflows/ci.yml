@@ -50,12 +50,24 @@ jobs:
       - name: Run tests 🧪
         run: yarn test
 
+      - name: Run generate
+        run: yarn generate
+
+      - name: Store generate
+        uses: actions/upload-artifact@master
+        with:
+          name: yarn-generate
+          path: dist
+
   deploy:
     needs: ci
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/vuejs'
     steps:
-      - name: Generate
-        run: yarn generate
+      - uses: actions/download-artifact@master
+        with:
+          name: yarn-generate
+          path: dist
 
       - name: Deploy to gh-pages
         run: |
