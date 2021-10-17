@@ -1,7 +1,7 @@
 <template>
   <article class="flex flex-col gap-4">
     <h1 class="text-4xl">
-        <NuxtLink :to="{ name: 'blog-slug', params: { slug: article.slug } }">
+      <NuxtLink :to="{ name: 'blog-slug', params: { slug: article.slug } }">
         {{ article.title }}
       </NuxtLink>
     </h1>
