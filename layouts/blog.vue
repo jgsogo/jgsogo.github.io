@@ -45,7 +45,6 @@ export default {
     this.owner = await this.$content("authors", "jgsogo").fetch();
   },
   beforeMount() {
-    console.log("created");
     window.addEventListener("keydown", this.onEscape);
   },
   beforeDestroy() {
