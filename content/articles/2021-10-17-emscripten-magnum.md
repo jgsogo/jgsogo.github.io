@@ -70,11 +70,21 @@ support, and the required components to import my 3D models. Anyway, those were
 a bunch of libraries using different build systems.
 
 
-## 
+## Building the libraries
+
+### Conanize all the things 
+
+## Emscripten
+
+### Magnum and SDL
+
+## Reproducible steps
+
+## Enjoy!
 
 ---
 
 aaaa <content-github-repository repo="jgsogo/blog-20211008-example-emsdk-magnum"></content-github-repository>aaa
 
 
-<content-magnum-wasm base_path="https://jgsogo.github.io/blog-20211008-example-emsdk-magnum" caption="Use controls..."></content-magnum-wasm>
+<content-magnum-wasm base_path="https://jgsogo.es/blog-20211008-example-emsdk-magnum" caption="Use controls..."></content-magnum-wasm>
