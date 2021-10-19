@@ -132,7 +132,8 @@ Ya tenemos todas las piezas disponibles y únicamente nos falta el cubo. El cubo
 aplicación de Qt con una ventana de OpenGL. Yo utilicé como base el [ejemplo de OpenGL ES 2.0](https://doc.qt.io/qt-5/qtopengl-cube-example.html), 
 cambié la textura e hice unos ajustes.
 
-En [este repositorio](https://github.com/jgsogo/qt-opengl-cube/tree/main/qt-opengl-example) podéis encontrar el código fuente que yo utilicé. Utilizando los pasos
+En <content-github-repository repo="jgsogo/qt-opengl-cube" link_internal="tree/main/qt-opengl-example">este repositorio</content-github-repository>
+podéis encontrar el código fuente que yo utilicé. Utilizando los pasos
 anteriores debería compilarse una aplicación para Webassembly que podéis abrir en vuestro
 navegador:
 
