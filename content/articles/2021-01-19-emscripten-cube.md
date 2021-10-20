@@ -11,7 +11,6 @@ tags:
   - web
 ---
 
-
 Hace mucho tiempo publiqué un tweet que tuvo cierta tracción, en él mostraba
 un cubo interactivo en el navegador que había hecho con C++. La magia detrás
 de ese cubo era una aplicación de Qt compilada para Webassembly utilizando un
