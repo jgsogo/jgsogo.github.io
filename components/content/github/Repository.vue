@@ -22,7 +22,7 @@
               <strong>
                 <a :href="info.html_url">{{ info.full_name }}</a>
               </strong>
-              <img class="inline h-4" :src="`/icons/${info.language}.png`" />
+              <img class="inline h-4" :src="`/icons/${info.language.toLowerCase()}.png`" />
             </div>
             <div class="text-sm text-gray-400">
               Created by
