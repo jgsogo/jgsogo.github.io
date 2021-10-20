@@ -8,7 +8,7 @@
     <p v-else-if="$fetchState.error">An error occurred :(</p>
     <table
       v-else
-      class="absolute left-0 z-50 grid grid-cols-3 gap-4 px-4 py-2 bg-white border rounded shadow w-96 -top-20 border-grey-100 hover-target"
+      class="absolute left-0 z-50 grid grid-cols-3 px-2 py-2 bg-white border rounded shadow w-96 border-grey-100 hover-target"
     >
       <tbody class="">
         <tr>
