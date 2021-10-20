@@ -3,28 +3,27 @@
     <a :href="`https://github.com/${repo}/${link_internal}`">
       <slot>{{ repo }}</slot>
     </a>
-    <span
+
+    <p v-if="$fetchState.pending">Fetching info...</p>
+    <p v-else-if="$fetchState.error">An error occurred :(</p>
+    <span v-else
       class="absolute left-0 flex flex-col px-4 py-2 bg-white border rounded shadow -top-20 border-grey-100 hover-target"
     >
-      <pre>{{ info }}</pre>
       <div>
-        <a href="info.owner.html_url">
-          <!--<img src="info.owner.avatar_url" />-->
+        <a :href="info.owner.html_url">
+          <img :src="info.owner.avatar_url" />
         </a>
         <strong>
-          <a href="info.html_url">info.name</a>
-          <sup> info.language</sup>
+          <a :href="info.html_url">{{ info.name }}</a>
+          <sup>{{ info.language }}</sup>
         </strong>
       </div>
-      <div>info.description</div>
-      <div></div>
+      <div>{{ info.description }}</div>
     </span>
   </span>
 </template>
 
 <script>
-import axios from "axios"; // don't forget me!
-
 export default {
   props: {
     repo: {
@@ -41,9 +40,10 @@ export default {
   }),
   async fetch() {
     console.log(`Getting data for repo: ${this.repo}`);
-    this.info = (await axios.get(`https://api.github.com/repos/${this.repo}`)).data;
-    console.log(` - name: ${JSON.stringify(this.info)}`);
+    this.info = (await this.$axios.get(`https://api.github.com/repos/${this.repo}`)).data;
+    console.log(` - name: ${JSON.stringify(this.info.name)}`);
   },
+  fetchKey: 'repo-card',
 };
 </script>
 
