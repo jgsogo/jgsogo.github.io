@@ -4,55 +4,59 @@
       <slot>{{ repo }}</slot>
     </a>
 
-    <p v-if="$fetchState.pending">Fetching info...</p>
-    <p v-else-if="$fetchState.error">An error occurred :(</p>
-    <table
-      v-else
-      class="absolute left-0 z-50 grid grid-cols-3 px-2 py-2 bg-white border rounded shadow w-96 border-grey-100 hover-target"
+    <div
+      class="absolute left-0 z-50 px-2 py-2 bg-white border rounded shadow hover-target w-96 border-grey-100"
     >
-      <tbody class="">
-        <tr>
-          <td class="w-1/5">
-            <a :href="info.owner.html_url">
-              <img class="rounded" :src="info.owner.avatar_url" />
-            </a>
-          </td>
-          <td class="flex flex-col align-top">
-            <div>
-              <strong>
-                <a :href="info.html_url">{{ info.full_name }}</a>
-              </strong>
-              <img class="inline h-4" :src="`/icons/${info.language.toLowerCase()}.png`" />
-            </div>
-            <div class="text-sm text-gray-400">
-              Created by
-              <a :href="info.owner.html_url"
-                ><span class="font-bold text-gray-600"
-                  >@{{ info.owner.login }}</span
-                ></a
-              >
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="2">
-            {{ info.description }}
-          </td>
-        </tr>
-        <tr>
-          <td class="text-xs uppercase" colspan="2">
-            <hr />
-            <div class="pt-2">
+      <p v-if="$fetchState.pending">Fetching info...</p>
+      <p v-else-if="$fetchState.error">:( An error occurred retrieving info for https://github.com/{{ repo }}</p>
+      <table v-else class="grid grid-cols-3">
+        <tbody class="">
+          <tr>
+            <td class="w-1/5">
+              <a :href="info.owner.html_url">
+                <img class="rounded" :src="info.owner.avatar_url" />
+              </a>
+            </td>
+            <td class="flex flex-col align-top">
               <div>
-                <fa-icon :icon="['fab', 'github']" />
-                <span class="font-bold">{{ info.forks }}</span> forks
-                <span class="font-bold">{{ info.watchers }} </span> stars
+                <strong>
+                  <a :href="info.html_url">{{ info.full_name }}</a>
+                </strong>
+                <img
+                  class="inline h-4"
+                  :src="`/icons/${info.language.toLowerCase()}.png`"
+                />
               </div>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+              <div class="text-sm text-gray-400">
+                Created by
+                <a :href="info.owner.html_url"
+                  ><span class="font-bold text-gray-600"
+                    >@{{ info.owner.login }}</span
+                  ></a
+                >
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              {{ info.description }}
+            </td>
+          </tr>
+          <tr>
+            <td class="text-xs uppercase" colspan="2">
+              <hr />
+              <div class="pt-2">
+                <div>
+                  <fa-icon :icon="['fab', 'github']" />
+                  <span class="font-bold">{{ info.forks }}</span> forks
+                  <span class="font-bold">{{ info.watchers }} </span> stars
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </span>
 </template>
 
@@ -73,7 +77,9 @@ export default {
   }),
   async fetch() {
     console.log(`Getting data for repo: ${this.repo}`);
-    this.info = (await this.$axios.get(`https://api.github.com/repos/${this.repo}`)).data;
+    this.info = (
+      await this.$axios.get(`https://api.github.com/repos/${this.repo}`)
+    ).data;
     console.log(` - name: ${JSON.stringify(this.info.name)}`);
   },
   fetchKey: "repo-card",
