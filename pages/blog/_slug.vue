@@ -75,7 +75,7 @@ export default {
 .nuxt-content p code {
   @apply bg-gray-100 !important;
 }
-.nuxt-content p a {
+.nuxt-content a {
   @apply text-red-500 hover:underline !important;
 }
 </style>
