@@ -1,21 +1,40 @@
+import getSiteMeta from "./utils/getSiteMeta";
+const meta = getSiteMeta();
+
 export default {
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'jgsogo.github.io',
+    title: 'Personal blog @jgsogo',
     htmlAttrs: {
       lang: 'en'
     },
     meta: [
+      ...meta,
       { charset: 'utf-8' },
+      { name: "HandheldFriendly", content: "True" },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
-      { name: 'format-detection', content: 'telephone=no' }
+      { property: "og:site_name", content: "Bob Ross" },
+      {
+        hid: "description",
+        name: "description",
+        content:
+          "Articles focused on programming, most of them around C++.",
+      },
+      { property: "og:image:width", content: "740" },
+      { property: "og:image:height", content: "300" },
+      { name: "twitter:site", content: "@jgsogo" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      {
+        hid: "canonical",
+        rel: "canonical",
+        href: process.env.BASE_URL,
+      },
     ],
     bodyAttrs: {
       class: ""
