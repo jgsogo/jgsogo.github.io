@@ -1,6 +1,6 @@
 <template>
   <a :href="`https://twitter.com/${user}`">
-    <slot>{{ user }}</slot>
+    <slot>@{{ user }}</slot>
   </a>
 </template>
 
