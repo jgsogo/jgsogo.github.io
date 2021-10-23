@@ -135,7 +135,7 @@ export default {
   @apply text-red-500 hover:underline !important;
 }
 
-ul {
+.nuxt-content ul {
   padding-left: 2rem;
   list-style-type: square;
 }
