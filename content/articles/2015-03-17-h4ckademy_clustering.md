@@ -10,7 +10,7 @@ tags:
 ---
 
 
-El otro día os presentaba <NuxtLink :to="`/blog/h4ckademy`">h4ckademy</NuxtLink>, la escuela de programación
+El otro día os presentaba <nuxt-link to="/blog/2015-03-06-h4ckademy">h4ckademy</nuxt-link>, la escuela de programación
 de mi amigo Israel Gutiérrez (<content-twitter-user user="gootyfer"></content-twitter-user>).
 Después de visitarla ese día decidí que podía
 ser una buena oportunidad para salir de mi zona de confort y ofrecer a los *alumnos* una breve *clase*
