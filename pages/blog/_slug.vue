@@ -140,4 +140,9 @@ export default {
   list-style-type: square;
 }
 
+.nuxt-content ol {
+  padding-left: 2rem;
+  list-style-type: decimal;
+}
+
 </style>
