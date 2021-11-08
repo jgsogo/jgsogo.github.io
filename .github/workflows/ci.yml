@@ -73,6 +73,7 @@ jobs:
         run: |
           cd dist
           echo ".nojekyll" > .nojekyll
+          echo "jgsogo.es" > CNAME
           git init .
           git checkout -b gh-pages
           git add .

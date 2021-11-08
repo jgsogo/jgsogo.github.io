@@ -1,9 +1,12 @@
 
 <template>
-  <div>
-    <img :src="src" :alt="alt" class="article-image" />
-    <span v-if="caption">{{ caption }}</span>
-  </div>
+  <figure class="p-4">
+    <img :src="src" :alt="alt" class="flex-grow article-image" />
+    <div v-if="source" class="text-xs text-right">Source: {{ source }}</div>
+    <figcaption v-if="caption" class="p-2 text-sm text-center">
+      <i>{{ caption }}</i>
+    </figcaption>
+  </figure>
 </template>
 
 
@@ -19,6 +22,10 @@ export default {
       required: true,
     },
     caption: {
+      type: String,
+      default: () => null,
+    },
+    source: {
       type: String,
       default: () => null,
     },

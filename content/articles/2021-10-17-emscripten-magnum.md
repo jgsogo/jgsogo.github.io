@@ -28,8 +28,8 @@ Spoiler: I didn't finish the course.
 Anyway, before moving forwards, I want to show you the viking shield I managed
 to do in the first lessons. I really enjoyed it and I can only recommend all the
 courses that 
-<content-twitter-handle handle="par_virtual">Pablo</content-twitter-handle> 
-and <content-twitter-handle handle="KoreFormacion">Koré team</content-twitter-handle>
+<content-twitter-user user="par_virtual">Pablo</content-twitter-user> 
+and <content-twitter-user user="KoreFormacion">Koré team</content-twitter-user>
 will organize in the future.
 
 <article-image src="/img/articles/kore-shield.png" alt="Viking shield" caption="Viking shield recreation"></article-image>
