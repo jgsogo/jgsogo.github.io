@@ -123,11 +123,11 @@ export default {
   @apply absolute right-0 text-gray-600 font-light z-10 mr-2 mt-1 text-sm;
 }
 
-.nuxt-content p code {
+.nuxt-content p > code {
   @apply bg-gray-100 !important;
 }
 
-.nuxt-content ul code {
+.nuxt-content li > code {
   @apply bg-gray-100 !important;
 }
 
