@@ -11,6 +11,15 @@
         {{ tag }}
       </div>
     </div>
+
+    <p v-if="article.draft">
+      <base-alert type="draft">
+        <strong>This article is a draft</strong>. At some point in time I expect
+        to continue working on it. Meanwhile, you can find here some ideas,
+        annotations and a schema of the future article.
+      </base-alert>
+    </p>
+
     <nuxt-content :document="article" />
 
     <hr />
@@ -29,6 +38,11 @@ export default {
     const article = await $content("articles", params.slug).fetch();
 
     const [prev, next] = await $content("articles")
+      .where({
+        draft: {
+          $in: [undefined, false],
+        },
+      })
       .only(["title", "slug"])
       .sortBy("date", "asc")
       .surround(params.slug)
@@ -123,11 +137,11 @@ export default {
   @apply absolute right-0 text-gray-600 font-light z-10 mr-2 mt-1 text-sm;
 }
 
-.nuxt-content p code {
+.nuxt-content p > code {
   @apply bg-gray-100 !important;
 }
 
-.nuxt-content ul code {
+.nuxt-content li > code {
   @apply bg-gray-100 !important;
 }
 
@@ -144,5 +158,4 @@ export default {
   padding-left: 2rem;
   list-style-type: decimal;
 }
-
 </style>
