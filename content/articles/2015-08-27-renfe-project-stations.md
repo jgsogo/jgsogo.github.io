@@ -67,13 +67,11 @@ complicado, tal y como se puede ver en la imagen siguiente:
 Sin embargo, las URLs de esta página siguen un patrón que no he podido identificar, aparece un identificador
 numérico al final que impide construirlas de forma automática. Algunos ejemplos:
 
-===== ============= =====
- ID    Nombre        URL
-===== ============= =====
-23004 Pontevedra    http://www.adif.es/es_ES/infraestructuras/estaciones/23004/informacion_000047.shtml
-30002 Plasencia     http://www.adif.es/es_ES/infraestructuras/estaciones/30002/informacion_000141.shtml
-74200 Huesca        http://www.adif.es/es_ES/infraestructuras/estaciones/74200/informacion_000099.shtml
-===== ============= =====
+| ID    | Nombre     | URL                                                                                 |
+|-------|------------|-------------------------------------------------------------------------------------|
+| 23004 | Pontevedra | http://www.adif.es/es_ES/infraestructuras/estaciones/23004/informacion_000047.shtml |
+| 30002 | Plasencia  | http://www.adif.es/es_ES/infraestructuras/estaciones/30002/informacion_000141.shtml |
+| 74200 | Huesca     | http://www.adif.es/es_ES/infraestructuras/estaciones/74200/informacion_000099.shtml |
 
 Como consecuencia de ese parámetro debo utilizar alguna otra técnica para acceder a las páginas de
 detalle de cada una de las estaciones: se puede utilizar un script que trabaje con el mapa, o partir de
@@ -90,7 +88,8 @@ pero tengo que geoposicionar unas 1300.
     alt="Mapa de estaciones"
     caption="Mapa de estaciones con las coordenadas GPS obtenidas de ADIF"></article-image>
 
-### Railopendata
+
+### Railopendata
 
 <content-twitter-user user="jgcasta">José Gómez Castaño</content-twitter-user>
 mantiene un <content-github-repository repo="jgcasta/railopendata">repositorio en Github</content-github-repository>
