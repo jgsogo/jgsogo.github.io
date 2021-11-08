@@ -38,11 +38,11 @@ export default {
     const article = await $content("articles", params.slug).fetch();
 
     const [prev, next] = await $content("articles")
-      .where({
+      /*.where({
         draft: {
           $in: [undefined, false],
         },
-      })
+      })*/
       .only(["title", "slug"])
       .sortBy("date", "asc")
       .surround(params.slug)
