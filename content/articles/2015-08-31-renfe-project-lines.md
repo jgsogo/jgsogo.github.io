@@ -44,7 +44,7 @@ Podemos detectar estos errores de dos formas:
   mal posicionada, ejecutando el algoritmo para todos los pares de estaciones puedo resolver la ambigüedades.
 
 Una vez que he detectado las estaciones mal posicionadas puedo utilizar el
-`algoritmo de trilateración <{filename}/Algorithms/trilateration_with_errors.rst>`__
+<nuxt-link to="/blog/2015-08-25-trilateration-with-errors">algoritmo de trilateración</nuxt-link>
 para calcular su posición correcta o bien solucionar el problema manualmente.
 
 Con los datos corregidos ya puedo generar mapas con las conexiones directas entre estaciones

@@ -44,8 +44,9 @@ caso, cada estación de la ciudad posee un identificador numérico único.
 
 Los identificadores numéricos, donde aparecen, son la primera opción para identificar las estaciones; sin
 embargo, en muchos otros casos, tendremos que utilizar los nombres y comparar de forma inexacta cadenas de
-texto para identificar la estación (ver `comparación inexacta de cadenas <{filename}/Algorithms/fuzzy_string_comparison.md>`__). Estos nombres alternativos
-los guardaremos como *alias* de la estación para utilizarlos en búsquedas futuras.
+texto para identificar la estación 
+(ver <nuxt-link to="/blog/2015-08-25-fuzzy-string-comparison">comparación inexacta de cadenas</nuxt-link>).
+Estos nombres alternativos los guardaremos como *alias* de la estación para utilizarlos en búsquedas futuras.
 
 
 Posicionamiento
@@ -179,7 +180,8 @@ las curvas que hace la vía y también puede haber error en el posicionamiento d
 una de ellas la voy a aproximar mediante una distribución de probabilidad construida a partir de los datos
 de todas las composiciones que hacen parada en dicha estación.
 
-Este algoritmo de trilateración os lo cuento en otro artículo: (`ver artículo <{filename}/Algorithms/trilateration_with_errors.rst>`__)
+Este algoritmo de trilateración os lo cuento en otro artículo:
+(<nuxt-link to="/blog/2015-08-25-trilateration-with-errors">ver artículo</nuxt-link>)
 
 
 Proyección sobre las líneas
