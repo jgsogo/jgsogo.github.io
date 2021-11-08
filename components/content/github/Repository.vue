@@ -22,7 +22,7 @@
               <strong>
                 <a :href="info.html_url">{{ info.full_name }}</a>
               </strong>
-              <img
+              <img v-if="info.language"
                 class="inline h-4"
                 :src="`/icons/${info.language.toLowerCase()}.png`"
               />
