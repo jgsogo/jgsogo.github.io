@@ -84,7 +84,7 @@ Podría parecer que aquí termina el trabajo, pero no es así; en la web de ADIF
 pero tengo que geoposicionar unas 1300.
 
 <article-image
-    src="/img/2015/renfe-stations-adif-gps.png"
+    src="/img/2015/renfe-stations-adif.png"
     alt="Mapa de estaciones"
     caption="Mapa de estaciones con las coordenadas GPS obtenidas de ADIF"></article-image>
 

@@ -7,6 +7,7 @@ category: Friends
 tags: 
   - machine-learning
   - event
+draft: true
 ---
 
 
@@ -30,7 +31,7 @@ otros temas, os dejo [aquí][datanalytics-iv-meetup-machine-learning] el enlace.
 
 
 Definición del modelo
-=====================
+---------------------
 
 
 Algunos enlaces de interés y temas que mencionar:
@@ -41,7 +42,7 @@ Algunos enlaces de interés y temas que mencionar:
 
 
 Aplicaciones
-============
+------------
 
 Habrá que hablar de:
 
