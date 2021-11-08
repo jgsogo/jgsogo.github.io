@@ -69,7 +69,7 @@ al destino.
 
 El Procesamiento de Lenguaje Natural (PLN) es una rama de la Inteligencia Artificial que comprende problemas muy variados con
 un grado de madurez muy diferente entre ellos (esta 
-<content-github-repository repository="Kyubyong/nlp_tasks">recopilación de Kyubyong</content-github-repository> 
+<content-github-repository repo="Kyubyong/nlp_tasks">recopilación de Kyubyong</content-github-repository> 
 ofrece un listado bastante completo), aunque cuando
 yo hablo de PLN quiero referirme al **conjunto de herramientas, algoritmos, modelos,... que me permiten convertir un texto expresado
 correctamente en lenguaje natural en un conjunto de datos que pueden ser procesados por un algoritmo**. Desde mi punto de vista es la
