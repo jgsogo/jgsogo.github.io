@@ -21,6 +21,11 @@ description: |
 
 [![Emscripten](https://github.com/jgsogo/blog-emsdk-magnum-viewer/actions/workflows/emscripten.yml/badge.svg)](https://github.com/jgsogo/blog-emsdk-magnum-viewer/actions/workflows/emscripten.yml)
 
+<base-alert type="next">
+If you are only interested in reproducing the example, go to the
+<a href="#show-me-the-code-reproducible-steps">last section of this blogpost</a>.
+</base-alert>
+
 Some months ago I joined a 3D course using Blender. The main purpose was to
 recover this hobby I enjoyed a lot in the good old days, but soon my mind started
 to think about showing those 3D models in the browser. Using C++, of course.
