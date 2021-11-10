@@ -1,10 +1,11 @@
 const type = "website";
 const url = "https://jgsogo.es";
+const twitter = "@jgsogo"
 const title = "Personal blog @jgsogo";
 const description = "Articles focused on programming, most of them around C++.";
 const mainImage = "/img/javi.jpeg";
 
-export default (meta) => {
+const getSiteMeta = (meta) => {
   return [
     {
       hid: "description",
@@ -58,3 +59,6 @@ export default (meta) => {
     },
   ];
 };
+
+export { url, twitter };
+export default getSiteMeta;

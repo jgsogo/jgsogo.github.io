@@ -29,6 +29,8 @@
 
 <script>
 import getSiteMeta from "./../../utils/getSiteMeta";
+import { url } from "./../../utils/getSiteMeta";
+
 
 export default {
   layout: "blog",
@@ -66,7 +68,7 @@ export default {
         type: "article",
         title: this.article.title,
         description: this.article.description,
-        url: `${this.$config.baseUrl}/blog/${this.$route.params.slug}`,
+        url: `${url}/blog/${this.$route.params.slug}`,
         mainImage: this.article.image,
       };
       return getSiteMeta(metaData);
