@@ -14,7 +14,9 @@ description: |
   In this article I use Emscripten to render an STL model in the browser with 
   the help of Magnum library. I'll use Conan and packages from ConanCenter to
   get the libraries and build everything needed. Finally we will get the files
-  we need to deploy in a web server to interact with the 3D model.
+  we need to deploy in a web server to interact with the 3D model. In this 
+  blogpost I'm not entering into the logic or sources, the purpose is to show
+  a working project that can be used in future developments.
 draft: true
 ---
 
@@ -124,21 +126,76 @@ of <content-github-repository repo="conan-io/conan-center-index">conan-center-in
 repository.
 
 Of course, it hasn't been only my work, but the effort of several contributors from the community that
-helped me creating other recipes. Thanks and kudos to all of them.
+helped me creating other recipes. Thanks and kudos to all of them. Now you can just install all required
+libraries with Conan and use it in your project:
+
+```bash
+conan install magnum/2020.06@
+```
 
 ## Emscripten
 
+[Emscripten](https://emscripten.org/) is a toolchain based on LLVM to generate WebAssembly binaries.
+These binaries can run in the browser. In my honest opinion is one of the most interesting technologies
+today: compact output, near-native speed and same source code as desktop. 
 
+From a C++ developer point of view, it's just a cross-building toolchain that generates some `.wasm` and
+`.js` files that can be loaded and executed by the browser. Due to security reason, access to system
+resources is limited and that's the reason by some libraries don't build out of the box and need some
+modifications (see <content-github-user user="emscripten-ports"></content-github-user>). There are
+two main limitation we will face in this example: OpenGL is substituted by WebGL (it supports only
+a subset of OpenGL ES 2.0/3.0), and access to filesystem is forbidden (although it can be virtualized). 
+
+Thanks to <content-github-user user="werto87"></content-github-user> there is a recipe for `emsdk`
+available in ConanCenter, so crossbuilding our libraries to WebAssembly will be straightforward
+using this package as a Conan's build-requirement. Below I will list the commands you need to execute.
 
 ### Magnum and SDL
 
-## Reproducible steps
+However, when it comes to SDL requirement in Magnum there is a problem with several root causes. Magnum, when
+building for desktop, depends on SDL v2, but when building for web it uses SDL v1. Why? SDL v1 is
+basically deprecated, and that's probably the reason why Magnum started to use the new version, but
+Emscripten still provides vendorized SDL v1 so it is probably easier to keep using old functions.
+
+From Conan perspective this is quite unfortunate. We only have
+[SDL v2 available in ConanCenter](https://conan.io/center/sdl) so we cannot switch the requirement
+when building for the web and we need to use the vendorized SDL version in `emsdk`. It works so far, 
+but we loose track of this dependencie and possible transitive requirements. 
+
+I don't have enough SDL expertise to contribute a PR to Magnum and move the requirement to v2 and,
+on the other hand, I didn't manage to _conanize_ SDL v1 (and it's probably not worth it since it is
+mainly deprecated).
+
+Here we are likely in a dead-end if we want to do the things right, I would love to update this blogpost
+in the near future saying that everything has been fixed and ready. Meanwhile we need to accept the
+workarounds mentioned above and keep going.
+
+## Show me the code! (reproducible steps)
+
+Time for fun! In this first attemp I'm just copying the `viewer` example from the
+<content-github-repository repo="mosra/magnum-examples" link_internal="tree/master/src/viewer">magnum-examples repository</content-github-repository>
+and modify it a little bit to load the STL model. In this blogpost I'm not
+explaining the logic or entering the source code, the intention here is to show that it works
+and provide a starting point for some actual development.
+
+All required sources can be found in my
+<content-github-repository repo="jgsogo/blog-20211008-example-emsdk-magnum">GitHub account</content-github-repository>,
+so the first step is to clone the repository to your local computer:
+
+```bash
+git clone https://github.com/jgsogo/blog-20211008-example-emsdk-magnum
+cd blog-20211008-example-emsdk-magnum
+```
+
+In this project I will use [Conan revisions](https://docs.conan.io/en/latest/versioning/revisions.html)
+and [lockfiles](https://docs.conan.io/en/latest/versioning/lockfiles.html#versioning-lockfiles), the purpose
+is to achieve reproducibility and guarantee that it will work in the future,  
+
+ I'm using some features from Conan that are not activated by default (but they will
+likely be defaults in Conan v2): reviisons
 
 ## Enjoy!
 
----
-
-aaaa <content-github-repository repo="jgsogo/blog-20211008-example-emsdk-magnum"></content-github-repository>aaa
-
+Here you have it: the Conan cube rendered using WebAssembly:
 
 <content-magnum-wasm base_path="https://jgsogo.es/blog-20211008-example-emsdk-magnum" caption="Use controls..."></content-magnum-wasm>
