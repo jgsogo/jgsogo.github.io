@@ -13,6 +13,11 @@
           <li class="px-3 space-x-2 cursor-pointer" v-on:click="doShowModal">
             <fa-icon :icon="['fa', 'search']" /><!--<span>Search</span>-->
           </li>
+          <li class="px-3 space-x-2 cursor-pointer">
+            <a :href="`https://twitter.com/intent/tweet?text=${tweet_text}`" target="_blank">
+              <fa-icon :icon="['fa', 'comment']" /><!--<span>Comment</span>-->
+            </a>
+          </li>
         </ul>
       </div>
       <div class="fixed flex flex-col w-1/4 bottom-20">
@@ -34,15 +39,19 @@
 </template>
 
 <script>
+import { url, twitter } from "../utils/getSiteMeta";
+
 export default {
   layout: "blog",
 
   data: () => ({
     owner: null,
     showModal: false,
+    tweet_text: null,
   }),
   async fetch() {
     this.owner = await this.$content("authors", "jgsogo").fetch();
+    this.tweet_text = `Hey ${twitter}! I've read ${url}${this.$route.path} and want to...`;
   },
   beforeMount() {
     window.addEventListener("keydown", this.onEscape);
@@ -70,8 +79,8 @@ export default {
 
 <style>
 html {
-  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
   font-size: 18px;
   word-spacing: 1px;
   -ms-text-size-adjust: 100%;
