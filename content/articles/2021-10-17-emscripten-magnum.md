@@ -17,16 +17,14 @@ description: |
   we need to deploy in a web server to interact with the 3D model. In this 
   blogpost I'm not entering into the logic or sources, the purpose is to show
   a working project that can be used in future developments.
-draft: true
 ---
 
+[![Emscripten](https://github.com/jgsogo/blog-emsdk-magnum-viewer/actions/workflows/emscripten.yml/badge.svg)](https://github.com/jgsogo/blog-emsdk-magnum-viewer/actions/workflows/emscripten.yml)
 
 Some months ago I joined a 3D course using Blender. The main purpose was to
 recover this hobby I enjoyed a lot in the good old days, but soon my mind started
 to think about showing those 3D models in the browser. Using C++, of course.
 Spoiler: I didn't finish the course.
-
-<!--more-->
 
 Anyway, before moving forwards, I want to show you the viking shield I managed
 to do in the first lessons. I really enjoyed it and I can only recommend all the
@@ -179,23 +177,86 @@ explaining the logic or entering the source code, the intention here is to show 
 and provide a starting point for some actual development.
 
 All required sources can be found in my
-<content-github-repository repo="jgsogo/blog-20211008-example-emsdk-magnum">GitHub account</content-github-repository>,
+<content-github-repository repo="jgsogo/blog-emsdk-magnum-viewer">GitHub account</content-github-repository>,
 so the first step is to clone the repository to your local computer:
 
 ```bash
-git clone https://github.com/jgsogo/blog-20211008-example-emsdk-magnum
-cd blog-20211008-example-emsdk-magnum
+git clone https://github.com/jgsogo/blog-emsdk-magnum-viewer
+cd blog-emsdk-magnum-viewer
 ```
 
 In this project I will use [Conan revisions](https://docs.conan.io/en/latest/versioning/revisions.html)
 and [lockfiles](https://docs.conan.io/en/latest/versioning/lockfiles.html#versioning-lockfiles), the purpose
-is to achieve reproducibility and guarantee that it will work in the future,  
+is to achieve reproducibility and guarantee that it will work in the future. Using these two features
+together we can force the recipe revisions that we know that work.
 
- I'm using some features from Conan that are not activated by default (but they will
-likely be defaults in Conan v2): reviisons
+Let's configure Conan in a local folder, so we don't disturb global installation:
+
+```bash
+export CONAN_USER_HOME=$(pwd)
+conan config set general.revisions_enabled=1
+```
+
+Now we are going to export two recipes with some modifications that are needed to work with Emscripten. These
+changes haven't been contributed to the
+<content-github-repository repo="conan-io/conan-center-index">conan-center-index</content-github-repository>
+repository yet, we probably need to think and decide first about [this issue](https://github.com/conan-io/conan-center-index/issues/7427).
+
+```bash
+conan export .conan/recipes/magnum/all/conanfile.py magnum/2020.06@
+conan export .conan/recipes/libjpeg/all/conanfile.py libjpeg/9d@
+```
+
+Now create a move to the build directory:
+
+```bash
+mkdir cmake-build-emsdk && cd cmake-build-emsdk
+```
+
+And it's time to use the lockfiles. A Conan lockfile is a file that states the exact revision of the packages
+involved in a dependency graph. Conan can use one of these files to download the packages from the remote and
+reproduce exactly the same scenario in another computer. However, as we said before, the dependencies are not
+exactly the same when building for desktop or emscripten (sometimes they are different for different configurations),
+so a true lockfile won't fit our needs. Fortunately, Conan provides _base lockfiles_ that capture only the
+recipe revision and this is what I'm using here and it is stored in the `lockfile.json` file.
+
+Using this _base lockfile_, we can create the full lockfile that matches our configuration. Different configs
+will use different packages (different binaries), but still they will use the same recipe revision.
+
+```bash
+conan lock create --profile:host=../.conan/profiles/emsdk --profile:build=default --lockfile=../lockfile.json --lockfile-out=lockfile.json --name=viewer --version=0.1 ../conanfile.txt --build --update
+```
+
+Now, we can use the generated file to install all the requirements in our dependency graph:
+
+```bash
+conan install --lockfile=lockfile.json ../conanfile.txt --build=missing --generator=virtualenv
+```
+
+Conan has generated everything we need to build the project: the module files that will be
+consumed by CMake (the well-known `FindXXX.cmake` files for the libraries) and some bash scripts
+to populate the environment with the information that the build-system needs to use the
+Emscripten toolchain.
+
+Next step is to activate the environment and build the project as usual:
+
+```bash
+source activate.sh
+cmake .. -DCMAKE_MODULE_PATH=$(pwd) -DCMAKE_TOOLCHAIN_FILE=$CONAN_CMAKE_TOOLCHAIN_FILE
+make
+```
+
+The build should succeed, at least it does in the CI (see badge at the top). In order
+to see it working in your computer, you just need to start a web server and point
+your browser to the HTML file:
+
+```bash
+python -m http.server --directory bin
+http://localhost:8000/viewer.html
+```
 
 ## Enjoy!
 
-Here you have it: the Conan cube rendered using WebAssembly:
+Here you have it: the Conan cube rendered using WebAssembly, use the moouse to navigate and move the object:
 
-<content-magnum-wasm base_path="https://jgsogo.es/blog-20211008-example-emsdk-magnum" caption="Use controls..."></content-magnum-wasm>
+<content-magnum-wasm base_path="https://jgsogo.es/blog-emsdk-magnum-viewer" caption="Use controls..."></content-magnum-wasm>
