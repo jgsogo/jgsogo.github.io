@@ -1,7 +1,7 @@
 ---
 lang: en
 title: Magnum example using Emscripten
-date: 2021-10-17
+date: 2021-11-10
 author: jgsogo
 category: C++
 tags: 
