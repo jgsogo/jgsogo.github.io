@@ -16,7 +16,7 @@ export default {
       { charset: 'utf-8' },
       { name: "HandheldFriendly", content: "True" },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { property: "og:site_name", content: "Bob Ross" },
+      { property: "og:site_name", content: "Javier G. Sogo" },
       {
         hid: "description",
         name: "description",
